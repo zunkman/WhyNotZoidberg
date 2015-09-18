@@ -17,15 +17,13 @@ public class DefaultPlayerMovement : MonoBehaviour
         newRigid2D = this.gameObject.GetComponent<Rigidbody2D>();
     }
 
-
+    /*
+    Gets player direction and jump boolean
+    */
     void FixedUpdate()
     {
         float p_MoveDir = Input.GetAxis("Horizontal");
         bool p_JumpDir = Input.GetButton("Jump");
-
-        Debug.Log(p_JumpDir);
-        p_Movement(p_MoveDir, p_MoveSpeed);
-        p_Jump(p_JumpDir, p_MoveDir, p_JumpHeight , p_JumpForwardForce);
     }
 
 
@@ -52,6 +50,9 @@ public class DefaultPlayerMovement : MonoBehaviour
         }
     }
 
+    /*
+    Movement Function
+    */
     public void p_Movement(float moveDirection, float moveSpeed)
     {
         if (moveDirection > 0.0f)
@@ -98,10 +99,4 @@ public class DefaultPlayerMovement : MonoBehaviour
             }
         }
     }
-
-
-
-
-
-    
 }
