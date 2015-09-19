@@ -7,17 +7,30 @@ public class DefaultPlayerMovement : MonoBehaviour
     public float p_JumpHeight;
     public float p_JumpForwardForce;
 
+    private float p_MoveDir;
+
     public bool jumpForwardForce;
     public bool isJumping;
-
-    private float p_MoveDir;
+    public bool gamePad = false;
     private bool p_JumpDir;
 
-    private Rigidbody2D newRigid2D; 
+    private Rigidbody2D newRigid2D;
+
+    private int joystickArrayLength;
 
     void Start()
     {
+        joystickArrayLength = Input.GetJoystickNames().GetLength(0);
         newRigid2D = this.gameObject.GetComponent<Rigidbody2D>();
+
+        if (joystickArrayLength == 0)
+        {
+            //Debug.Log("No Joystick found");
+        }
+        else
+        {
+            gamePad = true;
+        }
     }
 
     /*
@@ -25,16 +38,27 @@ public class DefaultPlayerMovement : MonoBehaviour
     */
     void Update()
     {
-        p_MoveDir = Input.GetAxis("Horizontal");
+        if (gamePad == true)
+        {
+            p_MoveDir = Input.GetAxis("GamePad1Horizontal");
 
-        p_Movement(p_MoveDir, p_MoveSpeed);
+            p_Movement(p_MoveDir, p_MoveSpeed);
 
-        p_JumpDir = Input.GetButton("Jump");
+            p_JumpDir = Input.GetButton("GamePad1Jump");
 
-        p_Jump(p_JumpDir, p_MoveDir, p_JumpHeight, p_JumpForwardForce);
+            p_Jump(p_JumpDir, p_MoveDir, p_JumpHeight, p_JumpForwardForce);
+        }
+        else
+        {
+            p_MoveDir = Input.GetAxis("Horizontal");
+
+            p_Movement(p_MoveDir, p_MoveSpeed);
+
+            p_JumpDir = Input.GetButton("Jump");
+
+            p_Jump(p_JumpDir, p_MoveDir, p_JumpHeight, p_JumpForwardForce);
+        }
     }
-
-
 
     /*
     Made for 2d use only
