@@ -3,24 +3,29 @@ using System.Collections;
 
 public class Player : MonoBehaviour {
 
-    [SerializeField] float horspeed;
-    [SerializeField] float horaccel;
-    [SerializeField] float jumpspeed;
-    [SerializeField] float gravity;
+    /* All of these variables need to be public */
+    [SerializeField] public float horspeed;
+    [SerializeField] public float horaccel;
+    [SerializeField] public float jumpspeed;
+    [SerializeField] public float gravity;
+    [SerializeField] public int playerNumber; // this is needed for multiple players
     //IMPORTANT NOTE: Set the width to something small, like 0.2.
     //Even if your character's sprite is 1 unit wide. The character will
     //be embedded somewhat in walls, this is fine, and will look fine once we switch to 2D sprites.
-    [SerializeField] float width;
-    [SerializeField] float height;
-    [SerializeField] int raycasts;
+    [SerializeField] public float width;
+    [SerializeField] public float height;
+    [SerializeField] public int raycasts;
     //Tap Grav = Bonus gravity when travelling upwards while not holding the Up key. This causes you to jump less high when you are not holding the Up key.
-    [SerializeField] float tapGrav;
+    [SerializeField] public float tapGrav;
     //Should be slightly higher than 45, like 47, just for the sake of rounding errors.
-    [SerializeField] float maxSlope;
-    float magicNumber = 0.03f;
+    [SerializeField] public float maxSlope;
+    float magicNumber = 0.05f;
     bool isJumping;
-    [SerializeField] Vector3 speed;
-	
+    public Vector3 speed;
+
+    //public float health;
+    //public float damage;
+
     //override any of these functions using
     //protected override void Example () {
     ////Debug.Log("yo :)");
@@ -28,9 +33,9 @@ public class Player : MonoBehaviour {
     //this way you can make your own class that inherits from player
     //and we can add overridable functions that most players will do the same way
     //e.g taking damage
-    
+
     // Use this for initialization
-	protected virtual void Start () {
+    protected virtual void Start () {
         speed = Vector3.zero;
 	
     }
@@ -71,11 +76,13 @@ public class Player : MonoBehaviour {
         {
             //move left
             speed.x += -horaccel * Time.deltaTime;
+            this.gameObject.transform.eulerAngles = new Vector3(0.0f, 180.0f, 0.0f);
         }
         else if (Input.GetAxis("Horizontal") > 0)
         {
             //move right
             speed.x += horaccel * Time.deltaTime;
+            this.gameObject.transform.eulerAngles = new Vector3(0.0f, 0.0f, 0.0f);
         }
         else
         {
