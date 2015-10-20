@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Polluto/Polluto.CSharp.Plugins.csproj
+/Polluto/Polluto.CSharp.Editor.csproj
+/Polluto/Library
