@@ -199,8 +199,14 @@ public class MainMenuScript : MonoBehaviour
         else if (GameHandler.numPlayers == 2)
         {
             characterSelectTitle.GetComponent<Text>().text = "Select your character player two";
-            playerOneOk.SetActive(false);
-            playerTwoOk.SetActive(true);
+            currentSelectingPlayer = 2;
+
+            if (currentSelectingPlayer == 2)
+            {
+                playerOneOk.SetActive(false);
+                //playerTwoOk.SetActive(true);
+            }
+            //playerTwoOk.SetActive(true);
             //make player one ok button disappear last
             //make player two ok button true
         }
@@ -208,6 +214,7 @@ public class MainMenuScript : MonoBehaviour
 
     public void playerTwoOkButton()
     {
+        playerOneOk.SetActive(false);
         playerTwoOk.SetActive(false);
         levelSelectCanvas.SetActive(true);
         moveCameraTierThree = true;
@@ -222,6 +229,7 @@ public class MainMenuScript : MonoBehaviour
         }
         else
         {
+            playerTwoOk.SetActive(true);
             GameHandler.selectedCharacterNamePlayerTwo = "Looper";
         }
 
@@ -236,6 +244,7 @@ public class MainMenuScript : MonoBehaviour
         }
         else
         {
+            playerTwoOk.SetActive(true);
             GameHandler.selectedCharacterNamePlayerTwo = "Higgs";
         }
     }
@@ -249,6 +258,7 @@ public class MainMenuScript : MonoBehaviour
         }
         else
         {
+            playerTwoOk.SetActive(true);
             GameHandler.selectedCharacterNamePlayerTwo = "JunkToss";
         }
     }
@@ -262,6 +272,7 @@ public class MainMenuScript : MonoBehaviour
         }
         else
         {
+            playerTwoOk.SetActive(true);
             GameHandler.selectedCharacterNamePlayerTwo = "TankGirl";
         }
     }
@@ -275,11 +286,32 @@ public class MainMenuScript : MonoBehaviour
         }
         else
         {
+            playerTwoOk.SetActive(true);
             GameHandler.selectedCharacterNamePlayerTwo = "GlassCanonMan";
         }
     }
 
     public void onClickSubterfuge()
+    {
+        Application.LoadLevel("Level4");
+    }
+
+    public void onClickMountainGoat()
+    {
+        Application.LoadLevel("MountainBox");
+    }
+
+    public void onClickFortKnox()
+    {
+        Application.LoadLevel("Level4");
+    }
+
+    public void onClickVolcanoParadise()
+    {
+        Application.LoadLevel("VolcanoParadise");
+    }
+
+    public void onClickLabratory()
     {
         Application.LoadLevel("Level4");
     }
