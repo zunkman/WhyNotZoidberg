@@ -115,7 +115,7 @@ public class Player : MonoBehaviour {
                 //check for ground from various points //--modified to match changes to Player --> Origin is now at the center of the player--//
                 float xoff = (width / 2) * (i - 1);
                 //using overload #12: origin, direction, hitinfo, maxdistance
-                if (Physics.Raycast(transform.position + new Vector3(xoff, 0f, 0f), Vector3.down, out hit, Mathf.Abs(height/2f) + Mathf.Abs(speed.y * Time.deltaTime) + magicNumber) && speed.y <= 0)
+                if (Physics.Raycast(transform.position + new Vector3(xoff, 0f, 0f), Vector3.down, out hit, Mathf.Abs(height/2f) + Mathf.Abs(speed.y * Time.deltaTime) + magicNumber) && speed.y <= 0 && hit.transform.gameObject.tag == "Ground")
                 {
                 //Debug.Log("Hit:" + hit.collider.tag);
                 //snap to floor, and enable jumping.
@@ -133,7 +133,7 @@ public class Player : MonoBehaviour {
                 RaycastHit h1, h2;
                 //raycast down from top left and top right corners of the character
                 if (Physics.Raycast(transform.position + new Vector3(-width / 4, (height / 2f), 0f), Vector3.down, out h1) &&
-                    Physics.Raycast(transform.position + new Vector3(width / 4, (height / 2f), 0f), Vector3.down, out h2))
+                    Physics.Raycast(transform.position + new Vector3(width / 4, (height / 2f), 0f), Vector3.down, out h2) && h1.transform.gameObject.tag == "Ground" && h2.transform.gameObject.tag == "Ground")
                 {
 
                         float slope = Vector2.Angle( h2.point - h1.point,Vector2.right);
@@ -163,7 +163,7 @@ public class Player : MonoBehaviour {
             //check for ceil from various points //--modified to match changes to Player --> Origin is now at the center of the player--//
             float xoff = (width / 2) * (i - 1);
             RaycastHit hit;
-            if (Physics.Raycast(transform.position + new Vector3(xoff, 0f, 0f), Vector3.up, out hit, (height / 2f) + Mathf.Abs(speed.y * Time.deltaTime) + magicNumber) && speed.y >= 0)
+            if (Physics.Raycast(transform.position + new Vector3(xoff, 0f, 0f), Vector3.up, out hit, (height / 2f) + Mathf.Abs(speed.y * Time.deltaTime) + magicNumber) && speed.y >= 0 && hit.transform.gameObject.tag == "Ground")
             {
                 //snap to floor, and enable jumping.
                 transform.position += new Vector3(0f, hit.distance - (height / 2f), 0f);
@@ -182,10 +182,10 @@ public class Player : MonoBehaviour {
         float check = speed.x*Time.deltaTime;
         float widthCheck = width / 2 * Mathf.Sign(check);
         RaycastHit hit;
-        if(Physics.Raycast(transform.position+new Vector3(-widthCheck,0f,0f),Vector3.right*Mathf.Sign(check),out hit, Mathf.Abs(check)+Mathf.Abs(widthCheck*2))){
+        if(Physics.Raycast(transform.position+new Vector3(-widthCheck,0f,0f),Vector3.right*Mathf.Sign(check),out hit, Mathf.Abs(check)+Mathf.Abs(widthCheck*2)) && hit.transform.gameObject.tag == "Ground") {
             //cast a second ray a bit above the first to check for a slope on the wall
             RaycastHit secondHit;
-            if (Physics.Raycast(transform.position + new Vector3(-widthCheck, (height/4), 0f), Vector3.right * Mathf.Sign(check), out secondHit))
+            if (Physics.Raycast(transform.position + new Vector3(-widthCheck, (height/4), 0f), Vector3.right * Mathf.Sign(check), out secondHit) && secondHit.transform.gameObject.tag == "Ground")
             {
 
                 Vector2 p1 = hit.point;
@@ -206,7 +206,7 @@ public class Player : MonoBehaviour {
         {
             float yoff = (height / raycasts * i) - (height/2f);
 
-            if (Physics.Raycast(transform.position + new Vector3(0f, yoff, 0f), Vector3.right * Mathf.Sign(speed.x), out hit, Mathf.Abs(speed.x * Time.deltaTime)+(width/2f)))
+            if (Physics.Raycast(transform.position + new Vector3(0f, yoff, 0f), Vector3.right * Mathf.Sign(speed.x), out hit, Mathf.Abs(speed.x * Time.deltaTime)+(width/2f)) && hit.transform.gameObject.tag == "Ground")
             {
                 transform.position += new Vector3((hit.distance - width / 2) * Mathf.Sign(speed.x), 0f, 0f);
                 speed.x = 0f;
