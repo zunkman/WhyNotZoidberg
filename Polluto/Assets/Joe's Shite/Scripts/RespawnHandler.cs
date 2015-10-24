@@ -14,6 +14,7 @@ public class RespawnHandler : MonoBehaviour
 
 	void Start ()
     {
+        theCamera = Camera.allCameras[0];
         originalObjects = new GameObject[respawnObjects.Length];
         for (int x = 0; x < respawnObjects.Length; x++)
         {

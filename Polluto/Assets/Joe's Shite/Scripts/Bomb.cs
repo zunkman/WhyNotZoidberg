@@ -189,8 +189,7 @@ public class Bomb : MonoBehaviour
             else
             {
                 zeePlayer = Instantiate(blastedPlayer, blastTargets[x].transform.position, Quaternion.identity) as GameObject;
-                zeePlayer.GetComponent<BlastedPlayer>().player = blastTargets[x].transform.parent.gameObject.GetComponentInChildren<Player>().gameObject;
-                zeePlayer.GetComponent<BlastedPlayer>().playerContainer = blastTargets[x];
+                zeePlayer.GetComponent<BlastedPlayer>().player = blastTargets[x].GetComponentInParent<Player>().gameObject;
 
                 // If the target is to the right.
                 if (blastTargets[x].transform.position.x - this.transform.position.x >= explosionHitbox.GetComponent<SphereCollider>().radius / 2)

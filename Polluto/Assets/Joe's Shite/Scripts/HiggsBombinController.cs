@@ -18,10 +18,26 @@ public class HiggsBombinController : MonoBehaviour
 
     private bool canAttack, canSpecial;
     public bool facingRight;
+    public int playerNumber;
 
 	// Use this for initialization
 	void Start ()
     {
+        
+        player = this.GetComponentInParent<Player>().gameObject;
+
+        // This is used for setting the stats in player.
+        playerNumber = player.GetComponent<Player>().playerNumber;
+        player.GetComponent<Player>().horspeed = 10;
+        player.GetComponent<Player>().horaccel = 30;
+        player.GetComponent<Player>().jumpspeed = 12;
+        player.GetComponent<Player>().gravity = 25;
+        player.GetComponent<Player>().width = 1;
+        player.GetComponent<Player>().height = 2;
+        player.GetComponent<Player>().raycasts = 20;
+        player.GetComponent<Player>().tapGrav = 25;
+        player.GetComponent<Player>().maxSlope = 47;
+
         this.transform.position = player.transform.position;
         if (attackDamage == 0)
         {
@@ -54,11 +70,7 @@ public class HiggsBombinController : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        if (player.activeSelf)
-        {
-            keepUp();
-        }
-        
+        keepUp();
         playerInput();
         cooldownHandler();
 	}
@@ -109,19 +121,40 @@ public class HiggsBombinController : MonoBehaviour
     // Gets the input from the player, concerning attacks.
     void playerInput()
     {
-        if (canAttack & Input.GetAxis("Fire1") >= 0.1)
+        if (playerNumber == 1)
         {
-            canAttack = false;
-            attack();
-            attackTimer = 0;
+            if (canAttack & Input.GetAxis("Basic Attack") >= 0.1)
+            {
+                canAttack = false;
+                attack();
+                attackTimer = 0;
+            }
+
+            if (canSpecial & Input.GetAxis("Special Attack") >= 0.1)
+            {
+                canSpecial = false;
+                specialMove();
+                specialTimer = 0;
+            }
         }
 
-        if (canSpecial & Input.GetAxis("Fire2") >= 0.1)
+        if (playerNumber == 2)
         {
-            canSpecial = false;
-            specialMove();
-            specialTimer = 0;
+            if (canAttack & Input.GetAxis("Basic Attack 2") >= 0.1)
+            {
+                canAttack = false;
+                attack();
+                attackTimer = 0;
+            }
+
+            if (canSpecial & Input.GetAxis("Special Attack 2") >= 0.1)
+            {
+                canSpecial = false;
+                specialMove();
+                specialTimer = 0;
+            }
         }
+        
     }
 
     // Launch a bomb

@@ -303,7 +303,7 @@ public class MainMenuScript : MonoBehaviour
 
     public void onClickFortKnox()
     {
-        Application.LoadLevel("Level4");
+        Application.LoadLevel("Fort Knox");
     }
 
     public void onClickVolcanoParadise()

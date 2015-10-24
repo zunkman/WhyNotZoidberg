@@ -8,13 +8,14 @@ This script will handle player movement when the player has been blasted by a bo
 public class BlastedPlayer : MonoBehaviour
 {
     [SerializeField] private float speed, maxSpeed, timePassed;
-    public GameObject playerContainer, player;
+    public GameObject player;
     private Rigidbody playerRigid;
     private bool begun;
-
+    private int playerNumber;
     // Use this for initialization
     void Start ()
     {
+        playerNumber = player.GetComponent<Player>().playerNumber;
 	    if (speed == 0)
         {
             speed = 10;
@@ -32,12 +33,10 @@ public class BlastedPlayer : MonoBehaviour
 	void Update ()
     {
         timePassed -= Time.deltaTime;
-        playerContainer.transform.position = this.transform.position;
-        player.transform.position = this.transform.position;
         if (begun)
         {
             applyInput(playerInput());
-            playerContainer.transform.position = this.transform.position;
+            player.transform.position = this.transform.position;
         }
 
         collisionCheck();
@@ -55,7 +54,7 @@ public class BlastedPlayer : MonoBehaviour
     {
         RaycastHit hit;
 
-        if (Physics.Raycast(playerContainer.transform.position, Vector3.right, out hit, 1f) || Physics.Raycast(playerContainer.transform.position, Vector3.left, out hit, 1f) || Physics.Raycast(playerContainer.transform.position, Vector3.up, out hit, 1f))
+        if (Physics.Raycast(player.transform.position, Vector3.right, out hit, 1f) || Physics.Raycast(player.transform.position, Vector3.left, out hit, 1f) || Physics.Raycast(player.transform.position, Vector3.up, out hit, 1f))
         {
             if (hit.transform.gameObject.tag == "Ground")
             {
@@ -66,7 +65,7 @@ public class BlastedPlayer : MonoBehaviour
             }
         }
 
-        else if (timePassed <= 0 & Physics.Raycast(playerContainer.transform.position, Vector3.down, out hit, 1f))
+        else if (timePassed <= 0 & Physics.Raycast(player.transform.position, Vector3.down, out hit, 1f))
         {
             playerRigid.velocity = new Vector3(0, 0.5f, 0);
             player.GetComponent<Player>().enabled = true;
@@ -80,11 +79,21 @@ public class BlastedPlayer : MonoBehaviour
     {
         float horizontalInput = 0;
 
-        if (Input.GetAxis("Horizontal") >= 0.1 || Input.GetAxis("Horizontal") <= -0.1)
+        if (playerNumber == 1)
         {
-            horizontalInput = Input.GetAxis("Horizontal");
+            if (Input.GetAxis("Horizontal") >= 0.1 || Input.GetAxis("Horizontal") <= -0.1)
+            {
+                horizontalInput = Input.GetAxis("Horizontal");
+            }
         }
-
+        
+        if (playerNumber == 2)
+        {
+            if (Input.GetAxis("Horizontal 2") >= 0.1 || Input.GetAxis("Horizontal 2") <= -0.1)
+            {
+                horizontalInput = Input.GetAxis("Horizontal 2");
+            }
+        }
         return horizontalInput;
     }
 
