@@ -125,8 +125,6 @@ public class GameHandler : MonoBehaviour
 
         }
 
-
-
         if (totalLives <= 0.0f)
         {
              Debug.Log("LOSERS!");
@@ -344,7 +342,8 @@ public class GameHandler : MonoBehaviour
             this.playerOneInstatiatedObject.GetComponent<Player>().playerNumber = 1;
 
         }
-        else if (numOfChars == 2)
+
+        if (numOfChars == 2)
         {
             this.playerOneInstatiatedObject = Instantiate(this.playerOne, playerSpawnOne.transform.position, Quaternion.identity) as GameObject;
 
@@ -377,22 +376,22 @@ public class GameHandler : MonoBehaviour
 
             this.playerTwoInstatiatedObject = Instantiate(this.playerTwo, playerSpawnTwo.transform.position, Quaternion.identity) as GameObject;
 
-            if (characterOneName == "Looper")
+            if (characterTwoName == "Looper")
             {
                 looperObject = Instantiate(this.looperObject, playerSpawnTwo.transform.position, Quaternion.identity) as GameObject;
                 looperObject.transform.parent = this.playerTwoInstatiatedObject.transform;
             }
-            else if (characterOneName == "JunkToss")
+            else if (characterTwoName == "JunkToss")
             {
                 junkTossObject = Instantiate(junkTossObject, playerSpawnTwo.transform.position, Quaternion.identity) as GameObject;
                 junkTossObject.transform.parent = this.playerTwoInstatiatedObject.transform;
             }
-            else if (characterOneName == "Higgs")
+            else if (characterTwoName == "Higgs")
             {
                 higgsObject = Instantiate(higgsObject, playerSpawnTwo.transform.position, Quaternion.identity) as GameObject;
                 higgsObject.transform.parent = this.playerTwoInstatiatedObject.transform;
             }
-            else if (characterOneName == "TankGirl")
+            else if (characterTwoName == "TankGirl")
             {
                 tankGirlObject = Instantiate(tankGirlObject, playerSpawnTwo.transform.position, Quaternion.identity) as GameObject;
                 tankGirlObject.transform.parent = this.playerTwoInstatiatedObject.transform;

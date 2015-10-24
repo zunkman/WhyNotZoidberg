@@ -229,8 +229,8 @@ public class MainMenuScript : MonoBehaviour
         }
         else
         {
-            playerTwoOk.SetActive(true);
             GameHandler.selectedCharacterNamePlayerTwo = "Looper";
+            playerTwoOk.SetActive(true);
         }
 
     }
@@ -244,8 +244,8 @@ public class MainMenuScript : MonoBehaviour
         }
         else
         {
-            playerTwoOk.SetActive(true);
             GameHandler.selectedCharacterNamePlayerTwo = "Higgs";
+            playerTwoOk.SetActive(true);
         }
     }
 
@@ -258,8 +258,8 @@ public class MainMenuScript : MonoBehaviour
         }
         else
         {
-            playerTwoOk.SetActive(true);
             GameHandler.selectedCharacterNamePlayerTwo = "JunkToss";
+            playerTwoOk.SetActive(true);
         }
     }
 
@@ -272,8 +272,8 @@ public class MainMenuScript : MonoBehaviour
         }
         else
         {
-            playerTwoOk.SetActive(true);
             GameHandler.selectedCharacterNamePlayerTwo = "TankGirl";
+            playerTwoOk.SetActive(true);
         }
     }
 
@@ -286,13 +286,14 @@ public class MainMenuScript : MonoBehaviour
         }
         else
         {
-            playerTwoOk.SetActive(true);
             GameHandler.selectedCharacterNamePlayerTwo = "GlassCanonMan";
+            playerTwoOk.SetActive(true);
         }
     }
 
     public void onClickSubterfuge()
     {
+        GameHandler.selectedLevelName = "Subterfuge";
         Application.LoadLevel("Level4");
     }
 
