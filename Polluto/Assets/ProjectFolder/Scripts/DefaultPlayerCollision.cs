@@ -27,17 +27,17 @@ public class DefaultPlayerCollision : MonoBehaviour
 
         if (collisionEnter.gameObject.tag == "smallBoostBox")
         {
-            this.gameObject.GetComponent<Player>().speed.y = 35.0f;
+            this.gameObject.GetComponent<Player>().speed.y = 16.5f;
         }
 
         if (collisionEnter.gameObject.tag == "mediumBoostBox")
         {
-            this.gameObject.GetComponent<Player>().speed.y = 50.0f;
+            this.gameObject.GetComponent<Player>().speed.y = 30.0f;
         }
 
         if (collisionEnter.gameObject.tag == "bigBoostBox")
         {
-            this.gameObject.GetComponent<Player>().speed.y = 100.0f;
+            this.gameObject.GetComponent<Player>().speed.y = 70.0f;
         }
     }
 

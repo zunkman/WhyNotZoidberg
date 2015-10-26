@@ -24,9 +24,9 @@ public class spikeBehaviour : MonoBehaviour
         }
 	}
 
-    void OnCollisionEnter(Collision CollisionEnter)
+    void OnTriggerEnter(Collider CollisionEnter)
     {
-        if (CollisionEnter.gameObject.tag == "Player")
+        if (CollisionEnter.gameObject.tag == "Player" || CollisionEnter.gameObject.tag == "Ground")
         {
             Destroy(this.gameObject);
         }
