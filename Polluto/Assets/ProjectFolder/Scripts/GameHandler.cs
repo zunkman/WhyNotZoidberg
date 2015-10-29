@@ -226,8 +226,6 @@ public class GameHandler : MonoBehaviour
         if (endMission == true)
         {
             string newMission = "Escape!";
-            elevator.GetComponent<ElevatorScript>().elevatorBroken = false;
-            elevator.GetComponent<ElevatorScript>().missionComplete = true;
             setMissionText(newMission);
             StartCoroutine(missionTextClear(3.0f));
         }
