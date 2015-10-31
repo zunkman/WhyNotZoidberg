@@ -5,34 +5,27 @@ public class Player : MonoBehaviour
 {
 
     /* All of these variables need to be public */
-    [SerializeField]
-    public float horspeed;
-    [SerializeField]
-    public float horaccel;
-    [SerializeField]
-    public float jumpspeed;
-    [SerializeField]
-    public float gravity;
-    [SerializeField]
-    public int playerNumber; // this is needed for multiple players
+    [SerializeField]    public float horspeed;
+    [SerializeField]    public float horaccel;
+    [SerializeField]    public float jumpspeed;
+    [SerializeField]    public float gravity;
+    [SerializeField]    public int playerNumber; // this is needed for multiple players
     //IMPORTANT NOTE: Set the width to something small, like 0.2.
     //Even if your character's sprite is 1 unit wide. The character will
     //be embedded somewhat in walls, this is fine, and will look fine once we switch to 2D sprites.
-    [SerializeField]
-    public float width;
-    [SerializeField]
-    public float height;
-    [SerializeField]
-    public int raycasts;
+    [SerializeField]    public float width;
+    [SerializeField]    public float height;
+    [SerializeField]    public int raycasts;
     //Tap Grav = Bonus gravity when travelling upwards while not holding the Up key. This causes you to jump less high when you are not holding the Up key.
-    [SerializeField]
-    public float tapGrav;
+    [SerializeField]    public float tapGrav;
     //Should be slightly higher than 45, like 47, just for the sake of rounding errors.
-    [SerializeField]
-    public float maxSlope;
-    protected float magicNumber = 0.05f;
-    protected bool isJumping;
-    public Vector3 speed;
+    [SerializeField]    public float maxSlope;
+
+    [SerializeField]    public Vector2 inputDirection = new Vector2(0, 0);//Map horizontal/vertical axis to a direction here
+
+    [SerializeField]    protected float magicNumber = 0.05f;
+    [SerializeField]    protected bool isJumping;
+    [SerializeField]    public Vector3 speed;
     //public float health;
     //public float damage;
 
@@ -55,6 +48,13 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
+        //-- Edited by CT, gets a direction from the axis. Can use for weapon direction.--//
+        if (playerNumber == 1)inputDirection.x = Input.GetAxis("Horizontal");
+        if (playerNumber == 2)inputDirection.x = Input.GetAxis("Horizontal 2");
+        if (playerNumber == 1)inputDirection.y = Input.GetAxis("Vertical");
+        if (playerNumber == 2)inputDirection.y = Input.GetAxis("Vertical 2");
+        if(inputDirection != Vector2.zero) inputDirection.Normalize();
+        //--  There may be some bugs with joysticks due to input settings.  --//
 
         //handle horizontal movement (left+right keys)
         //does not handle dashing yet, that might be a seperate function
@@ -74,7 +74,7 @@ public class Player : MonoBehaviour
                 Jump();
             }
         }
-        
+
         if (playerNumber == 2)
         {
             if (Input.GetButton("Jump 2") && canjump)
@@ -83,7 +83,7 @@ public class Player : MonoBehaviour
                 Jump();
             }
         }
-        
+
         //Handles collision with the wall.
         WallCollide();
         //Handles collision with the ceiling.
@@ -102,19 +102,18 @@ public class Player : MonoBehaviour
         // Edited by Joe. Checks if we're player 1. If so, gets input from normal axis. Otherwise, player two axis.
         if (playerNumber == 1)
         {
+
             if (Input.GetAxis("Horizontal") < 0)
             {
                 //move left
                 speed.x += -horaccel * Time.deltaTime;
                 this.gameObject.transform.eulerAngles = new Vector3(0.0f, 180.0f, 0.0f);
-            }
-            else if (Input.GetAxis("Horizontal") > 0)
+            } else if (Input.GetAxis("Horizontal") > 0)
             {
                 //move right
                 speed.x += horaccel * Time.deltaTime;
                 this.gameObject.transform.eulerAngles = new Vector3(0.0f, 0.0f, 0.0f);
-            }
-            else
+            } else
             {
                 //slow down if not holding left or right
                 if (speed.x > 0) { speed.x = Mathf.Max(speed.x - horaccel * Time.deltaTime, 0); }
@@ -129,14 +128,12 @@ public class Player : MonoBehaviour
                 //move left
                 speed.x += -horaccel * Time.deltaTime;
                 this.gameObject.transform.eulerAngles = new Vector3(0.0f, 180.0f, 0.0f);
-            }
-            else if (Input.GetAxis("Horizontal 2") > 0)
+            } else if (Input.GetAxis("Horizontal 2") > 0)
             {
                 //move right
                 speed.x += horaccel * Time.deltaTime;
                 this.gameObject.transform.eulerAngles = new Vector3(0.0f, 0.0f, 0.0f);
-            }
-            else
+            } else
             {
                 //slow down if not holding left or right
                 if (speed.x > 0) { speed.x = Mathf.Max(speed.x - horaccel * Time.deltaTime, 0); }
@@ -272,8 +269,7 @@ public class Player : MonoBehaviour
                 {
                     transform.position += new Vector3(0f, Mathf.Abs(check) * slopeRatio, 0f);
                 }
-            }
-            else
+            } else
             {
                 //slope check raycast failed, assume no slope?
                 transform.position += new Vector3(0f, Mathf.Abs(check), 0f);

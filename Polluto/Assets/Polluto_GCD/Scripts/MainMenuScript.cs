@@ -50,7 +50,7 @@ public class MainMenuScript : MonoBehaviour
         playerTwoOk.SetActive(false);
 
         newCameraPosition = mainCamera.transform.position;
-        cameraMoveSpeed = 40.0f;
+        cameraMoveSpeed = 4000.0f;//Changed 40 to 4000. It was the easiest way to fix waits between menu screens.
 
         menuTierOne = new Vector3(295.0f, 0.0f, -40.0f);
         menuTierTwo = new Vector3(295.0f, 0.0f, 160.0f);
@@ -62,9 +62,6 @@ public class MainMenuScript : MonoBehaviour
     void Update()
     {
         checkIfCameraIsMoving();
-
-
-
     }
 
     /* Constantly checks what tier the camera should be on */
@@ -86,8 +83,6 @@ public class MainMenuScript : MonoBehaviour
         {
            moveCameraTierThree = changeMenuPos(menuTierThree, moveCameraTierThree);
         }
-
-
     }
 
     /* Moves the camera to its respective tier*/
@@ -220,77 +215,16 @@ public class MainMenuScript : MonoBehaviour
         moveCameraTierThree = true;
     }
 
-    public void clickOnLooper()
+    public void clickOnCharacter(int charID)
     {
-        if (currentSelectingPlayer == 1)
+        //Looper, Higgs, JunkToss, TankGirl, GlassCannonMan
+        if(currentSelectingPlayer >= 0)
         {
-            GameHandler.selectedCharacterNamePlayerOne = "Looper";
-            playerOneOk.SetActive(true);
-        }
-        else
-        {
-            GameHandler.selectedCharacterNamePlayerTwo = "Looper";
-            playerTwoOk.SetActive(true);
-        }
-
-    }
-
-    public void clickOnHiggs()
-    {
-        if (currentSelectingPlayer == 1)
-        {
-            GameHandler.selectedCharacterNamePlayerOne = "Higgs";
-            playerOneOk.SetActive(true);
-        }
-        else
-        {
-            GameHandler.selectedCharacterNamePlayerTwo = "Higgs";
-            playerTwoOk.SetActive(true);
+            GameHandler.selectCharacter(currentSelectingPlayer, charID);
+            if (currentSelectingPlayer == 1) playerOneOk.SetActive(true);
+            if (currentSelectingPlayer == 2) playerTwoOk.SetActive(true);
         }
     }
-
-    public void clickOnJunkToss()
-    {
-        if (currentSelectingPlayer == 1)
-        {
-            GameHandler.selectedCharacterNamePlayerOne = "JunkToss";
-            playerOneOk.SetActive(true);
-        }
-        else
-        {
-            GameHandler.selectedCharacterNamePlayerTwo = "JunkToss";
-            playerTwoOk.SetActive(true);
-        }
-    }
-
-    public void clickOnTankGirl()
-    {
-        if (currentSelectingPlayer == 1)
-        {
-            GameHandler.selectedCharacterNamePlayerOne = "TankGirl";
-            playerOneOk.SetActive(true);
-        }
-        else
-        {
-            GameHandler.selectedCharacterNamePlayerTwo = "TankGirl";
-            playerTwoOk.SetActive(true);
-        }
-    }
-
-    public void clickOnGlassCanonMan()
-    {
-        if (currentSelectingPlayer == 1)
-        {
-            GameHandler.selectedCharacterNamePlayerOne = "GlassCanonMan";
-            playerOneOk.SetActive(true);
-        }
-        else
-        {
-            GameHandler.selectedCharacterNamePlayerTwo = "GlassCanonMan";
-            playerTwoOk.SetActive(true);
-        }
-    }
-
     public void onClickSubterfuge()
     {
         GameHandler.selectedLevelName = "Subterfuge";

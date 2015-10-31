@@ -25,7 +25,10 @@ public class Polluto_SFX : MonoBehaviour {
             Polluto_SFX.playSound ("testmusic");
 		} else {
 			Debug.Log ("wasTrue");
-			//DontDestroyOnLoad (this.transform.parent.gameObject);
+            if (this.transform.parent)
+            {
+                Destroy (this.transform.parent.gameObject);
+            }
 			Destroy (this.gameObject);
 		}
 	}

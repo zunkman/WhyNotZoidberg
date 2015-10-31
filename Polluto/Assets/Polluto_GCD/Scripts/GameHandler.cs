@@ -4,9 +4,12 @@ using UnityEngine.UI;
 
 public class GameHandler : MonoBehaviour
 {
-
+    private static bool loadOnceGameHandler = false;
+    [SerializeField]private bool isOriginal = false;//used with static stuff...
     [SerializeField]public static string selectedCharacterNamePlayerOne = "";
     [SerializeField]public static string selectedCharacterNamePlayerTwo = "";
+    [SerializeField]protected static GameObject[] playerCharType = { null, null };
+
     public static string selectedLevelName = "";
     
     [SerializeField]public static int numPlayers = 0;
@@ -24,6 +27,9 @@ public class GameHandler : MonoBehaviour
     [SerializeField]private GameObject junkTossObject;
     [SerializeField]private GameObject tankGirlObject;
     [SerializeField]private GameObject higgsObject;
+    [SerializeField]protected GameObject[] characterPrefabs = { null, null, null, null, null };
+    [SerializeField]protected static GameObject[] playableCharacters = { null, null, null, null, null };
+
 
     [SerializeField]private GameObject playerOneInstatiatedObject;
     [SerializeField]private GameObject playerTwoInstatiatedObject;
@@ -58,7 +64,30 @@ public class GameHandler : MonoBehaviour
     private bool isBoss;
     private bool alreadyGenerated;
 
-
+    void Awake()
+    {
+		if(loadOnceGameHandler == false) {
+			Debug.Log ("GH_wasFalse");
+            //Assigning non-static data to a static variable for easier access in scripts
+            //can't do this in the editor it seems
+            for(int i = 0; i < playableCharacters.Length; i++)
+            {
+                playableCharacters[i] = characterPrefabs[i];
+            }
+			loadOnceGameHandler = true;
+            isOriginal = true;
+			DontDestroyOnLoad (this.gameObject);
+			DontDestroyOnLoad (this.transform.parent.gameObject);
+		} else {
+			Debug.Log ("GH_wasTrue");
+            //destroy the duplicate if one was already there
+            if (this.transform.parent)
+            {
+                Destroy (this.transform.parent.gameObject);
+            }
+			Destroy (this.gameObject);
+		}
+	}
     // Use this for initialization
     void Start()
     {
@@ -85,11 +114,11 @@ public class GameHandler : MonoBehaviour
 
         if (numPlayers == 1)
         {
-            characterSelect(selectedCharacterNamePlayerOne, selectedCharacterNamePlayerTwo, numPlayers);
+            spawnPlayers(selectedCharacterNamePlayerOne, selectedCharacterNamePlayerTwo, numPlayers);
         }
         else if (numPlayers == 2)
         {
-            characterSelect(selectedCharacterNamePlayerOne, selectedCharacterNamePlayerTwo, numPlayers);
+            spawnPlayers(selectedCharacterNamePlayerOne, selectedCharacterNamePlayerTwo, numPlayers);
         }
 
         /* subterfuge start speficiers */
@@ -106,6 +135,13 @@ public class GameHandler : MonoBehaviour
             addSpecialCollisionScript();
         }
 
+        //for debugging purposes, will load default characters here when running from the editor
+        if(playerCharType[0] == null)
+        {
+            selectCharacter(1, 0);//should set looper as default for player one
+            numPlayers = 1;
+        }
+        OnLevelWasLoaded(0);
     }
 
     // Update is called once per frame
@@ -313,100 +349,24 @@ public class GameHandler : MonoBehaviour
         return numPlayers;
     }
 
-
-    void characterSelect(string characterOneName, string characterTwoName, int numOfChars)
+    //This function was too iffy. It has been shortened.
+    void spawnPlayers(string characterOneName, string characterTwoName, int numOfChars)
     {
-        if (numOfChars == 1)
-        {
-            this.playerOneInstatiatedObject = Instantiate(this.playerOne, playerSpawnOne.transform.position, Quaternion.identity) as GameObject;
-
-            if (characterOneName == "Looper")
-            {
-                looperObject = Instantiate(this.looperObject, playerSpawnOne.transform.position, Quaternion.identity) as GameObject;
-                looperObject.transform.parent = this.playerOneInstatiatedObject.transform;
+        GameObject spawned;
+        for (int i = 0;i< numOfChars; i++) {
+            Vector3 offset = new Vector3(i - (numOfChars / 2), 0, 0);
+            //checking length of the array before trying to read from it to prevent a potential crash
+            if(playerCharType.Length > i) { 
+                if(playerCharType[i] != null)
+                {
+                    spawned = Instantiate(playerCharType[i], playerSpawnOne.transform.position + offset, Quaternion.identity) as GameObject;
+                    spawned.GetComponent<Player>().playerNumber = i + 1;//may have issues with inconsistent character design...
+                }
             }
-            else if (characterOneName == "JunkToss")
-            {
-                junkTossObject = Instantiate(junkTossObject, playerSpawnOne.transform.position, Quaternion.identity) as GameObject;
-                junkTossObject.transform.parent = this.playerOneInstatiatedObject.transform;
-            }
-            else if (characterOneName == "Higgs")
-            {
-                higgsObject = Instantiate(higgsObject, playerSpawnOne.transform.position, Quaternion.identity) as GameObject;
-                higgsObject.transform.parent = this.playerOneInstatiatedObject.transform;
-            }
-            else if (characterOneName == "TankGirl")
-            {
-                tankGirlObject = Instantiate(tankGirlObject, playerSpawnOne.transform.position, Quaternion.identity) as GameObject;
-                tankGirlObject.transform.parent = this.playerOneInstatiatedObject.transform;
-            }
-
-            this.playerOneInstatiatedObject.GetComponent<Player>().playerNumber = 1;
-
-        }
-
-        if (numOfChars == 2)
-        {
-            this.playerOneInstatiatedObject = Instantiate(this.playerOne, playerSpawnOne.transform.position, Quaternion.identity) as GameObject;
-
-            if (characterOneName == "Looper")
-            {
-                looperObject = Instantiate(looperObject, playerSpawnOne.transform.position, Quaternion.identity) as GameObject;
-                looperObject.transform.parent = this.playerOneInstatiatedObject.transform;
-            }
-            else if (characterOneName == "JunkToss")
-            {
-                junkTossObject = Instantiate(junkTossObject, playerSpawnOne.transform.position, Quaternion.identity) as GameObject;
-                junkTossObject.transform.parent = this.playerOneInstatiatedObject.transform;
-            }
-            else if (characterOneName == "Higgs")
-            {
-                higgsObject = Instantiate(higgsObject, playerSpawnOne.transform.position, Quaternion.identity) as GameObject;
-                higgsObject.transform.parent = this.playerOneInstatiatedObject.transform;
-            }
-            else if (characterOneName == "TankGirl")
-            {
-                tankGirlObject = Instantiate(tankGirlObject, playerSpawnOne.transform.position, Quaternion.identity) as GameObject;
-                tankGirlObject.transform.parent = this.playerOneInstatiatedObject.transform;
-            }
-            else
-            {
-
-            }
-
-            this.playerOneInstatiatedObject.GetComponent<Player>().playerNumber = 1;
-
-            this.playerTwoInstatiatedObject = Instantiate(this.playerTwo, playerSpawnTwo.transform.position, Quaternion.identity) as GameObject;
-
-            if (characterTwoName == "Looper")
-            {
-                looperObject = Instantiate(this.looperObject, playerSpawnTwo.transform.position, Quaternion.identity) as GameObject;
-                looperObject.transform.parent = this.playerTwoInstatiatedObject.transform;
-            }
-            else if (characterTwoName == "JunkToss")
-            {
-                junkTossObject = Instantiate(junkTossObject, playerSpawnTwo.transform.position, Quaternion.identity) as GameObject;
-                junkTossObject.transform.parent = this.playerTwoInstatiatedObject.transform;
-            }
-            else if (characterTwoName == "Higgs")
-            {
-                higgsObject = Instantiate(higgsObject, playerSpawnTwo.transform.position, Quaternion.identity) as GameObject;
-                higgsObject.transform.parent = this.playerTwoInstatiatedObject.transform;
-            }
-            else if (characterTwoName == "TankGirl")
-            {
-                tankGirlObject = Instantiate(tankGirlObject, playerSpawnTwo.transform.position, Quaternion.identity) as GameObject;
-                tankGirlObject.transform.parent = this.playerTwoInstatiatedObject.transform;
-            }
-            else
-            {
-
-            }
-
-            this.playerTwoInstatiatedObject.GetComponent<Player>().playerNumber = 2;
         }
     }
 
+    //--Move this function and related variables from GameHandler to the subterfuge level script (is there one?)--//
     void setSwitchLocation(int powerSwitchNum)
     {
         switch (powerSwitchNum)
@@ -435,12 +395,51 @@ public class GameHandler : MonoBehaviour
         }
 
     }
-
-
+    //--^^^^--//
     IEnumerator missionTextClear(float timeToWait)
     {
         yield return new WaitForSeconds(timeToWait);
         setMissionText(" ");
     }
-
+    //--Function added by CT to work with modified Main Menu--//
+    public static void selectCharacter(int playerNum, int charID)
+    {
+        string charName = "";//may be better just fetch the name of the instantiated player object...
+        //Looper, Higgs, JunkToss, TankGirl, GlassCannonMan
+        switch (charID)
+        {
+            case 0: charName = "Looper";    break;
+            case 1: charName = "Higgs";    break;
+            case 2: charName = "JunkToss";    break;
+            case 3: charName = "TankGirl";    break;
+            case 4: charName = "GlassCannonMan";    break;
+        }
+        if (charID < 0 || charID >= playableCharacters.Length) charID = 0;
+        //playerNum should be 1 or 2
+        if(playerNum == 1)selectedCharacterNamePlayerOne = charName;//may be obsolete
+        if(playerNum == 2)selectedCharacterNamePlayerTwo = charName;//may be obsolete
+        if(playerNum >= 1 && playerNum <= 2)
+        {
+            int i = playerNum - 1;
+            if (playableCharacters[charID] != null) {
+                Debug.Log("Set Player " + i + " to class#" + charID + ".");
+                playerCharType[i] = playableCharacters[charID]; }
+                else { playerCharType[i] = playableCharacters[0]; }
+        }
+        //there is no check to make sure the input was valid
+        //if an invalid character name was used then the default character should be spawned
+    }
+    //apparently called when a level was loaded...
+    void OnLevelWasLoaded(int level)
+    {
+        if (isOriginal)//only runs if it's the first GameHandler, since it's supposed to be static.. ish
+        {
+            playerSpawnOne = GameObject.FindGameObjectWithTag("firstPlayerSpawn");
+            if (playerSpawnOne != null)
+            {
+                Debug.Log("Calling SpawnPlayers for level: " + level);
+                spawnPlayers(selectedCharacterNamePlayerOne, selectedCharacterNamePlayerTwo, numPlayers);
+            }
+        }
+    }
 }
