@@ -65,12 +65,12 @@ public class LooperFunctionality : MonoBehaviour
 
         looperHorSpeed = 11.0f; 
         looperHorAcceleration = 50.0f;
-        looperJumpSpeed = 26.0f; 
-        looperGravity = 55.0f;
+        looperJumpSpeed = 27.0f; 
+        looperGravity = 35.0f;
         looperWidth = 0.95f;
-        looperHeight = 1.0f;
+        looperHeight = 0.95f;
         looperRaycast = 20;
-        looperTapGravity = 100.0f;
+        looperTapGravity = 40.0f;
         looperMaxSlope = 47.0f;
         looperHealth = looperFullHealth;
         looperDamage = 10.0f;

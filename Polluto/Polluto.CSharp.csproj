@@ -60,9 +60,12 @@
     <Reference Include="UnityEngine.Networking">
       <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
     </Reference>
+<<<<<<< HEAD
     <Reference Include="UnityEngine.Analytics">
       <HintPath>Library\UnityAssemblies\UnityEngine.Analytics.dll</HintPath>
     </Reference>
+=======
+>>>>>>> refs/remotes/origin/Taylor's-branch
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
@@ -122,6 +125,7 @@
     <Compile Include="Assets\ZACH ATTACK\Global.cs" />
     <Compile Include="Assets\ZACH ATTACK\PlayerFollow.cs" />
     <Compile Include="Assets\ZACH ATTACK\TankGirl.cs" />
+    <Compile Include="Assets\invisToVisThing.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlendModesOverlay.shader" />

@@ -43,6 +43,7 @@ public class GameHandler : MonoBehaviour
 
     [SerializeField]private GameObject gameCanvas;
     [SerializeField]private GameObject missionText;
+    private GameObject elevator;
 
     private GameObject switchMissionStartHitBox;
 
@@ -75,6 +76,7 @@ public class GameHandler : MonoBehaviour
         missionText = GameObject.FindGameObjectWithTag("MissionText");
         newSwitchObject = GameObject.FindGameObjectWithTag("Switch");
         switchMissionStartHitBox = GameObject.FindGameObjectWithTag("beginSwitchMission");
+        elevator = GameObject.FindGameObjectWithTag("Elevator");
 
         //numPlayers = 2;
         //selectedCharacterNamePlayerOne = "Looper";
