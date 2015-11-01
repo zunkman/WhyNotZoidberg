@@ -10,7 +10,9 @@ public class HiggsBombinController : MonoBehaviour
 {
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject bomb;
-    [SerializeField] private float attackDamage, attackCooldown, specialCooldown;
+    [SerializeField] private GameObject attackRange;
+    public float attackDamage;
+    [SerializeField] private float attackCooldown, specialCooldown;
     private GameObject playerContainer;
     private float attackTimer, specialTimer;
 
@@ -25,7 +27,9 @@ public class HiggsBombinController : MonoBehaviour
     {
         
         player = this.GetComponentInParent<Player>().gameObject;
+        attackRange = this.GetComponentInChildren<HiggsAttack>().gameObject;
 
+        attackRange.SetActive(false);
         // This is used for setting the stats in player.
         playerNumber = player.GetComponent<Player>().playerNumber;
         player.GetComponent<Player>().horspeed = 10;
@@ -98,6 +102,11 @@ public class HiggsBombinController : MonoBehaviour
         if (!canAttack)
         {
             attackTimer += Time.deltaTime;
+
+            if (attackTimer >= 0.5)
+            {
+                attackRange.SetActive(false);
+            }
 
             if (attackTimer >= attackCooldown)
             {
@@ -181,6 +190,7 @@ public class HiggsBombinController : MonoBehaviour
     // Handles basic attacks.
     void attack ()
     {
-
+        canAttack = false;
+        attackRange.SetActive(true);
     }
 }

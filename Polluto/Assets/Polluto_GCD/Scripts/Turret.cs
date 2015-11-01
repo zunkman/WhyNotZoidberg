@@ -6,7 +6,7 @@ This will handle turret behaviour, including aiming, shooting.
 */
 public class Turret : MonoBehaviour
 {
-    [SerializeField] public float damage, fireRate, projectileSpeed;
+    [SerializeField] public float damage, initialFireRate, fireRate, projectileSpeed;
     [SerializeField] public Vector3 focus, defaultFocus;
 
     private float fireCooldown;
@@ -18,7 +18,7 @@ public class Turret : MonoBehaviour
     {
         haveTarget = false;
         canFire = false;
-        fireCooldown = fireRate;
+        fireCooldown = initialFireRate;
         focus = defaultFocus;
 	}
 	
@@ -84,7 +84,7 @@ public class Turret : MonoBehaviour
             haveTarget = false;
             focus = defaultFocus;
             canFire = false;
-            fireCooldown = fireRate;
+            fireCooldown = initialFireRate;
         }
     }
 
