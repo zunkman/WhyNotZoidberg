@@ -67,7 +67,7 @@ public class GameHandler : MonoBehaviour
     void Awake()
     {
 		if(loadOnceGameHandler == false) {
-			Debug.Log ("GH_wasFalse");
+			//Debug.Log ("GH_wasFalse");
             //Assigning non-static data to a static variable for easier access in scripts
             //can't do this in the editor it seems
             for(int i = 0; i < playableCharacters.Length; i++)
@@ -130,9 +130,9 @@ public class GameHandler : MonoBehaviour
             {
                 setSwitchLocation(i);
             }
-
+            
             subterfugeMissionStart();
-            addSpecialCollisionScript();
+            //addSpecialCollisionScript();
         }
 
         //for debugging purposes, will load default characters here when running from the editor
@@ -227,9 +227,8 @@ public class GameHandler : MonoBehaviour
             {
                 subterfugeNewMission();
                 playerSpawnOne.transform.position = new Vector3(25.0f, -148.5f, 0.0f);
-                playerSpawnTwo.transform.position = new Vector3(35.0f, -148.5f, 0.0f);
+                //playerSpawnTwo.transform.position = new Vector3(35.0f, -148.5f, 0.0f);
             }
-
 
             if (switchesOn == 2)
             {
@@ -422,7 +421,7 @@ public class GameHandler : MonoBehaviour
         {
             int i = playerNum - 1;
             if (playableCharacters[charID] != null) {
-                Debug.Log("Set Player " + i + " to class#" + charID + ".");
+                //Debug.Log("Set Player " + i + " to class#" + charID + ".");
                 playerCharType[i] = playableCharacters[charID]; }
                 else { playerCharType[i] = playableCharacters[0]; }
         }
@@ -434,6 +433,43 @@ public class GameHandler : MonoBehaviour
     {
         if (isOriginal)//only runs if it's the first GameHandler, since it's supposed to be static.. ish
         {
+            gameCanvas = GameObject.FindGameObjectWithTag("UI");
+            missionText = GameObject.FindGameObjectWithTag("MissionText");
+            newSwitchObject = GameObject.FindGameObjectWithTag("Switch");
+            switchMissionStartHitBox = GameObject.FindGameObjectWithTag("beginSwitchMission");
+            elevator = GameObject.FindGameObjectWithTag("Elevator");
+
+            //if (numPlayers == 1)
+            //{
+            //    spawnPlayers(selectedCharacterNamePlayerOne, selectedCharacterNamePlayerTwo, numPlayers);
+            //}
+            //else if (numPlayers == 2)
+            //{
+            //    spawnPlayers(selectedCharacterNamePlayerOne, selectedCharacterNamePlayerTwo, numPlayers);
+            //}
+
+            /* subterfuge start speficiers */
+            if (selectedLevelName == "Subterfuge")
+            {
+                switchMission = false;
+                switchArray = new Vector3[7];
+                for (int i = 0; i < switchArray.Length; i++)
+                {
+                    setSwitchLocation(i);
+                }
+
+                subterfugeMissionStart();
+                //addSpecialCollisionScript();
+            }
+
+            //for debugging purposes, will load default characters here when running from the editor
+            if (playerCharType[0] == null)
+            {
+                selectCharacter(1, 0);//should set looper as default for player one
+                numPlayers = 1;
+            }
+
+
             playerSpawnOne = GameObject.FindGameObjectWithTag("firstPlayerSpawn");
             if (playerSpawnOne != null)
             {

@@ -12,7 +12,7 @@ public class Polluto_SFX : MonoBehaviour {
 	{
 		//pickupSnd = soundList[0];
 		if(loadOnceSFX == false) {
-			Debug.Log ("wasFalse");
+			//Debug.Log ("wasFalse");
 			loadOnceSFX = true;
 			DontDestroyOnLoad (this.gameObject);
 			DontDestroyOnLoad (this.transform.parent.gameObject);
@@ -80,7 +80,7 @@ public class Polluto_SFX : MonoBehaviour {
 			soundsList[SID].Play ();
 			//Debug.Log ("Playing: " + soundsList[SID]);
 		} else {
-			Debug.Log ("Sound: " + SID + " does not exist... at the moment.");
+			//Debug.Log ("Sound: " + SID + " does not exist... at the moment.");
 		}
 	}
 }

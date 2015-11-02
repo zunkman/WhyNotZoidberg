@@ -164,31 +164,7 @@ public class LooperFunctionality : MonoBehaviour
 
     void abilities()
     {
-        if (playerNumber == 1)
-        {
-            if (Input.GetAxis("Basic Attack") >= 0.1)
-            {            
-                Attack();
-            }
-
-            if (Input.GetAxis("Special Attack") >= 0.1)
-            {
-                looperSpecialActive();
-            }
-        }
-
-        if (playerNumber == 2)
-        {
-            if (Input.GetAxis("Basic Attack 2") >= 0.1)
-            {
-                Attack();
-            }
-
-            if (Input.GetAxis("Special Attack 2") >= 0.1)
-            {
-                looperSpecialActive();
-            }
-        }
+        Attack();
     }
 
 
@@ -345,49 +321,106 @@ public class LooperFunctionality : MonoBehaviour
 
     void Attack()
     {
-        if (Input.GetKeyUp(KeyCode.Q) && chargeAttackTime >= attackCharged)
+        if (this.GetComponentInParent<Player>().playerNumber == 1)
         {
-            Debug.Log("asfa");
-            ChargeAttack();
-        }
-
-        if (Input.GetKey(KeyCode.W))
-        {
-            this.gameObject.transform.localPosition = new Vector3(0.0f, 0.5f, 0.0f);
-        }
-        else if (Input.GetKey(KeyCode.S))
-        {
-            this.gameObject.transform.localPosition = new Vector3(0.0f, -0.5f, 0.0f);
-        }
-        else
-        {
-            this.gameObject.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
-        }
-
-
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            Vector3 dir = parentObject.GetComponent<Player>().speed;
-
-            // 1 is right 0 is left
-            if (dir.x > 0)
+            if (Input.GetAxis("Basic Attack") <= 0.1f && chargeAttackTime >= attackCharged)//this is key up
             {
-                attackBox.enabled = true;
+                Vector3 dir = parentObject.GetComponent<Player>().speed;
+
+                // 1 is right 0 is left
+
+                chargeAttackTime = 0.0f;
+                StartCoroutine(attackReset(0.2f));
+
+                ChargeAttack();
+            }
+
+            if (Input.GetKey(KeyCode.W))
+            {
+                this.gameObject.transform.localPosition = new Vector3(0.0f, 0.5f, 0.0f);
+            }
+            else if (Input.GetKey(KeyCode.S))
+            {
+                this.gameObject.transform.localPosition = new Vector3(0.0f, -0.5f, 0.0f);
             }
             else
             {
-                attackBox.enabled = true;
+                this.gameObject.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
             }
-            chargeAttackTime = 0.0f;
-            StartCoroutine(attackReset(0.2f));
-        }
 
-        if (Input.GetKey(KeyCode.Q))
+
+            if (Input.GetAxis("Basic Attack") > 0.1f)
+            {
+                Vector3 dir = parentObject.GetComponent<Player>().speed;
+
+                // 1 is right 0 is left
+                if (dir.x > 0)
+                {
+                    attackBox.enabled = true;
+                }
+                else
+                {
+                    attackBox.enabled = true;
+                }
+                chargeAttackTime = 0.0f;
+                StartCoroutine(attackReset(0.2f));
+            }
+
+            if (Input.GetAxis("Basic Attack") > 0.1f)
+            {
+                chargeAttackTime += 1 * Time.deltaTime;
+            }
+        }
+        else
         {
-            chargeAttackTime += 1 * Time.deltaTime;
-        }
+            if (Input.GetAxis("Basic Attack 2") <= 0.1f && chargeAttackTime >= attackCharged)//this is key up
+            {
+                Vector3 dir = parentObject.GetComponent<Player>().speed;
 
-        
+                // 1 is right 0 is left
+
+                chargeAttackTime = 0.0f;
+                StartCoroutine(attackReset(0.2f));
+
+                ChargeAttack();
+            }
+
+            if (Input.GetKey(KeyCode.W))
+            {
+                this.gameObject.transform.localPosition = new Vector3(0.0f, 0.5f, 0.0f);
+            }
+            else if (Input.GetKey(KeyCode.S))
+            {
+                this.gameObject.transform.localPosition = new Vector3(0.0f, -0.5f, 0.0f);
+            }
+            else
+            {
+                this.gameObject.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
+            }
+
+
+            if (Input.GetAxis("Basic Attack 2") > 0.1f)
+            {
+                Vector3 dir = parentObject.GetComponent<Player>().speed;
+
+                // 1 is right 0 is left
+                if (dir.x > 0)
+                {
+                    attackBox.enabled = true;
+                }
+                else
+                {
+                    attackBox.enabled = true;
+                }
+                chargeAttackTime = 0.0f;
+                StartCoroutine(attackReset(0.2f));
+            }
+
+            if (Input.GetAxis("Basic Attack 2") > 0.1f)
+            {
+                chargeAttackTime += 1 * Time.deltaTime;
+            }
+        } 
     }
 
     void ChargeAttack()

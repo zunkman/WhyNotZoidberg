@@ -50,7 +50,7 @@ public class MainMenuScript : MonoBehaviour
         playerTwoOk.SetActive(false);
 
         newCameraPosition = mainCamera.transform.position;
-        cameraMoveSpeed = 4000.0f;//Changed 40 to 4000. It was the easiest way to fix waits between menu screens.
+        cameraMoveSpeed = 500.0f;//Changed 40 to 4000. It was the easiest way to fix waits between menu screens.
 
         menuTierOne = new Vector3(295.0f, 0.0f, -40.0f);
         menuTierTwo = new Vector3(295.0f, 0.0f, 160.0f);
@@ -225,6 +225,7 @@ public class MainMenuScript : MonoBehaviour
             if (currentSelectingPlayer == 2) playerTwoOk.SetActive(true);
         }
     }
+
     public void onClickSubterfuge()
     {
         GameHandler.selectedLevelName = "Subterfuge";
