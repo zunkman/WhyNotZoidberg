@@ -13,6 +13,7 @@ public class LooperFunctionality : MonoBehaviour
     private int looperRaycast;
     private float looperTapGravity;
     private float looperMaxSlope;
+    private float looperBaseHealth;
     [SerializeField]public float looperHealth;
     private float looperDamage;
 
@@ -73,7 +74,8 @@ public class LooperFunctionality : MonoBehaviour
         looperRaycast = 20;
         looperTapGravity = 40.0f;
         looperMaxSlope = 47.0f;
-        looperHealth = looperFullHealth;
+        looperBaseHealth = 100;
+        looperHealth = 100;
         looperDamage = 10.0f;
 
         transform.parent.GetComponent<Player>().horspeed = looperHorSpeed;
@@ -85,7 +87,10 @@ public class LooperFunctionality : MonoBehaviour
         transform.parent.GetComponent<Player>().raycasts = looperRaycast;
         transform.parent.GetComponent<Player>().tapGrav = looperTapGravity;
         transform.parent.GetComponent<Player>().maxSlope = looperMaxSlope;
+        transform.parent.GetComponent<Player>().baseHealth = looperBaseHealth;
+        transform.parent.GetComponent<Player>().health = looperHealth;
         playerNumber = this.GetComponentInParent<Player>().playerNumber;
+        
         //transform.parent.GetComponent<Player>().health = looperHealth;
         //transform.parent.GetComponent<Player>().damage = looperDamage;
 
@@ -141,7 +146,7 @@ public class LooperFunctionality : MonoBehaviour
         doubleTap();
         resetTimer();
         abilities();
-        checkPlayerHealth(this.looperHealth);
+        //checkPlayerHealth(this.looperHealth);
     }
 
     void looperSpecialActive()
@@ -274,7 +279,7 @@ public class LooperFunctionality : MonoBehaviour
 
     /* Checks the current health and if it's lower than 0 or is zero 
     respawn the player */
-    void checkPlayerHealth(float healthToCheck)
+    /*void checkPlayerHealth(float healthToCheck)
     {
         if (healthToCheck < 0.0f)
         {
@@ -286,7 +291,7 @@ public class LooperFunctionality : MonoBehaviour
             //this.gameObject.GetComponentInParent<Player>().health = looperFullHealth;
         }
 
-    }
+    }*/
 
     
     void canSpawnShadow()
