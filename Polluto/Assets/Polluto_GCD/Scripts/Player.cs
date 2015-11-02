@@ -26,6 +26,9 @@ public class Player : MonoBehaviour
     [SerializeField]    protected float magicNumber = 0.05f;
     [SerializeField]    protected bool isJumping;
     [SerializeField]    public Vector3 speed;
+
+    // Edit by Joe
+    [SerializeField] public float health, baseHealth;
     //public float health;
     //public float damage;
 
@@ -48,6 +51,8 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
+        // Edited by Joe
+        healthCheck();
         //-- Edited by CT, gets a direction from the axis. Can use for weapon direction.--//
         if (playerNumber == 1)inputDirection.x = Input.GetAxis("Horizontal");
         if (playerNumber == 2)inputDirection.x = Input.GetAxis("Horizontal 2");
@@ -290,5 +295,12 @@ public class Player : MonoBehaviour
     }
 
 
-
+    void healthCheck ()
+    {
+        GameObject handler = GameObject.FindGameObjectWithTag("gameHandler");
+        if (health <= 0)
+        {
+            handler.GetComponentInChildren<GameHandler>().respawnPlayer(this.gameObject);
+        }
+    }
 }

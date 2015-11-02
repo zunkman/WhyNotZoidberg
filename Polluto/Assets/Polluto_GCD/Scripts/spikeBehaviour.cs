@@ -3,11 +3,11 @@ using System.Collections;
 
 public class spikeBehaviour : MonoBehaviour
 {
-
+    [SerializeField] private float spikeDamage;
 	// Use this for initialization
 	void Start ()
     {
-	
+        spikeDamage = 10.0f;
 	}
 	
 	// Update is called once per frame
@@ -26,7 +26,13 @@ public class spikeBehaviour : MonoBehaviour
 
     void OnTriggerEnter(Collider CollisionEnter)
     {
-        if (CollisionEnter.gameObject.tag == "Player" || CollisionEnter.gameObject.tag == "Ground")
+        if (CollisionEnter.gameObject.tag == "Player")
+        {
+            CollisionEnter.gameObject.GetComponent<Player>().health -= spikeDamage;
+            Destroy(this.gameObject);
+        }
+
+        if (CollisionEnter.gameObject.tag == "Ground")
         {
             Destroy(this.gameObject);
         }

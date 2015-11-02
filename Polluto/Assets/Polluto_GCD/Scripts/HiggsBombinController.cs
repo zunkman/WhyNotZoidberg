@@ -41,6 +41,9 @@ public class HiggsBombinController : MonoBehaviour
         player.GetComponent<Player>().raycasts = 20;
         player.GetComponent<Player>().tapGrav = 25;
         player.GetComponent<Player>().maxSlope = 47;
+        player.GetComponent<Player>().baseHealth = 100;
+        player.GetComponent<Player>().health = 100;
+
 
         this.transform.position = player.transform.position;
         if (attackDamage == 0)

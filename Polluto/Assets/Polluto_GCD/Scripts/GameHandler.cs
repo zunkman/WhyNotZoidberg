@@ -156,43 +156,34 @@ public class GameHandler : MonoBehaviour
 
     public void respawnPlayer(GameObject playerToRespawn)
     {
-        if(numPlayers == 2)
-        {
-            if (playerToRespawn.transform.parent.GetComponent<Player>().playerNumber == 1 /*get the player two health an dif the health is above 0*/)
-            { }
-
-        }
-
         if (totalLives <= 0.0f)
         {
-             Debug.Log("LOSERS!");
-            Destroy(playerToRespawn.transform.parent);
+            Application.LoadLevel("MainMenu");
         }
         else
         {
             if (numPlayers == 1)
             {
-                playerToRespawn.transform.parent.transform.position = playerSpawnOne.transform.position;
+                playerToRespawn.transform.position = playerSpawnOne.transform.position;
                 totalLives -= 1;
                 Debug.Log(totalLives);
             }
 
             if (numPlayers == 2)
             {
-                if (playerToRespawn.transform.parent.GetComponent<Player>().playerNumber == 1)
+                if (playerToRespawn.transform.GetComponent<Player>().playerNumber == 1)
                 {
-                    Debug.Log("player one respawn");
-                    playerToRespawn.transform.parent.transform.position = playerSpawnOne.transform.position;
+                    playerToRespawn.transform.position = playerTwo.transform.position;
                     totalLives -= 1;
                 }
 
-                if (playerToRespawn.transform.parent.GetComponent<Player>().playerNumber == 2)
+                if (playerToRespawn.transform.GetComponent<Player>().playerNumber == 2)
                 {
-                    Debug.Log("player two respawn");
-                    playerToRespawn.transform.parent.transform.position = playerSpawnTwo.transform.position;
+                    playerToRespawn.transform.position = playerOne.transform.position;
                     totalLives -= 1;
                 }
             }
+            playerToRespawn.GetComponentInParent<Player>().health = playerToRespawn.GetComponentInParent<Player>().baseHealth;
         }
     }
 

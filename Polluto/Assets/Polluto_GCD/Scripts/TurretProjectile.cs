@@ -39,6 +39,7 @@ public class TurretProjectile : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
+            other.gameObject.GetComponentInParent<Player>().health -= ourDamage;
             Destroy(this.gameObject);
             Debug.Log("Hit a player.");
         }

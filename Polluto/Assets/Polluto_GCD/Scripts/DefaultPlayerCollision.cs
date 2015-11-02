@@ -46,19 +46,8 @@ public class DefaultPlayerCollision : MonoBehaviour
     {
         if(collisionStay.gameObject.tag == "Lava")
         {
-            this.gameObject.GetComponentInChildren<LooperFunctionality>().looperHealth -= lavaDamageOverTime;
+            this.gameObject.GetComponent<Player>().health -= lavaDamageOverTime;
             //Debug.Log(this.gameObject.GetComponentInParent<Player>().health);
-        }
-    }
-
-    void OnCollisionEnter(Collision collisionEnter)
-    {
-        if (collisionEnter.gameObject.tag == "Spike")
-        {
-            this.gameObject.GetComponentInChildren<LooperFunctionality>().looperHealth -= spikeDamage;
-            Vector3 dir = this.gameObject.GetComponentInParent<Player>().speed;
-            damageKnockBack(dir.x, pushPower);
-            //Debug.Log(this.gameObject.GetComponentInParent<Player>().health -= spikeDamage);
         }
     }
 
