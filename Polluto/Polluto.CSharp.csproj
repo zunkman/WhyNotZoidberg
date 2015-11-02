@@ -51,17 +51,11 @@
     <Reference Include="UnityEngine">
       <HintPath>Library\UnityAssemblies\UnityEngine.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Advertisements">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Advertisements.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Networking">
       <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Analytics">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Analytics.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
@@ -96,6 +90,7 @@
     <Compile Include="Assets\Polluto_GCD\Scripts\EnemyDamage.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\GameHandler.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\Global.cs" />
+    <Compile Include="Assets\Polluto_GCD\Scripts\HiggsAttack.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\HiggsBombinController.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\Level\LevelDoor.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\Level\MovingPlatformScript.cs" />

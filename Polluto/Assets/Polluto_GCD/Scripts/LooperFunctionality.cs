@@ -41,6 +41,7 @@ public class LooperFunctionality : MonoBehaviour
 
     [SerializeField]private int arraySlotsFull;
     private int buttonTaps;
+    private int playerNumber;
     [SerializeField]private int dir;
 
     [SerializeField]private float markerPlacementTimer;
@@ -84,6 +85,7 @@ public class LooperFunctionality : MonoBehaviour
         transform.parent.GetComponent<Player>().raycasts = looperRaycast;
         transform.parent.GetComponent<Player>().tapGrav = looperTapGravity;
         transform.parent.GetComponent<Player>().maxSlope = looperMaxSlope;
+        playerNumber = this.GetComponentInParent<Player>().playerNumber;
         //transform.parent.GetComponent<Player>().health = looperHealth;
         //transform.parent.GetComponent<Player>().damage = looperDamage;
 
@@ -124,25 +126,8 @@ public class LooperFunctionality : MonoBehaviour
         //looperHealth = this.gameObject.GetComponentInParent<Player>().health;
         
         //Make a timer and put the placeing marker function on a timer for like four seconds
-        if (Input.GetKeyDown(KeyCode.P) /*&& markerPlacementTimer == 0.0f*/)
-        {
-            if (specialActiveTimer > 0.0f && buttonTaps == 1 && arrayFull == true)
-            {
-                checkArrayFull();
-                swapWithShadow();
-            }
-            else
-            {
-                specialActiveTimer = 4.0f;
-                buttonTaps = 1;
 
-                looperFunctionality();
-                markerPlacementTimer = 4.0f; 
-            }
-        }
-
-        /*Testing*/
-        Vector3 directionFacing = parentObject.GetComponent<Player>().speed;
+        Vector3 directionFacing = this.GetComponentInParent<Player>().speed;
         if (directionFacing.x > 1)
         {
             javalinDirection = 1;
@@ -155,9 +140,57 @@ public class LooperFunctionality : MonoBehaviour
 
         doubleTap();
         resetTimer();
-        Attack();
+        abilities();
         checkPlayerHealth(this.looperHealth);
     }
+
+    void looperSpecialActive()
+    {
+        if (specialActiveTimer > 0.0f && buttonTaps == 1 && arrayFull == true)
+        {
+            checkArrayFull();
+            swapWithShadow();
+        }
+        else
+        {
+            specialActiveTimer = 4.0f;
+            buttonTaps = 1;
+
+            looperFunctionality();
+            markerPlacementTimer = 4.0f;
+        }
+    }
+
+
+    void abilities()
+    {
+        if (playerNumber == 1)
+        {
+            if (Input.GetAxis("Basic Attack") >= 0.1)
+            {            
+                Attack();
+            }
+
+            if (Input.GetAxis("Special Attack") >= 0.1)
+            {
+                looperSpecialActive();
+            }
+        }
+
+        if (playerNumber == 2)
+        {
+            if (Input.GetAxis("Basic Attack 2") >= 0.1)
+            {
+                Attack();
+            }
+
+            if (Input.GetAxis("Special Attack 2") >= 0.1)
+            {
+                looperSpecialActive();
+            }
+        }
+    }
+
 
     void doubleTap()
     {
@@ -312,10 +345,9 @@ public class LooperFunctionality : MonoBehaviour
 
     void Attack()
     {
-        
-
-        if (Input.GetKeyUp(KeyCode.O) && chargeAttackTime >= attackCharged)
+        if (Input.GetKeyUp(KeyCode.Q) && chargeAttackTime >= attackCharged)
         {
+            Debug.Log("asfa");
             ChargeAttack();
         }
 
@@ -333,7 +365,7 @@ public class LooperFunctionality : MonoBehaviour
         }
 
 
-        if (Input.GetKeyDown(KeyCode.O))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
             Vector3 dir = parentObject.GetComponent<Player>().speed;
 
@@ -350,7 +382,7 @@ public class LooperFunctionality : MonoBehaviour
             StartCoroutine(attackReset(0.2f));
         }
 
-        if (Input.GetKey(KeyCode.O))
+        if (Input.GetKey(KeyCode.Q))
         {
             chargeAttackTime += 1 * Time.deltaTime;
         }
@@ -390,8 +422,7 @@ public class LooperFunctionality : MonoBehaviour
     void OnTriggerExit(Collider colliderExit)
     {
         if (colliderExit.gameObject.tag == "Attack")
-        {
-            Debug.Log("HIt");
+        { 
             //gameHandler.GetComponent<GameHandler>().switchesOn += 1;
             //gameHandler.GetComponent<GameHandler>().subterfugeMissionUpdater();
             //this.gameObject.GetComponent<switchBehaviour>().enabled = false;
