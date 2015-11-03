@@ -28,7 +28,9 @@ public class spikeBehaviour : MonoBehaviour
     {
         if (CollisionEnter.gameObject.tag == "Player")
         {
-            CollisionEnter.gameObject.GetComponent<Player>().health -= spikeDamage;
+            //CollisionEnter.gameObject.GetComponent<Player>().health -= spikeDamage;
+            CollisionEnter.gameObject.GetComponentInParent<Player>().health -= spikeDamage;
+
             Destroy(this.gameObject);
         }
 
