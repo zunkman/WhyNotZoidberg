@@ -351,6 +351,8 @@ public class GameHandler : MonoBehaviour
                 {
                     spawned = Instantiate(playerCharType[i], playerSpawnOne.transform.position + offset, Quaternion.identity) as GameObject;
                     spawned.GetComponent<Player>().playerNumber = i + 1;//may have issues with inconsistent character design...
+                    if(i==0) playerOne = spawned;
+                    else playerTwo = spawned;
                 }
             }
         }
