@@ -14,6 +14,7 @@ public class TankGirl : Player
     bool aboutToJump;
     float stun;
     PlayerFollow camera;
+    public float attackDamage;
 
 
     protected override void Start()
@@ -25,7 +26,12 @@ public class TankGirl : Player
 
     protected override void Update()
     {
-        Debug.Log(stun);
+        if (playerNumber == 1) inputDirection.x = Input.GetAxis("Horizontal");
+        if (playerNumber == 2) inputDirection.x = Input.GetAxis("Horizontal 2");
+        if (playerNumber == 1) inputDirection.y = Input.GetAxis("Vertical");
+        if (playerNumber == 2) inputDirection.y = Input.GetAxis("Vertical 2");
+        if (inputDirection != Vector2.zero) inputDirection.Normalize();
+
         if (stun >= 0f) { stun -= Time.deltaTime; }
         if (aboutToJump)
         {
@@ -51,11 +57,25 @@ public class TankGirl : Player
         Gravity();
 
         bool canjump = FloorCollide();
-        if (Input.GetButton("Jump") && canjump && stun < 0f)
-        {
 
-            Jump();
+        if (playerNumber == 1)
+        {
+            if (Input.GetButton("Jump") && canjump && stun < 0f)
+            {
+                //Again, a single line of code for now, but you can put animation-y stuff here.
+                Jump();
+            }
         }
+
+        if (playerNumber == 2)
+        {
+            if (Input.GetButton("Jump 2") && canjump && stun < 0f)
+            {
+                //Again, a single line of code for now, but you can put animation-y stuff here.
+                Jump();
+            }
+        }
+
 
         WallCollide();
 

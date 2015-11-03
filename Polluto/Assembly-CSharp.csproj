@@ -89,6 +89,7 @@
      <Compile Include="Assets\Polluto_GCD\Scripts\subterfugeSpecialCollision.cs" />
      <Compile Include="Assets\Polluto_GCD\Scripts\switchBehaviour.cs" />
      <Compile Include="Assets\Polluto_GCD\Scripts\testPlayerScript.cs" />
+     <Compile Include="Assets\TankgirlAttack.cs" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlendOneOne.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\NoiseEffectShaderRGB.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\SeparableWeightedBlurDof34.shader" />
