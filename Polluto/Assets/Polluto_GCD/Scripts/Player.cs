@@ -44,7 +44,6 @@ public class Player : MonoBehaviour
     protected virtual void Start()
     {
         speed = Vector3.zero;
-
     }
 
 

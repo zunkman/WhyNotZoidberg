@@ -35,7 +35,7 @@ public class EnemyDamage : MonoBehaviour
         //--edit by CT to destroy objects with no health left when hit--//
         if(health < 0) {
             //modify later to call a function if more than simply destroying is needed
-            if (this.transform.parent) { Destroy(this.transform.parent.gameObject); } else { Destroy(this); }
+            //if (this.transform.parent) { Destroy(this.transform.parent.gameObject); } else { Destroy(this); }
             
         }
         //----//
