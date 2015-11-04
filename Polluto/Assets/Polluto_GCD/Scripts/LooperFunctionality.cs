@@ -355,22 +355,26 @@ public class LooperFunctionality : MonoBehaviour
             }
 
 
-           /* if (Input.GetAxis("Basic Attack") > 0.1f)
+            if (chargeAttackTime > 0.0f && Input.GetAxis("Basic Attack") < 0.1f)
             {
-                Vector3 dir = parentObject.GetComponent<Player>().speed;
+                if (chargeAttackTime < attackCharged)
+                {
+                    Vector3 dir = parentObject.GetComponent<Player>().speed;
 
-                // 1 is right 0 is left
-                if (dir.x > 0)
-                {
-                    attackBox.enabled = true;
+                    //1 is right 0 is left
+                    if (dir.x > 0)
+                    {
+                        attackBox.enabled = true;
+                    }
+                    else
+                    {
+                        attackBox.enabled = true;
+                    }  
+                    StartCoroutine(attackReset(0.2f));
+                    chargeAttackTime = 0;
                 }
-                else
-                {
-                    attackBox.enabled = true;
-                }
-                //chargeAttackTime = 0.0f;
-                StartCoroutine(attackReset(0.2f));
-            }*/
+                
+            }
 
             if (Input.GetAxis("Basic Attack") > 0.1f)
             {
@@ -406,37 +410,44 @@ public class LooperFunctionality : MonoBehaviour
                 this.gameObject.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
             }
 
-
-            /*if (Input.GetAxis("Basic Attack 2") > 0.1f)
+            // On key up, and the key was down first
+            if (chargeAttackTime > 0.0f && Input.GetAxis("Basic Attack 2") < 0.1f)
             {
-                Vector3 dir = parentObject.GetComponent<Player>().speed;
+                if (chargeAttackTime < attackCharged)
+                {
+                    Vector3 dir = parentObject.GetComponent<Player>().speed;
 
-                // 1 is right 0 is left
-                if (dir.x > 0)
-                {
-                    attackBox.enabled = true;
+                    //1 is right 0 is left
+                    if (dir.x > 0)
+                    {
+                        attackBox.enabled = true;
+                    }
+                    else
+                    {
+                        attackBox.enabled = true;
+                    }  
+                    StartCoroutine(attackReset(0.2f));
+                    chargeAttackTime = 0;
                 }
-                else
-                {
-                    attackBox.enabled = true;
-                }
-                chargeAttackTime = 0.0f;
-                StartCoroutine(attackReset(0.2f));
-            }*/
+                
+            }
+            
 
             if (Input.GetAxis("Basic Attack 2") > 0.1f)
             {
                 chargeAttackTime += 1 * Time.deltaTime;
+
+                
             }
         } 
     }
 
     void ChargeAttack()
     {
-        Vector3 javalinStart = this.gameObject.transform.position;
-        javalinStart.y += 0.5f;
+        Vector3 javelinStart = this.gameObject.transform.position;
+        javelinStart.y += 0.5f;
 
-        Instantiate(javelin, javalinStart, Quaternion.identity);
+        Instantiate(javelin, javelinStart, Quaternion.identity);
     }
 
 
