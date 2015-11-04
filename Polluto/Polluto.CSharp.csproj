@@ -118,6 +118,7 @@
     <Compile Include="Assets\Polluto_GCD\Scripts\subterfugeSpecialCollision.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\switchBehaviour.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\testPlayerScript.cs" />
+    <Compile Include="Assets\TankgirlAttack.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlendModesOverlay.shader" />

@@ -76,7 +76,8 @@ public class LooperFunctionality : MonoBehaviour
         looperMaxSlope = 47.0f;
         looperBaseHealth = 100;
         looperHealth = 100;
-        looperDamage = 10.0f;
+        looperDamage = 25.0f;
+        
 
         transform.parent.GetComponent<Player>().horspeed = looperHorSpeed;
         transform.parent.GetComponent<Player>().horaccel = looperHorAcceleration;
@@ -354,7 +355,7 @@ public class LooperFunctionality : MonoBehaviour
             }
 
 
-            if (Input.GetAxis("Basic Attack") > 0.1f)
+           /* if (Input.GetAxis("Basic Attack") > 0.1f)
             {
                 Vector3 dir = parentObject.GetComponent<Player>().speed;
 
@@ -367,17 +368,19 @@ public class LooperFunctionality : MonoBehaviour
                 {
                     attackBox.enabled = true;
                 }
-                chargeAttackTime = 0.0f;
+                //chargeAttackTime = 0.0f;
                 StartCoroutine(attackReset(0.2f));
-            }
+            }*/
 
             if (Input.GetAxis("Basic Attack") > 0.1f)
             {
                 chargeAttackTime += 1 * Time.deltaTime;
             }
         }
-        else
-        {
+
+        
+        if(this.GetComponentInParent<Player>().playerNumber == 2)
+        { 
             if (Input.GetAxis("Basic Attack 2") <= 0.1f && chargeAttackTime >= attackCharged)//this is key up
             {
                 Vector3 dir = parentObject.GetComponent<Player>().speed;
@@ -404,7 +407,7 @@ public class LooperFunctionality : MonoBehaviour
             }
 
 
-            if (Input.GetAxis("Basic Attack 2") > 0.1f)
+            /*if (Input.GetAxis("Basic Attack 2") > 0.1f)
             {
                 Vector3 dir = parentObject.GetComponent<Player>().speed;
 
@@ -419,7 +422,7 @@ public class LooperFunctionality : MonoBehaviour
                 }
                 chargeAttackTime = 0.0f;
                 StartCoroutine(attackReset(0.2f));
-            }
+            }*/
 
             if (Input.GetAxis("Basic Attack 2") > 0.1f)
             {
@@ -457,13 +460,11 @@ public class LooperFunctionality : MonoBehaviour
     }
 
 
-    void OnTriggerExit(Collider colliderExit)
+    void OnTriggerEnter(Collider colliderEnter)
     {
-        if (colliderExit.gameObject.tag == "Attack")
-        { 
-            //gameHandler.GetComponent<GameHandler>().switchesOn += 1;
-            //gameHandler.GetComponent<GameHandler>().subterfugeMissionUpdater();
-            //this.gameObject.GetComponent<switchBehaviour>().enabled = false;
+        if (colliderEnter.gameObject.tag == "Enemy")
+        {
+            colliderEnter.gameObject.GetComponent<EnemyDamage>().takeDamage(looperDamage);
         }
     }
 

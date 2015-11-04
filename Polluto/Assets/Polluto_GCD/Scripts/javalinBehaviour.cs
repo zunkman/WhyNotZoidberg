@@ -8,8 +8,10 @@ public class javalinBehaviour : MonoBehaviour
     public float speed;
     public int direction;
     public float aliveTimer;
-	// Use this for initialization
-	void Start ()
+
+    public float javalinDamage;
+    // Use this for initialization
+    void Start ()
     {
         newPosition = this.gameObject.transform.position;
 
@@ -17,6 +19,8 @@ public class javalinBehaviour : MonoBehaviour
         direction = player.GetComponent<LooperFunctionality>().javalinDirection;
         speed = player.GetComponent<LooperFunctionality>().javalinSpeed;
         aliveTimer = player.GetComponent<LooperFunctionality>().javalinDuration;
+
+        javalinDamage = 50.0f;
     }
 	
 	// Update is called once per frame
@@ -51,4 +55,13 @@ public class javalinBehaviour : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
+
+    void OnTriggerEnter(Collider colliderEnter)
+    {
+        if (colliderEnter.gameObject.tag == "Enemy")
+        {
+            colliderEnter.gameObject.GetComponent<EnemyDamage>().takeDamage(javalinDamage);
+        }
+    }
+
 }
