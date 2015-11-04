@@ -52,11 +52,11 @@ public class LooperFunctionality : MonoBehaviour
     [SerializeField]private float attackCharged;
 
     //Javalin variables
-    [SerializeField]private GameObject javalin;
+    [SerializeField]private GameObject javelin;
 
-    public float javalinSpeed;
-    public int javalinDirection;
-    public float javalinDuration;
+    public float javelinSpeed;
+    public int javelinDirection;
+    public float javelinDuration;
 
     void Start()
     {
@@ -102,8 +102,8 @@ public class LooperFunctionality : MonoBehaviour
        Javalin stats set
        */
 
-       javalinSpeed = 15.0f;
-       javalinDuration = 2.0f;
+       javelinSpeed = 15.0f;
+       javelinDuration = 2.0f;
 
     /*
     Looper Stats setup
@@ -136,11 +136,11 @@ public class LooperFunctionality : MonoBehaviour
         Vector3 directionFacing = this.GetComponentInParent<Player>().speed;
         if (directionFacing.x > 1)
         {
-            javalinDirection = 1;
+            javelinDirection = 1;
         }
         else if(directionFacing.x < 0)
         {
-            javalinDirection = 0;
+            javelinDirection = 0;
         }
     
 
@@ -436,7 +436,7 @@ public class LooperFunctionality : MonoBehaviour
         Vector3 javalinStart = this.gameObject.transform.position;
         javalinStart.y += 0.5f;
 
-        Instantiate(javalin, javalinStart, Quaternion.identity);
+        Instantiate(javelin, javalinStart, Quaternion.identity);
     }
 
 
