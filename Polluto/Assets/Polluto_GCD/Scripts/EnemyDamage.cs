@@ -9,6 +9,7 @@ public class EnemyDamage : MonoBehaviour
 {
     public float startHealth, health;
     public bool gotHit, hasHitAction;
+    [SerializeField] public bool autoDestruct = false;//set to true and the object will die when health drops below 0
 
 	// Use this for initialization
 	void Start ()
@@ -33,11 +34,15 @@ public class EnemyDamage : MonoBehaviour
 
         health -= damage;
         //--edit by CT to destroy objects with no health left when hit--//
-        if(health < 0) {
-            //modify later to call a function if more than simply destroying is needed
-            //if (this.transform.parent) { Destroy(this.transform.parent.gameObject); } else { Destroy(this); }
-            
+        if(health < 0 && autoDestruct == true) {
+            selfDestruct();
         }
         //----//
+    }
+
+    private void selfDestruct() {
+        if(autoDestruct) {
+            if (this.transform.parent) { Destroy(this.transform.parent.gameObject); } else { Destroy(this); }
+        }
     }
 }

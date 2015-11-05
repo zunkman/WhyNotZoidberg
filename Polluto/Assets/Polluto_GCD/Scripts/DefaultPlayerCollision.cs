@@ -20,7 +20,7 @@ public class DefaultPlayerCollision : MonoBehaviour
     {
         if (collisionEnter.gameObject.tag == "Lava")
         {
-            this.gameObject.GetComponentInChildren<LooperFunctionality>().looperHealth -= initialLavaDamage;
+            this.gameObject.GetComponentInChildren<Player>().health -= initialLavaDamage;
             Vector3 dir = this.gameObject.GetComponentInParent<Player>().speed;
             damageKnockBack(dir.x, pushPower);
         }

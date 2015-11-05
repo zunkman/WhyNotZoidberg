@@ -3,6 +3,8 @@ using System.Collections;
 
 public class TossedGarbage : MonoBehaviour {
 
+    [SerializeField] private bool isWeapon = false;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -12,37 +14,48 @@ public class TossedGarbage : MonoBehaviour {
 	void Update () {
 	
 	}
-    void OnTriggerEnter (Collider other)
-    {
-        //Debug.Log("Trigger Overlap.");
-        EnemyDamage impactedDamageScript = null;
-        if(other.GetComponent<EnemyDamage>())
-        {
-            //Debug.Log("Has Script.");
-            impactedDamageScript = other.GetComponent<EnemyDamage>();
+
+    void FixedUpdate() {
+        this.GetComponent<Rigidbody>().velocity += Physics.gravity * Time.deltaTime * 0.1f;
+    }
+
+    void hit(Collider other) {
+                //only do this if it is considered a weapon.
+        if(isWeapon || GetComponent<Rigidbody>().velocity.magnitude > 1.0f) {
+            //Debug.Log("Trigger Overlap.");
+            EnemyDamage impactedDamageScript = null;
+            if(other.GetComponent<EnemyDamage>())
+            {
+                //Debug.Log("Has Script.");
+                impactedDamageScript = other.GetComponent<EnemyDamage>();
             
-        } else if(other.transform.parent)
-        {
-            //Debug.Log("Has Parent.");
-            if (other.transform.parent.GetComponent<EnemyDamage>())
+            } else if(other.transform.parent)
             {
-                //Debug.Log("Has Child Script.");
-                impactedDamageScript = other.transform.parent.GetComponent<EnemyDamage>();
-            } else
+                //Debug.Log("Has Parent.");
+                if (other.transform.parent.GetComponent<EnemyDamage>())
+                {
+                    //Debug.Log("Has Child Script.");
+                    impactedDamageScript = other.transform.parent.GetComponent<EnemyDamage>();
+                } else
+                {
+                    //Debug.Log("No Child script.");
+                }
+            }
+            if (impactedDamageScript)
             {
-                //Debug.Log("No Child script.");
+                impactedDamageScript.takeDamage(1.0f + GetComponent<Rigidbody>().velocity.magnitude);//deals more damage if thrown faster
+                Destroy(this);
+            }
+            if (other.gameObject.tag == "Ground")
+            {
+            
+                    Destroy(this.gameObject);
             }
         }
-        if (impactedDamageScript)
-        {
-            impactedDamageScript.takeDamage(1.0f);
-            Destroy(this);
-        }
-        if (other.gameObject.tag == "Ground")
-        {
-            Destroy(this.gameObject);
-            
-        }
+    }
+    void OnTriggerEnter (Collider other)
+    {
+        hit(other);
     }
     
     void OnTriggerStay(Collider other)
@@ -51,6 +64,7 @@ public class TossedGarbage : MonoBehaviour {
     }
     void OnCollisionEnter(Collision other)
     {
+        hit(other.collider);
         //Debug.Log("Collider Overlap.");
     }
 }
