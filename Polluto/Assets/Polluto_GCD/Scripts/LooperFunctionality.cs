@@ -25,28 +25,27 @@ public class LooperFunctionality : MonoBehaviour
     /* 
     Looper Functionality variables
     */
-    [SerializeField]private Vector3[] shadowArray;
+    /* is true if the shadow is spawned somewhere */
+    private bool shadowAlive;
 
-    Vector3 emptyVector;
-
-    [SerializeField]private bool duplicateData;
-    [SerializeField]private bool arrayFull;
-    private bool shadow;
-    private bool spawnShadow;
-
+    /* Shadow object */
     public GameObject looperShadow;
-    private GameObject shadowObj;
-    [SerializeField]private GameObject parentObject;
+    public GameObject looperShadowInstance;
+
+    private GameObject parentObject;
 
     [SerializeField]private BoxCollider attackBox;
 
-    [SerializeField]private int arraySlotsFull;
+    private bool canSpawnShadow;
+
     private int buttonTaps;
     private int playerNumber;
-    [SerializeField]private int dir;
+    private int dir;
 
     [SerializeField]private float markerPlacementTimer;
     [SerializeField]private float specialActiveTimer;
+    [SerializeField]private float shadowCoolDown;
+    [SerializeField]private float shadownTimer;
 
     [SerializeField]private float chargeAttackTime;
     [SerializeField]private float attackCharged;
@@ -98,6 +97,8 @@ public class LooperFunctionality : MonoBehaviour
         //Getting the gamehandler object
         gameHandlerObject = GameObject.FindGameObjectWithTag("gameHandler");
 
+        shadownTimer = 5.0f;
+
        /*
        Javalin stats set
        */
@@ -108,10 +109,6 @@ public class LooperFunctionality : MonoBehaviour
     /*
     Looper Stats setup
     */
-
-        shadowArray = new Vector3[4];
-        
-        parentObject = this.gameObject.transform.parent.gameObject;
         attackBox = this.gameObject.GetComponent<BoxCollider>() as BoxCollider;
        
         attackBox.enabled = false;
@@ -147,26 +144,66 @@ public class LooperFunctionality : MonoBehaviour
         doubleTap();
         resetTimer();
         abilities();
+        looperSpecialActive();
         //checkPlayerHealth(this.looperHealth);
     }
 
     void looperSpecialActive()
     {
-        if (specialActiveTimer > 0.0f && buttonTaps == 1 && arrayFull == true)
+        if (playerNumber == 1)
         {
-            checkArrayFull();
-            swapWithShadow();
+            if (Input.GetAxis("Basic Attack") <= 0.1f)
+            {
+                spawnShadow();
+            }
         }
-        else
-        {
-            specialActiveTimer = 4.0f;
-            buttonTaps = 1;
 
-            looperFunctionality();
-            markerPlacementTimer = 4.0f;
+        if (playerNumber == 2)
+        {
+            if (Input.GetAxis("Basic Attack 2") <= 0.1f)
+            {
+                spawnShadow();
+            }
+        }
+
+        shadowCoolDownTimer();
+
+    }
+
+    /* Spawns loopers shadow. If loopers shadow is already spawned
+    then teleport to the shadow and destroy it. */
+    void spawnShadow()
+    {
+        if (shadowAlive == false && canSpawnShadow == true)
+        {
+            looperShadowInstance = Instantiate(looperShadow, this.gameObject.transform.position, Quaternion.identity) as GameObject;
+            shadowAlive = true;
+            shadowCoolDown = shadownTimer;
+            canSpawnShadow = false;
+        }
+        else if(shadowAlive == true && canSpawnShadow == true)
+        {
+            this.gameObject.transform.position = looperShadowInstance.transform.position;
+            Destroy(looperShadowInstance); 
+            shadowAlive = false;
+            shadowCoolDown = shadownTimer;
+            canSpawnShadow = false;
         }
     }
 
+    void shadowCoolDownTimer()
+    {
+        if (shadowCoolDown > 0.0f)
+        {
+            shadowCoolDown -= 1 * Time.deltaTime;
+        }
+
+        if (shadowCoolDown < 0.0f)
+        {
+            shadowCoolDown = 0.0f;
+            canSpawnShadow = true;
+        }
+    }
 
     void abilities()
     {
@@ -185,99 +222,7 @@ public class LooperFunctionality : MonoBehaviour
             buttonTaps = 0;
         }
     }
-
-    void swapWithShadow()
-    {
-        if (shadow == true)
-        {
-            //Vector3 newShadowPosition = transform.parent.transform.position;
-            transform.parent.transform.position = shadowArray[0];//You teleport to shadow
-            shadowArray[0] = emptyVector;
-
-            //shadowObj.transform.position = shadowArray[3];
-            specialActiveTimer = 0.0f;
-        }
-    }
-
-
-
-    //Done
-    void looperFunctionality()
-    {
-        emptyVector = new Vector3(0.0f, 0.0f, 0.0f);
-        
-        //stores the position of the stopping point
-        Vector3 tempVector = transform.parent.transform.position;
-
-        //This will check for duplicate data and store non duplicate data
-        for (int i = 0; i < shadowArray.Length; i++)
-        {
-            if (shadowArray[i] != emptyVector)
-            {
-                if (shadowArray[i] == transform.parent.transform.position)
-                {
-                    duplicateData = true;
-                    break;
-                }
-                else
-                {
-                    duplicateData = false;
-                }
-            }
-        }
-        
-        //This places data that is not duplicated into the array
-        if (duplicateData == false)
-        {
-            for (int i = 0; i < shadowArray.Length; i++)
-            {
-                if (shadowArray[i] == emptyVector && duplicateData != true)
-                {
-                    shadowArray[i] = tempVector;
-                    break;
-                }
-            }
-        }
-
-        checkArrayFull();
-
-
-        
-        //If the array is full then delete the oldest data in the array which would be zero
-        if (arrayFull == true && duplicateData != true)
-        {
-            shadowArray[0] = shadowArray[1];
-            shadowArray[1] = shadowArray[2];
-            shadowArray[2] = shadowArray[3];
-            shadowArray[3] = tempVector;
-
-            canSpawnShadow();
-        } 
-    }
-
-    void checkArrayFull()
-    {
-        //This whill check if the array is full
-        for (int i = 0; i < shadowArray.Length; i++)
-        {
-            if (shadowArray[i] != emptyVector)
-            {
-                arraySlotsFull = i + 1;
-            }
-
-            if (arraySlotsFull >= 4)
-            {
-                arrayFull = true;
-            }
-            else
-            {
-                arraySlotsFull = 0;
-                arrayFull = false;
-            }
-
-        }
-    }
-
+    
     /* Checks the current health and if it's lower than 0 or is zero 
     respawn the player */
     /*void checkPlayerHealth(float healthToCheck)
@@ -293,37 +238,7 @@ public class LooperFunctionality : MonoBehaviour
         }
 
     }*/
-
     
-    void canSpawnShadow()
-    {
-        for (int i = 0; i < shadowArray.Length; i++)
-        {
-            if (shadowArray[i] == emptyVector)
-            {
-                spawnShadow = false;
-                break;
-            }
-            else
-            {
-                spawnShadow = true;
-            }
-
-        }
-
-        if(spawnShadow == true)
-        {
-            if (shadow == false)
-            {
-                shadow = true;
-                shadowObj = Instantiate(looperShadow, shadowArray[0], Quaternion.identity) as GameObject;
-            }
-            else
-            {
-                shadowObj.transform.position = shadowArray[0];
-            }
-        }
-    }
 
     void Attack()
     {
