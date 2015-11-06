@@ -32,7 +32,7 @@ public class LooperFunctionality : MonoBehaviour
     public GameObject looperShadow;
     public GameObject looperShadowInstance;
 
-    private GameObject parentObject;
+    [SerializeField]private GameObject parentObject;
 
     [SerializeField]private BoxCollider attackBox;
 
@@ -95,7 +95,6 @@ public class LooperFunctionality : MonoBehaviour
         //transform.parent.GetComponent<Player>().damage = looperDamage;
 
         //Getting the gamehandler object
-        gameHandlerObject = GameObject.FindGameObjectWithTag("gameHandler");
 
         shadownTimer = 5.0f;
 

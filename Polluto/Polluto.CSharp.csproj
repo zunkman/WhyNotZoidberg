@@ -104,6 +104,7 @@
     <Compile Include="Assets\Polluto_GCD\Scripts\Player\CameraFollow.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\Player\JunkManExtras.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\Player\TankGirl.cs" />
+    <Compile Include="Assets\Polluto_GCD\Scripts\Player\Telekinesis_Grabber.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\Player\TossedGarbage.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\PlayerFollow.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\RespawnHandler.cs" />
