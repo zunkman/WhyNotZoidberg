@@ -28,6 +28,8 @@ public class LooperFunctionality : MonoBehaviour
     /* is true if the shadow is spawned somewhere */
     private bool shadowAlive;
 
+    private bool canSpawnShadow;
+
     /* Shadow object */
     public GameObject looperShadow;
     public GameObject looperShadowInstance;
@@ -35,8 +37,6 @@ public class LooperFunctionality : MonoBehaviour
     [SerializeField]private GameObject parentObject;
 
     [SerializeField]private BoxCollider attackBox;
-
-    private bool canSpawnShadow;
 
     private int buttonTaps;
     private int playerNumber;
@@ -112,6 +112,9 @@ public class LooperFunctionality : MonoBehaviour
        
         attackBox.enabled = false;
         attackCharged = 3.0f;
+
+        shadowAlive = false;
+        canSpawnShadow = true;
         //find a way to get the javalin object and spawn it
 
     }
@@ -151,7 +154,7 @@ public class LooperFunctionality : MonoBehaviour
     {
         if (playerNumber == 1)
         {
-            if (Input.GetAxis("Basic Attack") <= 0.1f)
+            if (Input.GetAxis("Special Attack") >= 0.1f)
             {
                 spawnShadow();
             }
@@ -159,7 +162,7 @@ public class LooperFunctionality : MonoBehaviour
 
         if (playerNumber == 2)
         {
-            if (Input.GetAxis("Basic Attack 2") <= 0.1f)
+            if (Input.GetAxis("Special Attack 2") >= 0.1f)
             {
                 spawnShadow();
             }
@@ -182,7 +185,7 @@ public class LooperFunctionality : MonoBehaviour
         }
         else if(shadowAlive == true && canSpawnShadow == true)
         {
-            this.gameObject.transform.position = looperShadowInstance.transform.position;
+            this.gameObject.transform.parent.transform.position = looperShadowInstance.transform.position;
             Destroy(looperShadowInstance); 
             shadowAlive = false;
             shadowCoolDown = shadownTimer;

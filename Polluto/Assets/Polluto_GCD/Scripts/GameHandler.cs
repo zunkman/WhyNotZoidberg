@@ -35,6 +35,8 @@ public class GameHandler : MonoBehaviour
     [SerializeField]private GameObject playerTwoInstatiatedObject;
     [SerializeField]private GameObject looperInstantiatedObject;
 
+    [SerializeField]private GameObject endLevelDoor;
+
   
     //Something wrong with spawning switches fiX!!!!
 
@@ -112,6 +114,9 @@ public class GameHandler : MonoBehaviour
         //selectedCharacterNamePlayerTwo = "Looper";
         //selectedLevelName = "Subterfuge";
 
+        /* Remove later */
+        endLevelDoor.SetActive(false);
+
         if (numPlayers == 1)
         {
             spawnPlayers(selectedCharacterNamePlayerOne, selectedCharacterNamePlayerTwo, numPlayers);
@@ -122,6 +127,7 @@ public class GameHandler : MonoBehaviour
         }
 
         /* subterfuge start speficiers */
+        /* REMOVE LATER! */
         if (selectedLevelName == "Subterfuge")
         {
             switchMission = false;
@@ -187,7 +193,7 @@ public class GameHandler : MonoBehaviour
         }
     }
 
-
+    /* Move to subterfuge mission script later */
     void addSpecialCollisionScript()
     {
         if(numPlayers == 1)
@@ -201,6 +207,7 @@ public class GameHandler : MonoBehaviour
         }
     }
 
+    /* Move to subterfuge mission script later */
     void subterfugeMissionStart()
     {
         string newMission = "Find control room";
@@ -209,7 +216,8 @@ public class GameHandler : MonoBehaviour
         //add a special collision component to each character for only this level
         setCompas();
     }
-    
+
+    /* Move to subterfuge mission script later */
     public void subterfugeMissionUpdater()
     {
         if (switchMission == true)
@@ -257,6 +265,7 @@ public class GameHandler : MonoBehaviour
         }
     }
 
+    /* Move to subterfuge mission script later */
     public void subterfugeNewMission()
     {
         //possibly use this as compas setter function
@@ -270,11 +279,12 @@ public class GameHandler : MonoBehaviour
         }
         else if (endMission == true)
         {
+            endLevelDoor.SetActive(true);
             //in here I think there will be an escape timer if not then whatever
         }
     }
 
-
+    /* Move to subterfuge mission script later */
     void checkForRepeatData()
     {
         if (alreadyGenerated == false)
@@ -307,13 +317,13 @@ public class GameHandler : MonoBehaviour
         alreadyGenerated = true;
     }
 
-
+    /* Move to subterfuge mission script later */
     void setMissionText(string textToShow)
     {
         missionText.GetComponent<Text>().text = textToShow;
     }
 
-
+    /* Move to subterfuge mission script later */
     void setCompas()
     {
         if (Input.GetKeyDown(KeyCode.C))
@@ -358,6 +368,7 @@ public class GameHandler : MonoBehaviour
         }
     }
 
+    /* Move to subterfuge mission script later */
     //--Move this function and related variables from GameHandler to the subterfuge level script (is there one?)--//
     void setSwitchLocation(int powerSwitchNum)
     {
@@ -387,6 +398,8 @@ public class GameHandler : MonoBehaviour
         }
 
     }
+
+    /* Move to subterfuge mission script later */
     //--^^^^--//
     IEnumerator missionTextClear(float timeToWait)
     {
@@ -441,6 +454,7 @@ public class GameHandler : MonoBehaviour
             //    spawnPlayers(selectedCharacterNamePlayerOne, selectedCharacterNamePlayerTwo, numPlayers);
             //}
 
+            /* Move to subterfuge mission script later */
             /* subterfuge start speficiers */
             if (selectedLevelName == "Subterfuge")
             {
