@@ -37,6 +37,10 @@ public class GameHandler : MonoBehaviour
 
     [SerializeField]private GameObject endLevelDoor;
 
+    [SerializeField]private GameObject pauseMenu;
+
+    private bool isPaused;
+
   
     //Something wrong with spawning switches fiX!!!!
 
@@ -101,8 +105,11 @@ public class GameHandler : MonoBehaviour
         playerSpawnOne = GameObject.FindGameObjectWithTag("firstPlayerSpawn");
         playerSpawnTwo = GameObject.FindGameObjectWithTag("secondPlayerSpawn");
 
-        /* Subterfuge level specific objects */
         
+
+
+        /* Subterfuge level specific objects */
+
         gameCanvas = GameObject.FindGameObjectWithTag("UI");
         missionText = GameObject.FindGameObjectWithTag("MissionText");
         newSwitchObject = GameObject.FindGameObjectWithTag("Switch");
@@ -115,7 +122,7 @@ public class GameHandler : MonoBehaviour
         //selectedLevelName = "Subterfuge";
 
         /* Remove later */
-        endLevelDoor.SetActive(false);
+        if (endLevelDoor != null) endLevelDoor.SetActive(false);
 
         if (numPlayers == 1)
         {
@@ -153,6 +160,11 @@ public class GameHandler : MonoBehaviour
     // Update is called once per frame
     void Update () 
     {
+        if(Input.GetAxis("pause") >= 0.1f && isPaused == false)
+        {
+            pauseGame();
+        }
+        
 	}
 
     void LateUpdate()
@@ -476,6 +488,16 @@ public class GameHandler : MonoBehaviour
                 numPlayers = 1;
             }
 
+            if (pauseMenu == null)
+            {
+                pauseMenu = GameObject.FindGameObjectWithTag("pauseMenu");
+            }
+
+            if (pauseMenu != null)
+            {
+                pauseMenu.SetActive(false);
+                isPaused = false;
+            }
 
             playerSpawnOne = GameObject.FindGameObjectWithTag("firstPlayerSpawn");
             if (playerSpawnOne != null)
@@ -484,5 +506,34 @@ public class GameHandler : MonoBehaviour
                 spawnPlayers(selectedCharacterNamePlayerOne, selectedCharacterNamePlayerTwo, numPlayers);
             }
         }
+    }
+
+    public void pauseGame()
+    {
+        if (isPaused == false)
+        {
+            Time.timeScale = 0.0f;
+            pauseMenu.SetActive(true);
+            isPaused = true;
+        }
+        else
+        {
+            Time.timeScale = 1.0f;
+            pauseMenu.SetActive(false);
+            isPaused = false;
+        }
+    }
+
+    public void resume()
+    {
+        Time.timeScale = 1.0f;
+        pauseMenu.SetActive(false);
+        isPaused = false;
+    }
+
+    public void backToMainMenu()
+    {
+        Time.timeScale = 1.0f;
+        Application.LoadLevel("MainMenu");
     }
 }
