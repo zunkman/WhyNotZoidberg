@@ -39,7 +39,9 @@ public class GameHandler : MonoBehaviour
 
     [SerializeField]private GameObject pauseMenu;
 
-    private bool isPaused;
+    [SerializeField]private bool isPaused;
+    public bool stopGame;
+    private bool buttonUp;
 
   
     //Something wrong with spawning switches fiX!!!!
@@ -105,9 +107,6 @@ public class GameHandler : MonoBehaviour
         playerSpawnOne = GameObject.FindGameObjectWithTag("firstPlayerSpawn");
         playerSpawnTwo = GameObject.FindGameObjectWithTag("secondPlayerSpawn");
 
-        
-
-
         /* Subterfuge level specific objects */
 
         gameCanvas = GameObject.FindGameObjectWithTag("UI");
@@ -123,6 +122,8 @@ public class GameHandler : MonoBehaviour
 
         /* Remove later */
         if (endLevelDoor != null) endLevelDoor.SetActive(false);
+        buttonUp = false;
+        
 
         if (numPlayers == 1)
         {
@@ -160,16 +161,28 @@ public class GameHandler : MonoBehaviour
     // Update is called once per frame
     void Update () 
     {
-        if(Input.GetAxis("pause") >= 0.1f && isPaused == false)
+        if (Input.GetAxis("pause") >= 0.1f && buttonUp == true && selectedLevelName != null || selectedLevelName == "")
         {
-            pauseGame();
+            if (stopGame == false && buttonUp == true)
+            {
+                stopGame = true;
+                isPaused = true;
+                pauseGame();
+            }
+
+
+            buttonUp = false;
         }
-        
-	}
+        else
+        {
+            buttonUp = true;
+        }
+    }
 
     void LateUpdate()
     {
-       
+        
+
     }
 
     public void respawnPlayer(GameObject playerToRespawn)
@@ -505,35 +518,34 @@ public class GameHandler : MonoBehaviour
                 Debug.Log("Calling SpawnPlayers for level: " + level);
                 spawnPlayers(selectedCharacterNamePlayerOne, selectedCharacterNamePlayerTwo, numPlayers);
             }
+
+            stopGame = false;
         }
     }
 
     public void pauseGame()
     {
-        if (isPaused == false)
+        if (isPaused == true)
         {
-            Time.timeScale = 0.0f;
             pauseMenu.SetActive(true);
-            isPaused = true;
-        }
-        else
-        {
-            Time.timeScale = 1.0f;
-            pauseMenu.SetActive(false);
-            isPaused = false;
+            Time.timeScale = 0.0f;  
         }
     }
 
     public void resume()
     {
-        Time.timeScale = 1.0f;
-        pauseMenu.SetActive(false);
         isPaused = false;
+        stopGame = false;
+        pauseMenu.SetActive(false);
+        Time.timeScale = 1.0f;
     }
 
     public void backToMainMenu()
     {
         Time.timeScale = 1.0f;
+        isPaused = false;
+        pauseMenu.SetActive(false);
+        selectedLevelName = null;
         Application.LoadLevel("MainMenu");
     }
 }

@@ -1,0 +1,46 @@
+Initialize engine version: 5.2.0f3 (e7947df39b5c)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA GeForce GT 650M (ID=0xfd5)
+    Vendor:   NVIDIA
+    VRAM:     967 MB
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\Taylor\Documents\GitHub\WhyNotZoidberg\Polluto\testbuild_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Taylor\Documents\GitHub\WhyNotZoidberg\Polluto\testbuild_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Taylor\Documents\GitHub\WhyNotZoidberg\Polluto\testbuild_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
+Loading C:\Users\Taylor\Documents\GitHub\WhyNotZoidberg\Polluto\testbuild_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
+Platform assembly: C:\Users\Taylor\Documents\GitHub\WhyNotZoidberg\Polluto\testbuild_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Taylor\Documents\GitHub\WhyNotZoidberg\Polluto\testbuild_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\Taylor\Documents\GitHub\WhyNotZoidberg\Polluto\testbuild_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\Taylor\Documents\GitHub\WhyNotZoidberg\Polluto\testbuild_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\Taylor\Documents\GitHub\WhyNotZoidberg\Polluto\testbuild_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\Taylor\Documents\GitHub\WhyNotZoidberg\Polluto\testbuild_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: C:\Users\Taylor\Documents\GitHub\WhyNotZoidberg\Polluto\testbuild_Data\Managed\System.Core.dll (this message is harmless)
+- Completed reload, in  0.235 seconds
+desktop: 2880x1800 60Hz; virtual: 2880x1800 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+Platform assembly: C:\Users\Taylor\Documents\GitHub\WhyNotZoidberg\Polluto\testbuild_Data\Managed\System.dll (this message is harmless)
+Setting up 2 worker threads for Enlighten.
+  Thread -> id: 3998 -> priority: 1 
+  Thread -> id: 2cd8 -> priority: 1 
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 16.241858 ms
+GH_wasTrue
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 64)
+
+wasTrue
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 64)
+
+Calling SpawnPlayers for level: 3
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 64)
+
+
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 3984.
+Total: 2.531032 ms (FindLiveObjects: 0.496676 ms CreateObjectMapping: 0.333927 ms MarkObjects: 1.669271 ms  DeleteObjects: 0.028590 ms)
+

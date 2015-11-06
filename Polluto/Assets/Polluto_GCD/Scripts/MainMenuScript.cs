@@ -234,21 +234,25 @@ public class MainMenuScript : MonoBehaviour
 
     public void onClickMountainGoat()
     {
+        GameHandler.selectedLevelName = "  ";
         Application.LoadLevel("MountainBox");
     }
 
     public void onClickFortKnox()
     {
+        GameHandler.selectedLevelName = "Fort Knox";
         Application.LoadLevel("Fort Knox");
     }
 
     public void onClickVolcanoParadise()
     {
+        GameHandler.selectedLevelName = "VolcanoParadise";
         Application.LoadLevel("VolcanoParadise");
     }
 
     public void onClickLabratory()
     {
+        GameHandler.selectedLevelName = "Subterfuge";
         Application.LoadLevel("Level4");
     }
 
