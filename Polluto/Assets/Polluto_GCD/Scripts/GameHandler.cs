@@ -36,15 +36,15 @@ public class GameHandler : MonoBehaviour
     [SerializeField]private GameObject looperInstantiatedObject;
 
     [SerializeField]private GameObject endLevelDoor;
-
     [SerializeField]private GameObject pauseMenu;
 
-    [SerializeField]private bool isPaused;
+    private bool isPaused;
     public bool stopGame;
     private bool buttonUp;
 
-  
-    //Something wrong with spawning switches fiX!!!!
+    /* Possible remove this later */
+    public GameObject targetObject;
+    public GameObject compasObject;
 
     /* Subterfuges variables */
 
@@ -62,6 +62,7 @@ public class GameHandler : MonoBehaviour
     private GameObject switchMissionStartHitBox;
 
     public Vector3[] switchArray;
+    public GameObject[] switchCompasTargets;
 
     public int switchesOn;
 
@@ -115,15 +116,9 @@ public class GameHandler : MonoBehaviour
         switchMissionStartHitBox = GameObject.FindGameObjectWithTag("beginSwitchMission");
         elevator = GameObject.FindGameObjectWithTag("Elevator");
 
-        //numPlayers = 2;
-        //selectedCharacterNamePlayerOne = "Looper";
-        //selectedCharacterNamePlayerTwo = "Looper";
-        //selectedLevelName = "Subterfuge";
-
         /* Remove later */
         if (endLevelDoor != null) endLevelDoor.SetActive(false);
         buttonUp = false;
-        
 
         if (numPlayers == 1)
         {
@@ -140,6 +135,7 @@ public class GameHandler : MonoBehaviour
         {
             switchMission = false;
             switchArray = new Vector3[7];
+            switchCompasTargets = new GameObject[2];
             for (int i = 0; i < switchArray.Length; i++)
             {
                 setSwitchLocation(i);
@@ -161,6 +157,20 @@ public class GameHandler : MonoBehaviour
     // Update is called once per frame
     void Update () 
     {
+        pauseFunction();
+    }
+
+    void LateUpdate()
+    {
+        if (compasObject != null)
+        {
+            setCompas();
+        }  
+    }
+
+    /* Called each fram to check if a player wanted to pause the game */
+    void pauseFunction()
+    {
         if (Input.GetAxis("pause") >= 0.1f && buttonUp == true && selectedLevelName != null || selectedLevelName == "")
         {
             if (stopGame == false && buttonUp == true)
@@ -169,20 +179,12 @@ public class GameHandler : MonoBehaviour
                 isPaused = true;
                 pauseGame();
             }
-
-
             buttonUp = false;
         }
         else
         {
             buttonUp = true;
         }
-    }
-
-    void LateUpdate()
-    {
-        
-
     }
 
     public void respawnPlayer(GameObject playerToRespawn)
@@ -239,7 +241,7 @@ public class GameHandler : MonoBehaviour
         setMissionText(newMission);
         StartCoroutine(missionTextClear(3.0f));
         //add a special collision component to each character for only this level
-        setCompas();
+        
     }
 
     /* Move to subterfuge mission script later */
@@ -251,7 +253,6 @@ public class GameHandler : MonoBehaviour
             {
                 subterfugeNewMission();
                 playerSpawnOne.transform.position = new Vector3(25.0f, -148.5f, 0.0f);
-                //playerSpawnTwo.transform.position = new Vector3(35.0f, -148.5f, 0.0f);
             }
 
             if (switchesOn == 2)
@@ -261,6 +262,15 @@ public class GameHandler : MonoBehaviour
             }
             else
             {
+                if(switchesOn == 0)
+                {
+                    setNewCompasTarget(switchCompasTargets[0]);
+                }
+                else
+                {
+                    setNewCompasTarget(switchCompasTargets[1]);
+                }
+
                 missionText.GetComponent<Text>().text = "Find power breakers and turn them on [" + switchesOn + "/2]";
                 StartCoroutine(missionTextClear(3.0f));
             }
@@ -285,6 +295,8 @@ public class GameHandler : MonoBehaviour
         if (endMission == true)
         {
             string newMission = "Escape!";
+            endLevelDoor.SetActive(true);
+            setNewCompasTarget(endLevelDoor);
             setMissionText(newMission);
             StartCoroutine(missionTextClear(3.0f));
         }
@@ -304,7 +316,7 @@ public class GameHandler : MonoBehaviour
         }
         else if (endMission == true)
         {
-            endLevelDoor.SetActive(true);
+            
             //in here I think there will be an escape timer if not then whatever
         }
     }
@@ -327,9 +339,9 @@ public class GameHandler : MonoBehaviour
                 }
                 else
                 {
-                    Instantiate(newSwitchObject, switchArray[switchToMake], Quaternion.identity);
+                    GameObject switchInstance = Instantiate(newSwitchObject, switchArray[switchToMake], Quaternion.identity) as GameObject;
                     switchCount += 1;
-                    Debug.Log(switchCount);
+                    switchCompasTargets[switchCount - 1] = switchInstance;
                     tempHolderVal = switchToMake;
                 }
 
@@ -351,13 +363,16 @@ public class GameHandler : MonoBehaviour
     /* Move to subterfuge mission script later */
     void setCompas()
     {
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            //Debug.Log("Show path to mission");
-        }
-
+        Vector3 compassRotation = (targetObject.transform.position - playerOne.transform.position).normalized;
+        float angle = Mathf.Atan2(compassRotation.y, compassRotation.x) * Mathf.Rad2Deg;
+        compasObject.transform.rotation = Quaternion.AngleAxis(angle + 90.0f, Vector3.forward);
     }
 
+    /* Sets a new target for the compass */
+    void setNewCompasTarget(GameObject newTarget)
+    {
+        targetObject = newTarget;
+    }
 
     public GameObject getPlayerOne()
     {
@@ -479,6 +494,18 @@ public class GameHandler : MonoBehaviour
             //    spawnPlayers(selectedCharacterNamePlayerOne, selectedCharacterNamePlayerTwo, numPlayers);
             //}
 
+            if(endLevelDoor == null)
+            {
+                endLevelDoor = GameObject.FindGameObjectWithTag("endLevel");
+            }
+
+            if(endLevelDoor != null)
+            {
+                endLevelDoor.SetActive(false);
+            }
+
+            switchCompasTargets = new GameObject[2];
+
             /* Move to subterfuge mission script later */
             /* subterfuge start speficiers */
             if (selectedLevelName == "Subterfuge")
@@ -491,7 +518,6 @@ public class GameHandler : MonoBehaviour
                 }
 
                 subterfugeMissionStart();
-                //addSpecialCollisionScript();
             }
 
             //for debugging purposes, will load default characters here when running from the editor
@@ -506,10 +532,21 @@ public class GameHandler : MonoBehaviour
                 pauseMenu = GameObject.FindGameObjectWithTag("pauseMenu");
             }
 
+            if(compasObject == null)
+            {
+                compasObject = GameObject.FindGameObjectWithTag("compass");
+            }
+
+            if (targetObject == null)
+            {
+                targetObject = GameObject.FindGameObjectWithTag("target");
+            }
+
             if (pauseMenu != null)
             {
                 pauseMenu.SetActive(false);
                 isPaused = false;
+                stopGame = false;
             }
 
             playerSpawnOne = GameObject.FindGameObjectWithTag("firstPlayerSpawn");
@@ -518,8 +555,6 @@ public class GameHandler : MonoBehaviour
                 Debug.Log("Calling SpawnPlayers for level: " + level);
                 spawnPlayers(selectedCharacterNamePlayerOne, selectedCharacterNamePlayerTwo, numPlayers);
             }
-
-            stopGame = false;
         }
     }
 

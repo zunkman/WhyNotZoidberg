@@ -107,6 +107,7 @@
     <Compile Include="Assets\Polluto_GCD\Scripts\Player\Telekinesis_Grabber.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\Player\TossedGarbage.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\PlayerFollow.cs" />
+    <Compile Include="Assets\Polluto_GCD\Scripts\PlayerUI.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\RespawnHandler.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\Restarter.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\Turret.cs" />
