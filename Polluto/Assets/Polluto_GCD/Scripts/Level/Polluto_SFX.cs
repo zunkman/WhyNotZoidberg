@@ -22,7 +22,7 @@ public class Polluto_SFX : MonoBehaviour {
 				soundsList[i] = soundList[i];
 				DontDestroyOnLoad (soundsList[i]);
 			}
-            Polluto_SFX.playSound ("testmusic");
+            Polluto_SFX.playSound ("levelload");
 		} else {
 			Debug.Log ("wasTrue");
             if (this.transform.parent)
@@ -39,23 +39,15 @@ public class Polluto_SFX : MonoBehaviour {
 		case "pickup":
 			SID = 0;
 			break;
-		case "hitwall":
-			SID = 2;
-			break;
-		case "hitbarrier":
-			SID = 2;
-			break;
-		case "playerdeath":
-			SID = 6;
-			break;
-		case "teleport":
-			SID = 2;
-			break;
 		case "newlevel":
-			SID = 0;
-			break;
-		case "testmusic":
+		case "levelload":
+        case "testmusic":
 			SID = 1;
+			break;
+		case "hitwall":
+		case "hitbarrier":
+        case "teleport":
+			SID = 2;
 			break;
 		case "shoot":
 			SID = 3;
@@ -66,6 +58,7 @@ public class Polluto_SFX : MonoBehaviour {
 		case "bossDeath":
 			SID = 5;
 			break;
+		case "playerdeath":
 		case "playerDeath":
 			SID = 6;
 			break;

@@ -27,11 +27,11 @@ public class GameHandler : MonoBehaviour
     [SerializeField]protected GameObject[] characterPrefabs = { null, null, null, null, null };
     [SerializeField]protected static GameObject[] playableCharacters = { null, null, null, null, null };
 
-
-    //
-
+    //--ref for checking offscreen players--//
+    [SerializeField]private Camera sceneCamera;
     //
     [SerializeField]private GameObject pauseMenu;
+    [SerializeField]private float offScreenTime;
 
     private bool isPaused;
     public bool stopGame;
@@ -88,6 +88,22 @@ public class GameHandler : MonoBehaviour
     void Update () 
     {
         pauseFunction();
+        //--offscreen p2 relocate--//
+        if(playerTwo != null && playerOne != null) {
+            if(sceneCamera != null) {
+                Vector3 distVect = playerTwo.transform.position - sceneCamera.transform.position;
+                distVect.z = 0;//camera's z might be way off
+                if(distVect.magnitude > sceneCamera.orthographicSize * 1.6f) {
+                    //give a half second before teleporting, so looper's teleport has time to work first
+                    offScreenTime += Time.deltaTime;
+                    if(offScreenTime > 0.5f) playerTwo.transform.position = playerOne.transform.position;
+                } else {
+                    offScreenTime = 0.0f;
+                }
+            } else {
+                sceneCamera = FindObjectOfType<Camera>();
+            }
+        }
     }
 
     void LateUpdate()
@@ -230,6 +246,8 @@ public class GameHandler : MonoBehaviour
     {
         if (isOriginal)//only runs if it's the first GameHandler, since it's supposed to be static.. ish
         {
+            //this may break if more than one camera is in the scene
+            sceneCamera = FindObjectOfType<Camera>();
             //for debugging purposes, will load default characters here when running from the editor
             if (playerCharType[0] == null)
             {
@@ -266,6 +284,8 @@ public class GameHandler : MonoBehaviour
                 Debug.Log("Calling SpawnPlayers for level: " + level);
                 spawnPlayers(selectedCharacterNamePlayerOne, selectedCharacterNamePlayerTwo, numPlayers);
             }
+
+            Polluto_SFX.playSound ("levelload");
         }
     }
 
