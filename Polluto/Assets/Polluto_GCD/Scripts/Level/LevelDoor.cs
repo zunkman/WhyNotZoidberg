@@ -12,7 +12,10 @@ public class LevelDoor : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+        //LevelDoor test = FindObjectOfType<LevelDoor>();
+        //GameObject doorObject = test.transform.parent.gameObject;
+        //for game handler...
+        //if(endLevelDoor != null) endLevelDoor.SetActive(false);
 	}
 	void OnTriggerEnter2D (Collider2D other) {
 		if(other.gameObject.tag == "Player") {

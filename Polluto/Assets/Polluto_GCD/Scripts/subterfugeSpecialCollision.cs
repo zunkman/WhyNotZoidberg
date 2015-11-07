@@ -1,13 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//--Consider placing subterfuge specific events in the subterfuge level.--//
+//--Script modified to work with subterfuge level script instead of gamehandler--//
 public class subterfugeSpecialCollision : MonoBehaviour
 {
-    private GameObject gameHandler;
+    //private GameObject gameHandler;
     private GameObject switchMissionHitBox;
+    [SerializeField]private LevelScript_Subterfuge subterfugeScript;
     void Start()
     {
-        gameHandler = GameObject.FindGameObjectWithTag("gameHandler");
+        subterfugeScript = FindObjectOfType<LevelScript_Subterfuge>();
+        //gameHandler = GameObject.FindGameObjectWithTag("gameHandler");
         switchMissionHitBox = GameObject.FindGameObjectWithTag("beginSwitchMission");
     }
 
@@ -16,11 +20,8 @@ public class subterfugeSpecialCollision : MonoBehaviour
         if(colliderEnter.gameObject.tag == "beginSwitchMission")
         {
             switchMissionHitBox.SetActive(false);
-            gameHandler.GetComponent<GameHandler>().switchMission = true;
-            gameHandler.GetComponent<GameHandler>().subterfugeMissionUpdater();
+            subterfugeScript.switchMission = true;
+            subterfugeScript.subterfugeMissionUpdater();
         }
     }
-
-    
-
 }

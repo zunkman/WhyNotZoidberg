@@ -4,12 +4,14 @@ using System.Collections;
 public class switchBehaviour : MonoBehaviour
 {
     [SerializeField]private GameObject gameHandler;
+    [SerializeField]private LevelScript_Subterfuge subterfugeScript;
 	// Use this for initialization
 	void Start ()
     {
-        if (gameHandler == null)
+        
+        if (subterfugeScript == null)
         {
-            gameHandler = GameObject.FindGameObjectWithTag("gameHandler");
+            subterfugeScript = FindObjectOfType<LevelScript_Subterfuge>();
         }
 	}
 
@@ -17,8 +19,8 @@ public class switchBehaviour : MonoBehaviour
     {
         if (colliderExit.gameObject.tag == "Attack")
         {
-            gameHandler.GetComponent<GameHandler>().switchesOn += 1;
-            gameHandler.GetComponent<GameHandler>().subterfugeMissionUpdater();
+            subterfugeScript.switchesOn += 1;
+            subterfugeScript.subterfugeMissionUpdater();
             this.gameObject.GetComponent<BoxCollider>().enabled = false;
         }
     }
