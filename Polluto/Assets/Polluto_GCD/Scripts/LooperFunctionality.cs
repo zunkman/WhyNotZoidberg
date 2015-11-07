@@ -186,6 +186,10 @@ public class LooperFunctionality : MonoBehaviour
         else if(shadowAlive == true && canSpawnShadow == true)
         {
             this.gameObject.transform.parent.transform.position = looperShadowInstance.transform.position;
+            GameHandler gameHandlerScript = FindObjectOfType<GameHandler>();
+            if(gameHandlerScript.getPlayerOne() != null) gameHandlerScript.getPlayerOne().transform.position = looperShadowInstance.transform.position;
+            if(gameHandlerScript.getPlayerTwo() != null) gameHandlerScript.getPlayerTwo().transform.position = looperShadowInstance.transform.position;
+
             Destroy(looperShadowInstance); 
             shadowAlive = false;
             shadowCoolDown = shadownTimer;
