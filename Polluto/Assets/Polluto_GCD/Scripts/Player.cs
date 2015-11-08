@@ -25,7 +25,9 @@ public class Player : MonoBehaviour
 
     [SerializeField]    protected float magicNumber = 0.05f;
     [SerializeField]    protected bool isJumping;
-    [SerializeField]    public Vector3 speed;
+    [SerializeField]    public Vector3 speed, velocity; //velocity is speed * deltatime
+    [SerializeField]    Vector3 groundNormal = new Vector3(0, 1, 0);
+    [SerializeField]    Vector3 speedAdjust = new Vector3(0, 0, 0);
 
     // Edit by Joe
     [SerializeField] public float health, baseHealth;
@@ -67,6 +69,7 @@ public class Player : MonoBehaviour
         Gravity();
         //Floor Collide is a boolean because it returns whether or not you can jump. Should I leave it this way? Y/N.
 
+        velocity = speed * Time.deltaTime;
         bool canjump = FloorCollide();
 
         // Edited by Joe. Checks if we're player 1. If so, gets input from normal axis. Otherwise, player two axis.
@@ -89,15 +92,12 @@ public class Player : MonoBehaviour
         }
 
         //Handles collision with the wall.
-        WallCollide();
+        //WallCollide();
         //Handles collision with the ceiling.
-        CeilCollide();
+        //CeilCollide();
 
-
-
-        transform.localPosition += speed * Time.deltaTime;
-
-
+        transform.position += velocity;
+        //transform.position += speed * Time.deltaTime;// + speedAdjust; speed += speedAdjust;
     }
 
     protected virtual void HorMove()
@@ -176,54 +176,141 @@ public class Player : MonoBehaviour
     protected virtual bool FloorCollide()
     {
         bool canjump = false;
-        bool floor = false;
-        float oldyspeed = speed.y;
+        //bool floor = false;
+        
+        //float oldyspeed = speed.y;
         RaycastHit hit;
 
+        //--Raycast all sample code below.--//
+        RaycastHit[] hits;
+        Vector3 tempPos = transform.position;
+        Vector3 nxOffset = Vector3.zero;
+        //right, left, up, down
+		Vector3[] dirChk = {new Vector3(1f, 0, 0), new Vector3(-1f, 0, 0), new Vector3(0, 1f, 0), new Vector3(0, -1f, 0)};
+        Vector3 rayOffset = new Vector3(0, 0, 0);
+        Vector3 hitNormal = new Vector3(0, 0, 0);
+        float[] dirOffsets = { 0, 0, 0, 0 };
+        //Ray ray;
+        bool wasHit; int hitCount = 0;
+        speedAdjust = new Vector3(0, 0, 0);
+        for(int i=0;i<4;i++){
+            tempPos = transform.position;
+            if(i == 3) groundNormal = new Vector3(0, 1, 0);
+            for(int rc = -1; rc <= 1;rc++) {
+                nxOffset = Vector3.zero;
+			    //ray = new Ray(tempPos, dirChk[i]);
+                float rayDist = Mathf.Abs(dirChk[i].x) * ((width * 0.5f) + Mathf.Abs(velocity.x)) 
+                                + Mathf.Abs(dirChk[i].y) * ((height * 0.5f) + Mathf.Abs(velocity.y));
+			    hits = null;
+                rayOffset = new Vector3(dirChk[i][1]* ((width * 0.45f) * rc), dirChk[i][0]* ((height * 0.25f) * rc), 0);//offset on other axis
+			    hits = Physics.RaycastAll (tempPos + rayOffset, dirChk[i], rayDist);//ray, 1.0f);//
 
-        for (int i = 0; i <= 2; i++)
-        {
-            //check for ground from various points //--modified to match changes to Player --> Origin is now at the center of the player--//
-            float xoff = (width / 2) * (i - 1);
-            //using overload #12: origin, direction, hitinfo, maxdistance
-            if (Physics.Raycast(transform.position + new Vector3(xoff, 0f, 0f), Vector3.down, out hit, Mathf.Abs(height / 2f) + Mathf.Abs(speed.y * Time.deltaTime) + magicNumber) && speed.y <= 0 && hit.transform.gameObject.tag == "Ground")
-            {
-                //Debug.Log("Hit:" + hit.collider.tag);
-                //snap to floor, and enable jumping.
-                //if (!hit.collider.isTrigger) { }
-                transform.position += new Vector3(0f, -hit.distance + (height / 2f), 0f);
-                speed.y = 0f;
-                canjump = true;
-                isJumping = false;
-                floor = true;
+			    Debug.DrawRay (tempPos + rayOffset, dirChk[i]*rayDist, Color.green, 1.0f);
+			    wasHit = false; int j = 0;
+			    while (j < hits.Length) {
+				    hit = hits[j];
+				    j++;
+					
+                    if(hit.collider.isTrigger == false) {
+					    if(hit.collider.gameObject.tag.Contains("Ground") || hit.collider.gameObject.tag.Contains("Wall"))
+                        {
+						    hitCount++;
+                            //only consider the nearest obstruction, or the one that will push the player back the most
+                            if(Mathf.Abs(rayDist - hit.distance) > nxOffset.magnitude) { 
+                                wasHit = true;
+                                nxOffset = dirChk[i] * 1.0f * (hit.distance - rayDist);
+                                hitNormal = hit.normal;
+                            }
+					    }
+
+                        //Debug.Log ("RCA hit:[" + hit.collider.gameObject.name + ", " + hit.collider.gameObject.tag + "],pos:["+ hit.transform.position + "],player:" + transform.position
+                        //  + ",dist:" + hit.distance + ",offset:" + nxOffset + ",dirchk:" + dirChk[i]);
+				    }// else { Debug.Log ("RCA hit:[" + hit.collider.gameObject.name + ", " + hit.collider.gameObject.tag + "],pos:["+ hit.transform.position + "] T"); }
+			    }
+			    if(wasHit == true) {
+                    //transform.position = tempPos + nxOffset;//new Vector3(0f,  rayDist - hit.distance, 0f);
+                    {
+                        //hitNormal, speedAdjust, nxOffset, speed
+                        float adjustment = 0;
+                        adjustment = nxOffset.x;// * Mathf.Abs(hitNormal.x) + nxOffset.y * (1 - Mathf.Abs(hitNormal.y));
+                        if(Mathf.Abs(adjustment) > Mathf.Abs(speedAdjust.x))speedAdjust.x = adjustment;
+                        if(Mathf.Abs(adjustment) > dirOffsets[i]) dirOffsets[i] = nxOffset.magnitude;
+                        adjustment = nxOffset.y;// * Mathf.Abs(hitNormal.y) - nxOffset.x * (1 - Mathf.Abs(hitNormal.x));
+                        if(Mathf.Abs(adjustment) > Mathf.Abs(speedAdjust.y)) speedAdjust.y = adjustment;
+                        if(Mathf.Abs(adjustment) > dirOffsets[i]) dirOffsets[i] = nxOffset.magnitude;
+                        //if(nxOffset.y != 0) Debug.Log ("hitNormal:" + hitNormal.x + "," + hitNormal.y + ", nxOffset:" + nxOffset.x + "," + nxOffset.y + "speed:"+ speed.y);
+                        //if(nxOffset.y != 0) Debug.Log ("hitNormal:" + hitNormal + ", nxOffset:" + nxOffset);// + "speed:"+ speed + "speedA:"+ speedAdjust);
+                    }
+                    if(i == 0 && hitNormal.y < 0.5) speed.x = Mathf.Min(0, speed.x);//Mathf.Min(0f, speed.x);
+                    if(i == 1 && hitNormal.y < 0.5) speed.x = Mathf.Max(0, speed.x);//Mathf.Max(0f, speed.x);
+                    if(i == 2) speed.y = Mathf.Min(0, speed.y);//Mathf.Min(0f, speed.y);
+                    if(i == 3) {
+                        if(hitNormal.y < 1.0f) groundNormal = hitNormal;
+                        speed.y = Mathf.Max(0, speed.y);//Mathf.Max(0f, speed.y);
+                        canjump = true;
+                        isJumping = false;
+                        //floor = true;
+                    }
+			    }
             }
-        }
-
-        if (floor)
+		}
         {
-            //slopes done here
-            RaycastHit h1, h2;
-            //raycast down from top left and top right corners of the character
-            if (Physics.Raycast(transform.position + new Vector3(-width / 4, (height / 2f), 0f), Vector3.down, out h1) &&
-                Physics.Raycast(transform.position + new Vector3(width / 4, (height / 2f), 0f), Vector3.down, out h2) && h1.transform.gameObject.tag == "Ground" && h2.transform.gameObject.tag == "Ground")
-            {
-
-                float slope = Vector2.Angle(h2.point - h1.point, Vector2.right);
-                //Debug.Log(h1.point.ToString() + " " + h2.point.ToString());
-                //Debug.Log(slope);
-                if (slope > maxSlope)
+            speedAdjust = new Vector3(dirOffsets[1]-dirOffsets[0], dirOffsets[3]-dirOffsets[2], 0);
+            //Debug.Log(dirOffsets[3] + " " + dirOffsets[2] + ".." + groundNormal);
+            if(groundNormal.y >= 0.5 && groundNormal.y < 1.0f && velocity.x != 0.0f && speed.x != 0.0f) {
+                float slope = Vector2.Angle(new Vector2(0.0f, 1.0f), new Vector2(groundNormal.x, groundNormal.y));
                 {
-                    canjump = false;
-                    if (h1.distance < h2.distance) { transform.Translate(-oldyspeed * Mathf.Atan(slope * Mathf.Deg2Rad) * Time.deltaTime + magicNumber, 0f, 0f); speed.x = Mathf.Max(0f, speed.x); speed.y = oldyspeed; }
-                    else { transform.Translate(oldyspeed * Mathf.Atan(slope * Mathf.Deg2Rad) * Time.deltaTime - magicNumber, 0f, 0f); speed.x = Mathf.Min(0f, speed.x); speed.y = oldyspeed; }
-
+                    //canjump = false;
+                    //Debug.Log(slope + ", arc:" + new Vector3(Mathf.Atan((90 - slope) * Mathf.Deg2Rad)*Mathf.Sign(velocity.x), Mathf.Atan(slope * Mathf.Deg2Rad), 0.0f) + ", stuff:" + groundNormal);
+                    float hillScale = speedAdjust.magnitude;//velocity.magnitude;//
+                    speedAdjust += new Vector3(Mathf.Atan((90 - slope) * Mathf.Deg2Rad)*Mathf.Sign(velocity.x), Mathf.Atan(slope * Mathf.Deg2Rad), 0.0f) * hillScale;
                 }
-
-
             }
-
-
         }
+        if(hitCount > 0 && speedAdjust.magnitude > 0.0f) {
+            velocity += speedAdjust;
+            //Debug.Log ("vel:" + velocity);
+        }
+        //transform.position += velocity;
+        //--Raycast all sample code above.--//
+
+        //for (int i = 0; i <= 2; i++)
+        //{
+        //    //check for ground from various points //--modified to match changes to Player --> Origin is now at the center of the player--//
+        //    float xoff = (width / 2) * (i - 1);
+        //    //using overload #12: origin, direction, hitinfo, maxdistance
+        //    if (Physics.Raycast(transform.position + new Vector3(xoff, 0f, 0f), Vector3.down, out hit, Mathf.Abs(height / 2f) + Mathf.Abs(speed.y * Time.deltaTime) + magicNumber) && speed.y <= 0 && hit.transform.gameObject.tag == "Ground")
+        //    {
+        //        //Debug.Log("Hit:" + hit.collider.tag);
+        //        //snap to floor, and enable jumping.
+        //        //if (!hit.collider.isTrigger) { }
+        //        transform.position += new Vector3(0f, -hit.distance + (height / 2f), 0f);
+        //        speed.y = 0f;
+        //        canjump = true;
+        //        isJumping = false;
+        //        floor = true;
+        //    }
+        //}
+
+        //if (floor)
+        //{
+        //    //slopes done here
+        //    RaycastHit h1, h2;
+        //    //raycast down from top left and top right corners of the character
+        //    if (Physics.Raycast(transform.position + new Vector3(-width / 4, (height / 2f), 0f), Vector3.down, out h1) &&
+        //        Physics.Raycast(transform.position + new Vector3(width / 4, (height / 2f), 0f), Vector3.down, out h2) && h1.transform.gameObject.tag == "Ground" && h2.transform.gameObject.tag == "Ground")
+        //    {
+        //        float slope = Vector2.Angle(h2.point - h1.point, Vector2.right);
+        //        //Debug.Log(h1.point.ToString() + " " + h2.point.ToString());
+        //        //Debug.Log(slope);
+        //        if (slope > maxSlope)
+        //        {
+        //            canjump = false;
+        //            if (h1.distance < h2.distance) { transform.Translate(-oldyspeed * Mathf.Atan(slope * Mathf.Deg2Rad) * Time.deltaTime + magicNumber, 0f, 0f); speed.x = Mathf.Max(0f, speed.x); speed.y = oldyspeed; }
+        //            else { transform.Translate(oldyspeed * Mathf.Atan(slope * Mathf.Deg2Rad) * Time.deltaTime - magicNumber, 0f, 0f); speed.x = Mathf.Min(0f, speed.x); speed.y = oldyspeed; }
+        //        }
+        //    }
+        //}
 
         return canjump;
     }
@@ -297,7 +384,7 @@ public class Player : MonoBehaviour
     void healthCheck ()
     {
         GameObject handler = GameObject.FindGameObjectWithTag("gameHandler");
-        if (health <= 0)
+        if (health <= 0 && handler != null)
         {
             handler.GetComponentInChildren<GameHandler>().respawnPlayer(this.gameObject);
         }

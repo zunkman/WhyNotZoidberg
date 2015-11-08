@@ -104,12 +104,12 @@ public class TankGirl : Player
         }
 
         Gravity();
-
+        velocity = speed * Time.deltaTime;
         bool canjump = FloorCollide();
         if (canjump == true && isJumping) { 
         
         }
-
+        if(!canjump) aboutToJump = false;
         if (playerNumber == 1)
         {
             if (Input.GetButton("Jump") && canjump && stun < 0f)
@@ -129,10 +129,10 @@ public class TankGirl : Player
         }
 
 
-        WallCollide();
+        //WallCollide();
 
-        CeilCollide();
-        transform.localPosition += speed * Time.deltaTime;
+        //CeilCollide();
+        transform.localPosition += velocity;//speed * Time.deltaTime;
 
         if (isAttacking) {
             attackPrepare -= Time.deltaTime;
