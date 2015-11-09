@@ -262,7 +262,7 @@ public class Player : MonoBehaviour
                 {
                     //canjump = false;
                     //Debug.Log(slope + ", arc:" + new Vector3(Mathf.Atan((90 - slope) * Mathf.Deg2Rad)*Mathf.Sign(velocity.x), Mathf.Atan(slope * Mathf.Deg2Rad), 0.0f) + ", stuff:" + groundNormal);
-                    float hillScale = speedAdjust.magnitude;//velocity.magnitude;//
+                    float hillScale = speedAdjust.magnitude * 0.5f;//velocity.magnitude;//
                     speedAdjust += new Vector3(Mathf.Atan((90 - slope) * Mathf.Deg2Rad)*Mathf.Sign(velocity.x), Mathf.Atan(slope * Mathf.Deg2Rad), 0.0f) * hillScale;
                 }
             }

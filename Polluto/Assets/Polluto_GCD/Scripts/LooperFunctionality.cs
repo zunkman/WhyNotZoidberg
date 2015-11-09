@@ -69,7 +69,7 @@ public class LooperFunctionality : MonoBehaviour
         looperJumpSpeed = 27.0f; 
         looperGravity = 35.0f;
         looperWidth = 0.95f;
-        looperHeight = 0.95f;
+        looperHeight = 1.9f;
         looperRaycast = 20;
         looperTapGravity = 40.0f;
         looperMaxSlope = 47.0f;
