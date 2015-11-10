@@ -11,6 +11,8 @@ public class BGScroller : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	    if(sceneCamera != null) transform.position = sceneCamera.transform.position * (1.0f - 0.01f * bgScrollSpeed);
+        Vector3 newTransform = sceneCamera.transform.position * (1.0f - 0.01f * bgScrollSpeed);
+        newTransform.z = 0;
+	    if(sceneCamera != null) transform.position = newTransform;
 	}
 }
