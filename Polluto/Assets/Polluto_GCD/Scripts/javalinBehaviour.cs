@@ -58,9 +58,10 @@ public class javalinBehaviour : MonoBehaviour
 
     void OnTriggerEnter(Collider colliderEnter)
     {
-        if (colliderEnter.gameObject.tag == "Enemy")
+        //if (colliderEnter.gameObject.tag == "Enemy")
         {
-            colliderEnter.gameObject.GetComponent<EnemyDamage>().takeDamage(javelinDamage);
+            EnemyDamage hitHP = colliderEnter.gameObject.GetComponentInParent<EnemyDamage>();
+            if(hitHP != null) hitHP.takeDamage(javelinDamage);
         }
     }
 

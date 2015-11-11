@@ -163,26 +163,10 @@ public class Bomb : MonoBehaviour
         GameObject zeePlayer;
         for (int x = 0; x < targets; x++)
         {
-            if (blastTargets[x].tag == "Enemy")
+            if (blastTargets[x].tag == "Enemy" || blastTargets[x].tag == "Ground")
             {
-                // If the target is to the right.
-                if (blastTargets[x].transform.position.x - this.transform.position.x >= explosionHitbox.GetComponent<SphereCollider>().radius / 2)
-                {
-
-                }
-
-                // If the target is to the left.
-                else if (blastTargets[x].transform.position.x - this.transform.position.x <= -explosionHitbox.GetComponent<SphereCollider>().radius / 2)
-                {
-
-                }
-
-                // If the target is on top of the bomb.
-                else
-                {
-
-                }
-                blastTargets[x].GetComponent<EnemyDamage>().takeDamage(damage);
+                EnemyDamage hitHP = blastTargets[x].GetComponentInParent<EnemyDamage>();
+                if(hitHP != null) hitHP.takeDamage(damage);
             }
 
             // If it's a player, we do some crazy ass shit. God it's late.

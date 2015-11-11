@@ -48,7 +48,6 @@ public class TossedGarbage : MonoBehaviour {
             }
             if (other.gameObject.tag == "Ground")
             {
-            
                     Destroy(this.gameObject);
             }
         }

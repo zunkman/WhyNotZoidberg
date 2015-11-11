@@ -396,9 +396,10 @@ public class LooperFunctionality : MonoBehaviour
 
     void OnTriggerEnter(Collider colliderEnter)
     {
-        if (colliderEnter.gameObject.tag == "Enemy")
+        //if (colliderEnter.gameObject.tag == "Enemy")
         {
-            colliderEnter.gameObject.GetComponent<EnemyDamage>().takeDamage(looperDamage);
+            EnemyDamage hitHP = colliderEnter.gameObject.GetComponentInParent<EnemyDamage>();
+            if(hitHP != null) colliderEnter.gameObject.GetComponent<EnemyDamage>().takeDamage(looperDamage);
         }
     }
 

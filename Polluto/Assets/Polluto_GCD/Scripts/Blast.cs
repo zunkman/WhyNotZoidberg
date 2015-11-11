@@ -27,7 +27,7 @@ public class Blast : MonoBehaviour
     // Checks if we collided with a possible target, if so we store them in blastTargets
     void OnTriggerEnter (Collider other)
     {
-        if (other.gameObject.tag == "Player" || other.gameObject.tag == "Enemy")
+        if (other.gameObject.tag == "Player" || other.gameObject.tag == "Enemy" || other.gameObject.tag == "Ground")
         {
             haveTargets = true;
             bombTargets[targetNumber] = other.gameObject;

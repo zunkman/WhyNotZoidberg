@@ -34,7 +34,7 @@ public class EnemyDamage : MonoBehaviour
 
         health -= damage;
         //--edit by CT to destroy objects with no health left when hit--//
-        if(health < 0 && autoDestruct == true) {
+        if(health <= 0 && autoDestruct == true) {
             selfDestruct();
         }
         //----//
