@@ -12,6 +12,7 @@ public class BlastedPlayer : MonoBehaviour
     private Rigidbody playerRigid;
     private bool begun;
     private int playerNumber;
+    private BoxCollider ourCollider;
     // Use this for initialization
     void Start ()
     {
@@ -27,19 +28,21 @@ public class BlastedPlayer : MonoBehaviour
         }
 
         playerRigid = this.GetComponent<Rigidbody>();
+
+        ourCollider = this.GetComponent<BoxCollider>();
+
+        ourCollider.size = new Vector3(player.GetComponent<Player>().width, player.GetComponent<Player>().height, 1);
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        timePassed -= Time.deltaTime;
+        timePassed += Time.deltaTime;
         if (begun)
         {
             applyInput(playerInput());
             player.transform.position = this.transform.position;
         }
-
-        collisionCheck();
 	}
     
     // This is called by bomb after it's given this gameobject instance it's parameters.
@@ -50,22 +53,9 @@ public class BlastedPlayer : MonoBehaviour
     }
 
     // This will check if we've collided with something. If so, we disable this controller, and reenable the player controller.
-    void collisionCheck ()
+    void OnTriggerEnter (Collider other)
     {
-        RaycastHit hit;
-
-        if (Physics.Raycast(player.transform.position, Vector3.right, out hit, 1f) || Physics.Raycast(player.transform.position, Vector3.left, out hit, 1f) || Physics.Raycast(player.transform.position, Vector3.up, out hit, 1f))
-        {
-            if (hit.transform.gameObject.tag == "Ground")
-            {
-                playerRigid.velocity = new Vector3(0, 0.5f, 0);
-                player.GetComponent<Player>().enabled = true;
-                player.transform.position = this.transform.position;
-                Destroy(this.gameObject);
-            }
-        }
-
-        else if (timePassed <= 0 & Physics.Raycast(player.transform.position, Vector3.down, out hit, 1f))
+        if (other.gameObject.tag == "Ground" && timePassed >= 1f)
         {
             playerRigid.velocity = new Vector3(0, 0.5f, 0);
             player.GetComponent<Player>().enabled = true;

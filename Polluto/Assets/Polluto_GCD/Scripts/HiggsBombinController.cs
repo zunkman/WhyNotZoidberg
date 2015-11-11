@@ -9,6 +9,7 @@ This script will be used for controlling the Higgs Bombin' character, and handli
 public class HiggsBombinController : MonoBehaviour
 {
     [SerializeField] private GameObject player;
+    [SerializeField] private GameObject UI;
     [SerializeField] private GameObject bomb;
     [SerializeField] private GameObject attackRange;
     public float attackDamage;
@@ -72,6 +73,8 @@ public class HiggsBombinController : MonoBehaviour
 
         attackTimer = attackCooldown;
         specialTimer = specialCooldown;
+
+        UI = GameObject.FindGameObjectWithTag("UI");
 	}
 	
 	// Update is called once per frame
@@ -139,6 +142,7 @@ public class HiggsBombinController : MonoBehaviour
             {
                 canAttack = false;
                 attack();
+                UI.GetComponent<PlayerUI>().startBasicCooldown(playerNumber, attackCooldown);
                 attackTimer = 0;
             }
 
@@ -146,6 +150,7 @@ public class HiggsBombinController : MonoBehaviour
             {
                 canSpecial = false;
                 specialMove();
+                UI.GetComponent<PlayerUI>().startSpecialCooldown(playerNumber, specialCooldown);
                 specialTimer = 0;
             }
         }

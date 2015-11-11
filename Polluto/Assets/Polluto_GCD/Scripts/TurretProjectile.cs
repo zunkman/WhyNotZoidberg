@@ -6,7 +6,7 @@ This script will handle turret projectiles, specifically dealing damage.
 */
 public class TurretProjectile : MonoBehaviour
 {
-    private float ourDamage;
+    [SerializeField] private float ourDamage;
 
 	// Use this for initialization
 	void Start ()
@@ -40,14 +40,15 @@ public class TurretProjectile : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             other.gameObject.GetComponentInParent<Player>().health -= ourDamage;
+            
             Destroy(this.gameObject);
-            Debug.Log("Hit a player.");
+
         }
 
         else if (other.gameObject.tag == "Ground")
         {
             Destroy(this.gameObject);
-            Debug.Log("Hit the ground.");
+            
         }
 
         else
