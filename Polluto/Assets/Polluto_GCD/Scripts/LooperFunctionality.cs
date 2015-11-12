@@ -181,6 +181,7 @@ public class LooperFunctionality : MonoBehaviour
             looperShadowInstance = Instantiate(looperShadow, this.gameObject.transform.position, Quaternion.identity) as GameObject;
             shadowAlive = true;
             shadowCoolDown = shadownTimer;
+            if(this.GetComponentInParent<Player>().UIScript) this.GetComponentInParent<Player>().UIScript.startSpecialCooldown(playerNumber, shadowCoolDown);
             canSpawnShadow = false;
         }
         else if(shadowAlive == true && canSpawnShadow == true)
@@ -195,6 +196,7 @@ public class LooperFunctionality : MonoBehaviour
             Destroy(looperShadowInstance); 
             shadowAlive = false;
             shadowCoolDown = shadownTimer;
+            if(this.GetComponentInParent<Player>().UIScript) this.GetComponentInParent<Player>().UIScript.startSpecialCooldown(playerNumber, shadowCoolDown);
             canSpawnShadow = false;
         }
     }
@@ -389,6 +391,8 @@ public class LooperFunctionality : MonoBehaviour
 
     IEnumerator attackReset(float time)
     {
+        Debug.Log("AReset:" + time);
+        if(this.GetComponentInParent<Player>().UIScript) this.GetComponentInParent<Player>().UIScript.startBasicCooldown(playerNumber, time);
         yield return new WaitForSeconds(time);
         attackBox.enabled = false;
     }

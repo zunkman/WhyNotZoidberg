@@ -24,7 +24,7 @@ public class Polluto_SFX : MonoBehaviour {
 			}
             Polluto_SFX.playSound ("levelload");
 		} else {
-			Debug.Log ("wasTrue");
+			Debug.Log ("SFX_wasTrue");
             if (this.transform.parent)
             {
                 Destroy (this.transform.parent.gameObject);

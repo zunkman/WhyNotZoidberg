@@ -31,9 +31,9 @@ public class Player : MonoBehaviour
 
     // Edit by Joe
     [SerializeField] public float health, baseHealth;
-    //public float health;
-    //public float damage;
 
+    [SerializeField] public PlayerUI UIScript;
+    
     //override any of these functions using
     //protected override void Example () {
     ////Debug.Log("yo :)");
@@ -46,6 +46,7 @@ public class Player : MonoBehaviour
     protected virtual void Start()
     {
         speed = Vector3.zero;
+        UIScript = FindObjectOfType<PlayerUI>();//check if this is null when accessing, some scenes may not have it
     }
 
 
@@ -212,7 +213,8 @@ public class Player : MonoBehaviour
 				    j++;
 					
                     if(hit.collider.isTrigger == false) {
-					    if(hit.collider.gameObject.tag.Contains("Ground") || hit.collider.gameObject.tag.Contains("Wall"))
+					    if(hit.collider.gameObject.tag.Contains("Ground") || hit.collider.gameObject.tag.Contains("Wall")
+                            || (hit.collider.gameObject.tag.Contains("Enemy") && i != 2))
                         {
 						    hitCount++;
                             //only consider the nearest obstruction, or the one that will push the player back the most
@@ -262,8 +264,8 @@ public class Player : MonoBehaviour
                 {
                     //canjump = false;
                     //Debug.Log(slope + ", arc:" + new Vector3(Mathf.Atan((90 - slope) * Mathf.Deg2Rad)*Mathf.Sign(velocity.x), Mathf.Atan(slope * Mathf.Deg2Rad), 0.0f) + ", stuff:" + groundNormal);
-                    float hillScale = speedAdjust.magnitude * 0.5f;//velocity.magnitude;//
-                    speedAdjust += new Vector3(Mathf.Atan((90 - slope) * Mathf.Deg2Rad)*Mathf.Sign(velocity.x), Mathf.Atan(slope * Mathf.Deg2Rad), 0.0f) * hillScale;
+                    float hillScale = velocity.magnitude - (velocity + speedAdjust).magnitude;//velocity.magnitude;//speedAdjust.magnitude
+                    if(hillScale > 0) speedAdjust += new Vector3(Mathf.Atan((90 - slope) * Mathf.Deg2Rad)*Mathf.Sign(velocity.x), Mathf.Atan(slope * Mathf.Deg2Rad), 0.0f) * hillScale;
                 }
             }
         }
@@ -271,47 +273,6 @@ public class Player : MonoBehaviour
             velocity += speedAdjust;
             //Debug.Log ("vel:" + velocity);
         }
-        //transform.position += velocity;
-        //--Raycast all sample code above.--//
-
-        //for (int i = 0; i <= 2; i++)
-        //{
-        //    //check for ground from various points //--modified to match changes to Player --> Origin is now at the center of the player--//
-        //    float xoff = (width / 2) * (i - 1);
-        //    //using overload #12: origin, direction, hitinfo, maxdistance
-        //    if (Physics.Raycast(transform.position + new Vector3(xoff, 0f, 0f), Vector3.down, out hit, Mathf.Abs(height / 2f) + Mathf.Abs(speed.y * Time.deltaTime) + magicNumber) && speed.y <= 0 && hit.transform.gameObject.tag == "Ground")
-        //    {
-        //        //Debug.Log("Hit:" + hit.collider.tag);
-        //        //snap to floor, and enable jumping.
-        //        //if (!hit.collider.isTrigger) { }
-        //        transform.position += new Vector3(0f, -hit.distance + (height / 2f), 0f);
-        //        speed.y = 0f;
-        //        canjump = true;
-        //        isJumping = false;
-        //        floor = true;
-        //    }
-        //}
-
-        //if (floor)
-        //{
-        //    //slopes done here
-        //    RaycastHit h1, h2;
-        //    //raycast down from top left and top right corners of the character
-        //    if (Physics.Raycast(transform.position + new Vector3(-width / 4, (height / 2f), 0f), Vector3.down, out h1) &&
-        //        Physics.Raycast(transform.position + new Vector3(width / 4, (height / 2f), 0f), Vector3.down, out h2) && h1.transform.gameObject.tag == "Ground" && h2.transform.gameObject.tag == "Ground")
-        //    {
-        //        float slope = Vector2.Angle(h2.point - h1.point, Vector2.right);
-        //        //Debug.Log(h1.point.ToString() + " " + h2.point.ToString());
-        //        //Debug.Log(slope);
-        //        if (slope > maxSlope)
-        //        {
-        //            canjump = false;
-        //            if (h1.distance < h2.distance) { transform.Translate(-oldyspeed * Mathf.Atan(slope * Mathf.Deg2Rad) * Time.deltaTime + magicNumber, 0f, 0f); speed.x = Mathf.Max(0f, speed.x); speed.y = oldyspeed; }
-        //            else { transform.Translate(oldyspeed * Mathf.Atan(slope * Mathf.Deg2Rad) * Time.deltaTime - magicNumber, 0f, 0f); speed.x = Mathf.Min(0f, speed.x); speed.y = oldyspeed; }
-        //        }
-        //    }
-        //}
-
         return canjump;
     }
 

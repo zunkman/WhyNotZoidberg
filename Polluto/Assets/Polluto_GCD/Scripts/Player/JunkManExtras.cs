@@ -53,11 +53,12 @@ public class JunkManExtras : MonoBehaviour
             if (attacking[i] >= 0.16f && attackTimers[i] >= attackCooldowns[i])
             {
                 attackTimers[i] = 0.0f;//reset timer since we're firing... probably
+                if(i==1)if(playerScript.UIScript) playerScript.UIScript.startSpecialCooldown(playerScript.playerNumber, attackCooldowns[i]);
                 if (!spawnable) continue;
                 GameObject spawned = Instantiate(spawnable, this.transform.position + new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(0.0f, 1.0f), 0.0f), this.transform.rotation) as GameObject;
                 if(playerScript.inputDirection != Vector2.zero) spawned.GetComponent<Rigidbody>().velocity = playerScript.inputDirection * spawnableSpeed[i];
                 else spawned.GetComponent<Rigidbody>().velocity = spawned.transform.right * spawnableSpeed[i];//shoot facing if no input vector
-                Debug.Log(spawned.transform.forward);
+                //Debug.Log(spawned.transform.forward);
             }
         }
 

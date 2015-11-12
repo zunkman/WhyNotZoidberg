@@ -35,6 +35,7 @@ public class TankGirl : Player
 
     protected override void Start()
     {
+        base.Start();
         attack = GetComponentInChildren<TankgirlAttack>();
         speed = Vector3.zero;
         jumptimer = jumpDelay;
@@ -127,10 +128,7 @@ public class TankGirl : Player
                 Jump();
             }
         }
-
-
         //WallCollide();
-
         //CeilCollide();
         transform.localPosition += velocity;//speed * Time.deltaTime;
 
@@ -158,9 +156,6 @@ public class TankGirl : Player
         
     }
 
-
-    
-
     void Attack() {
         if (!charging)
         {
@@ -175,6 +170,7 @@ public class TankGirl : Player
             isAttacking = true;
             charging = false;
         }
+        UIScript.startBasicCooldown(playerNumber, stun);
         //speed.x = 0;
     }
     void Charge() {
@@ -188,6 +184,7 @@ public class TankGirl : Player
             if (Mathf.Sign(Input.GetAxis("Horizontal")) != chargeDir) {
                 charging = false;
                 stun = chargeWindDown;
+                if(UIScript) UIScript.startSpecialCooldown(playerNumber, stun);
             }
         }
 
@@ -197,6 +194,7 @@ public class TankGirl : Player
             {
                 charging = false;
                 stun = chargeWindDown;
+                if(UIScript) UIScript.startSpecialCooldown(playerNumber, stun);
             }
         }
     }

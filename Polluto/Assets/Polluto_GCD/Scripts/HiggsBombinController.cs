@@ -142,7 +142,8 @@ public class HiggsBombinController : MonoBehaviour
             {
                 canAttack = false;
                 attack();
-                UI.GetComponent<PlayerUI>().startBasicCooldown(playerNumber, attackCooldown);
+                if(player.GetComponent<Player>().UIScript) player.GetComponent<Player>().UIScript.startBasicCooldown(playerNumber, attackCooldown);
+                //UI.GetComponent<PlayerUI>().startBasicCooldown(playerNumber, attackCooldown);
                 attackTimer = 0;
             }
 
@@ -150,7 +151,8 @@ public class HiggsBombinController : MonoBehaviour
             {
                 canSpecial = false;
                 specialMove();
-                UI.GetComponent<PlayerUI>().startSpecialCooldown(playerNumber, specialCooldown);
+                if(player.GetComponent<Player>().UIScript) player.GetComponent<Player>().UIScript.startSpecialCooldown(playerNumber, specialCooldown);
+                //UI.GetComponent<PlayerUI>().startSpecialCooldown(playerNumber, specialCooldown);
                 specialTimer = 0;
             }
         }
@@ -161,6 +163,7 @@ public class HiggsBombinController : MonoBehaviour
             {
                 canAttack = false;
                 attack();
+                if(player.GetComponent<Player>().UIScript) player.GetComponent<Player>().UIScript.startBasicCooldown(playerNumber, attackCooldown);
                 attackTimer = 0;
             }
 
@@ -168,6 +171,7 @@ public class HiggsBombinController : MonoBehaviour
             {
                 canSpecial = false;
                 specialMove();
+                if(player.GetComponent<Player>().UIScript) player.GetComponent<Player>().UIScript.startSpecialCooldown(playerNumber, specialCooldown);
                 specialTimer = 0;
             }
         }
