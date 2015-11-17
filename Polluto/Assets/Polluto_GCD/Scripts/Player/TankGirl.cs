@@ -64,6 +64,10 @@ public class TankGirl : Player
             {
                 Attack();
             }
+            if (Input.GetButton("Special Attack 2") && stun < 0f)
+            {
+                Charge();
+            }
 
         } 
         if (inputDirection != Vector2.zero) inputDirection.Normalize();
@@ -76,7 +80,8 @@ public class TankGirl : Player
             {
                 jumptimer = jumpDelay;
                 speed.y = jumpspeed;
-                speed.x = (horspeed + JumpBonusSpeed) * Input.GetAxis("Horizontal");
+               speed.x = (horspeed + JumpBonusSpeed);
+               speed.x *= playerNumber == 1 ? Input.GetAxis("Horizontal") : Input.GetAxis("Horizontal 2");
                 if (charging) {
                     speed.x *= chargeMult;
                 }
