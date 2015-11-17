@@ -92,7 +92,9 @@
     <Compile Include="Assets\Polluto_GCD\Scripts\Global.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\HiggsAttack.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\HiggsBombinController.cs" />
+    <Compile Include="Assets\Polluto_GCD\Scripts\Level\BGScroller.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\Level\LevelDoor.cs" />
+    <Compile Include="Assets\Polluto_GCD\Scripts\Level\LevelScript_Subterfuge.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\Level\MovingPlatformScript.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\Level\Polluto_SFX.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\LooperFunctionality.cs" />

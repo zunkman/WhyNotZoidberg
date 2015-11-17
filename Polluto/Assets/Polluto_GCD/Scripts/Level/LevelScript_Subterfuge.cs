@@ -16,6 +16,10 @@ public class LevelScript_Subterfuge : MonoBehaviour {
     [SerializeField]private GameObject missionText;
     private GameObject elevator;
 
+    [SerializeField]public GameObject targetObject;
+    [SerializeField]public GameObject playerOne;
+    [SerializeField]public GameObject compasObject;
+
     private GameObject switchMissionStartHitBox;
 
     public Vector3[] switchArray;
@@ -39,8 +43,10 @@ public class LevelScript_Subterfuge : MonoBehaviour {
     //--Reference to GameHandler--//
     [SerializeField]private GameHandler gameHandlerScript;
 
-	// Use this for initialization
-	void Start () {
+    
+
+    // Use this for initialization
+    void Start () {
         gameHandlerScript = FindObjectOfType<GameHandler>();
         
         playerSpawnOne = GameObject.FindGameObjectWithTag("firstPlayerSpawn");
@@ -62,9 +68,6 @@ public class LevelScript_Subterfuge : MonoBehaviour {
 
         switchCompasTargets = new GameObject[2];
 
-        /* Move to subterfuge mission script later */
-        /* subterfuge start speficiers */
-        //if (selectedLevelName == "Subterfuge")
         {
             switchMission = false;
             switchArray = new Vector3[7];
@@ -75,26 +78,45 @@ public class LevelScript_Subterfuge : MonoBehaviour {
 
             subterfugeMissionStart();
         }
-	}
-	
-	// Update is called once per frame
-	void Update () {
+
+        if (compasObject == null)
+        {
+            compasObject = GameObject.FindGameObjectWithTag("compass");
+        }
+
+    }
+
+    void LateUpdate()
+    {
+        if (playerOne == null)
+        {
+            playerOne = gameHandlerScript.getPlayerOne();
+        }
+
+        if (compasObject != null)
+        {
+            setCompas();
+        }
+    }
+
+    // Update is called once per frame
+    void Update () {
 	
 	}
 
-    /* Move to subterfuge mission script later */
-    //void addSpecialCollisionScript()
-    //{
-    //    if(numPlayers == 1)
-    //    {
-    //        playerOneInstatiatedObject.AddComponent<subterfugeSpecialCollision>();
-    //    }
-    //    else if (numPlayers == 2)
-    //    {
-    //        playerOneInstatiatedObject.AddComponent<subterfugeSpecialCollision>();
-    //        playerTwoInstatiatedObject.AddComponent<subterfugeSpecialCollision>();
-    //    }
-    //}
+    /* Set the compas target */
+    void setCompas()
+    {
+        Vector3 compassRotation = (targetObject.transform.position - playerOne.transform.position).normalized;
+        float angle = Mathf.Atan2(compassRotation.y, compassRotation.x) * Mathf.Rad2Deg;
+        compasObject.transform.rotation = Quaternion.AngleAxis(angle + 90.0f, Vector3.forward);
+    }
+
+    /* Sets a new target for the compass */
+    public void setNewCompassTarget(GameObject newTarget)
+    {
+        targetObject = newTarget;
+    }
 
     /* Move to subterfuge mission script later */
     void subterfugeMissionStart()
@@ -126,11 +148,11 @@ public class LevelScript_Subterfuge : MonoBehaviour {
             {
                 if(switchesOn == 0)
                 {
-                    if(gameHandlerScript != null)gameHandlerScript.setNewCompassTarget(switchCompasTargets[0]);
+                    setNewCompassTarget(switchCompasTargets[0]);
                 }
                 else
                 {
-                    if(gameHandlerScript != null)gameHandlerScript.setNewCompassTarget(switchCompasTargets[1]);
+                    setNewCompassTarget(switchCompasTargets[1]);
                 }
 
                 missionText.GetComponent<Text>().text = "Find power breakers and turn them on [" + switchesOn + "/2]";
@@ -158,7 +180,7 @@ public class LevelScript_Subterfuge : MonoBehaviour {
         {
             string newMission = "Escape!";
             endLevelDoor.SetActive(true);
-            if(gameHandlerScript != null)gameHandlerScript.setNewCompassTarget(endLevelDoor);
+            setNewCompassTarget(endLevelDoor);
             setMissionText(newMission);
             StartCoroutine(missionTextClear(3.0f));
         }

@@ -39,7 +39,7 @@ public class GameHandler : MonoBehaviour
 
     /* Possible remove this later */
     public GameObject targetObject;
-    public GameObject compasObject;
+    
 
 
 
@@ -106,13 +106,7 @@ public class GameHandler : MonoBehaviour
         }
     }
 
-    void LateUpdate()
-    {
-        if (compasObject != null)
-        {
-            setCompas();
-        }  
-    }
+    
 
     /* Called each frame to check if a player wanted to pause the game */
     void pauseFunction()
@@ -166,18 +160,9 @@ public class GameHandler : MonoBehaviour
         }
     }
 
-    void setCompas()
-    {
-        Vector3 compassRotation = (targetObject.transform.position - playerOne.transform.position).normalized;
-        float angle = Mathf.Atan2(compassRotation.y, compassRotation.x) * Mathf.Rad2Deg;
-        compasObject.transform.rotation = Quaternion.AngleAxis(angle + 90.0f, Vector3.forward);
-    }
+   
 
-    /* Sets a new target for the compass */
-    public void setNewCompassTarget(GameObject newTarget)
-    {
-        targetObject = newTarget;
-    }
+  
 
     public GameObject getPlayerOne()
     {
@@ -258,11 +243,6 @@ public class GameHandler : MonoBehaviour
             if (pauseMenu == null)
             {
                 pauseMenu = GameObject.FindGameObjectWithTag("pauseMenu");
-            }
-
-            if(compasObject == null)
-            {
-                compasObject = GameObject.FindGameObjectWithTag("compass");
             }
 
             if (targetObject == null)

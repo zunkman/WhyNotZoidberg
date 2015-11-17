@@ -37,6 +37,7 @@ public class LooperFunctionality : MonoBehaviour
     [SerializeField]private GameObject parentObject;
 
     [SerializeField]private BoxCollider attackBox;
+    [SerializeField]private SpriteRenderer attackSprite;
 
     private int buttonTaps;
     private int playerNumber;
@@ -109,27 +110,20 @@ public class LooperFunctionality : MonoBehaviour
     Looper Stats setup
     */
         attackBox = this.gameObject.GetComponent<BoxCollider>() as BoxCollider;
+        attackSprite = this.gameObject.GetComponent<SpriteRenderer>() as SpriteRenderer;
        
         attackBox.enabled = false;
+        attackSprite.enabled = false;
+
         attackCharged = 3.0f;
 
         shadowAlive = false;
         canSpawnShadow = true;
-        //find a way to get the javalin object and spawn it
-
     }
 
     // Update is called once per frame
     void Update()
-    {
-        /*
-        Currently the swap mechanic will work as such. The player will go to change positions but will place a marker which will
-        change the current shadow position to the next in line then the player will swap places witht he next shadow
-        making this a super duper hard mechanic to use, but will be really fun a rewarding when you get it right
-        */
-
-        //looperHealth = this.gameObject.GetComponentInParent<Player>().health;
-        
+    {        
         //Make a timer and put the placeing marker function on a timer for like four seconds
 
         Vector3 directionFacing = this.GetComponentInParent<Player>().speed;
@@ -147,7 +141,6 @@ public class LooperFunctionality : MonoBehaviour
         resetTimer();
         abilities();
         looperSpecialActive();
-        //checkPlayerHealth(this.looperHealth);
     }
 
     void looperSpecialActive()
@@ -201,6 +194,7 @@ public class LooperFunctionality : MonoBehaviour
         }
     }
 
+    /* Cooldown for the placing/swapping with a shadow */
     void shadowCoolDownTimer()
     {
         if (shadowCoolDown > 0.0f)
@@ -232,24 +226,8 @@ public class LooperFunctionality : MonoBehaviour
             buttonTaps = 0;
         }
     }
-    
-    /* Checks the current health and if it's lower than 0 or is zero 
-    respawn the player */
-    /*void checkPlayerHealth(float healthToCheck)
-    {
-        if (healthToCheck < 0.0f)
-        {
-            
-            //Debug.Log(this.parentObject);
-            gameHandlerObject.GetComponent<GameHandler>().respawnPlayer(this.gameObject);
-            this.looperHealth = looperFullHealth;
-            //this.looperHealth = this.looperFullHealth;
-            //this.gameObject.GetComponentInParent<Player>().health = looperFullHealth;
-        }
-
-    }*/
-    
-
+   
+    /* Loopers basic attack and charge attack */
     void Attack()
     {
         if (this.GetComponentInParent<Player>().playerNumber == 1)
@@ -266,7 +244,7 @@ public class LooperFunctionality : MonoBehaviour
                 ChargeAttack();
             }
 
-            if (Input.GetKey(KeyCode.W))
+            /*if (Input.GetKey(KeyCode.W))
             {
                 this.gameObject.transform.localPosition = new Vector3(0.0f, 0.5f, 0.0f);
             }
@@ -277,7 +255,7 @@ public class LooperFunctionality : MonoBehaviour
             else
             {
                 this.gameObject.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
-            }
+            }*/
 
 
             if (chargeAttackTime > 0.0f && Input.GetAxis("Basic Attack") < 0.1f)
@@ -290,10 +268,12 @@ public class LooperFunctionality : MonoBehaviour
                     if (dir.x > 0)
                     {
                         attackBox.enabled = true;
+                        attackSprite.enabled = true;
                     }
                     else
                     {
                         attackBox.enabled = true;
+                        attackSprite.enabled = true;
                     }  
                     StartCoroutine(attackReset(0.2f));
                     chargeAttackTime = 0;
@@ -322,7 +302,7 @@ public class LooperFunctionality : MonoBehaviour
                 ChargeAttack();
             }
 
-            if (Input.GetKey(KeyCode.W))
+            /*if (Input.GetKey(KeyCode.W))
             {
                 this.gameObject.transform.localPosition = new Vector3(0.0f, 0.5f, 0.0f);
             }
@@ -333,7 +313,7 @@ public class LooperFunctionality : MonoBehaviour
             else
             {
                 this.gameObject.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
-            }
+            }*/
 
             // On key up, and the key was down first
             if (chargeAttackTime > 0.0f && Input.GetAxis("Basic Attack 2") < 0.1f)
@@ -346,10 +326,12 @@ public class LooperFunctionality : MonoBehaviour
                     if (dir.x > 0)
                     {
                         attackBox.enabled = true;
+                        attackSprite.enabled = true;
                     }
                     else
                     {
                         attackBox.enabled = true;
+                        attackSprite.enabled = true;
                     }  
                     StartCoroutine(attackReset(0.2f));
                     chargeAttackTime = 0;
@@ -367,6 +349,7 @@ public class LooperFunctionality : MonoBehaviour
         } 
     }
 
+    /* Spawn the javalin */
     void ChargeAttack()
     {
         Vector3 javelinStart = this.gameObject.transform.position;
@@ -375,7 +358,7 @@ public class LooperFunctionality : MonoBehaviour
         Instantiate(javelin, javelinStart, Quaternion.identity);
     }
 
-
+    /* Cooldown timer for loopers shadow */
     void resetTimer()
     {
         if (markerPlacementTimer > 0.0f)
@@ -395,6 +378,7 @@ public class LooperFunctionality : MonoBehaviour
         if(this.GetComponentInParent<Player>().UIScript) this.GetComponentInParent<Player>().UIScript.startBasicCooldown(playerNumber, time);
         yield return new WaitForSeconds(time);
         attackBox.enabled = false;
+        attackSprite.enabled = false;
     }
 
 
