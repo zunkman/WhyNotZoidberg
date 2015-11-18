@@ -24,18 +24,18 @@ public class TossedGarbage : MonoBehaviour {
         if(isWeapon || GetComponent<Rigidbody>().velocity.magnitude > 1.0f) {
             //Debug.Log("Trigger Overlap.");
             EnemyDamage impactedDamageScript = null;
-            if(other.GetComponent<EnemyDamage>())
+            if(other.GetComponentInChildren<EnemyDamage>())
             {
                 //Debug.Log("Has Script.");
-                impactedDamageScript = other.GetComponent<EnemyDamage>();
+                impactedDamageScript = other.GetComponentInChildren<EnemyDamage>();
             
             } else if(other.transform.parent)
             {
                 //Debug.Log("Has Parent.");
-                if (other.transform.parent.GetComponent<EnemyDamage>())
+                if (other.transform.parent.GetComponentInChildren<EnemyDamage>())
                 {
                     //Debug.Log("Has Child Script.");
-                    impactedDamageScript = other.transform.parent.GetComponent<EnemyDamage>();
+                    impactedDamageScript = other.transform.parent.GetComponentInChildren<EnemyDamage>();
                 } else
                 {
                     //Debug.Log("No Child script.");
@@ -43,7 +43,7 @@ public class TossedGarbage : MonoBehaviour {
             }
             if (impactedDamageScript)
             {
-                impactedDamageScript.takeDamage(1.0f + GetComponent<Rigidbody>().velocity.magnitude);//deals more damage if thrown faster
+                impactedDamageScript.takeDamage(1.0f + GetComponentInChildren<Rigidbody>().velocity.magnitude);//deals more damage if thrown faster
                 Destroy(this);
             }
             if (other.gameObject.tag == "Ground")
