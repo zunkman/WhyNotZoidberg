@@ -25,7 +25,7 @@ public class Checkpoint : MonoBehaviour
 
     void OnTriggerEnter (Collider other)
     {
-        if (other.gameObject.tag == "Player")
+        if (!active && other.gameObject.tag == "Player")
         {
             active = true;
 
