@@ -19,7 +19,7 @@ public class GameHandler : MonoBehaviour
     [SerializeField]private GameObject playerOne;
     [SerializeField]private GameObject playerTwo;
 
-    [SerializeField]private GameObject playerSpawnOne;
+    public GameObject playerSpawnOne;
     //[SerializeField]private GameObject playerSpawnTwo;
 
     /* All of the player gameobjects */
