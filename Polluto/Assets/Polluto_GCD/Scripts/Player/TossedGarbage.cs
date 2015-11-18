@@ -3,7 +3,8 @@ using System.Collections;
 
 public class TossedGarbage : MonoBehaviour {
 
-    [SerializeField] private bool isWeapon = false;
+    [SerializeField] public bool isWeapon = false;
+    [SerializeField] private float baseDamage = 10.0f;
 
 	// Use this for initialization
 	void Start () {
@@ -20,7 +21,7 @@ public class TossedGarbage : MonoBehaviour {
     }
 
     void hit(Collider other) {
-                //only do this if it is considered a weapon.
+        //only do this if it is considered a weapon.
         if(isWeapon || GetComponent<Rigidbody>().velocity.magnitude > 1.0f) {
             //Debug.Log("Trigger Overlap.");
             EnemyDamage impactedDamageScript = null;
@@ -43,14 +44,16 @@ public class TossedGarbage : MonoBehaviour {
             }
             if (impactedDamageScript)
             {
-                impactedDamageScript.takeDamage(1.0f + GetComponentInChildren<Rigidbody>().velocity.magnitude);//deals more damage if thrown faster
-                Destroy(this);
+                impactedDamageScript.takeDamage(baseDamage + GetComponentInChildren<Rigidbody>().velocity.magnitude);//deals more damage if thrown faster
+                isWeapon = false;
+                baseDamage *= 0.5f; if(baseDamage < 1.0f) baseDamage = 1.0f;
+                //Destroy(this);
             }
             if (other.gameObject.tag == "Ground")
             {
                     Destroy(this.gameObject);
             }
-        }
+        } else { Debug.Log("Velocity:" + GetComponent<Rigidbody>().velocity.magnitude); }
     }
     void OnTriggerEnter (Collider other)
     {

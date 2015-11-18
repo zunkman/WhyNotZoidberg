@@ -28,6 +28,7 @@ public class Telekinesis_Grabber : MonoBehaviour {
                         if(CollectedTrash[i] == null) continue;//nulls will be cleaned up on their own later
                         //Vector3 offset = this.transform.position - CollectedTrash[i].transform.position;
 				        CollectedTrash[i].GetComponent<Rigidbody>().velocity = CollectedTrash[i].GetComponent<Rigidbody>().velocity + inputDirection * Time.deltaTime * 10.0f;
+                        CollectedTrash[i].isWeapon = true;
 			        }
                 } else {
                     //if there's no movement simply collect
