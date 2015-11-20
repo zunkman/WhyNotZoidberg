@@ -19,6 +19,7 @@ public class AI_MeleeAttack : MonoBehaviour {
     {
         if (other.gameObject.tag == "Player")
         {
+            Polluto_SFX.playSound ("zap");
             other.gameObject.GetComponentInParent<Player>().health -= attackDamage;
         }
 

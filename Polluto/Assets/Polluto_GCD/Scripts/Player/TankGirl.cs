@@ -44,6 +44,7 @@ public class TankGirl : Player
 
     protected override void Update()
     {
+        healthCheck();
         if (playerNumber == 1)
         {
             inputDirection.x = Input.GetAxis("Horizontal");
@@ -201,6 +202,15 @@ public class TankGirl : Player
                 stun = chargeWindDown;
                 if(UIScript) UIScript.startSpecialCooldown(playerNumber, stun);
             }
+        }
+    }
+
+    void healthCheck()
+    {
+        GameObject handler = GameObject.FindGameObjectWithTag("gameHandler");
+        if (health <= 0 && handler != null)
+        {
+            handler.GetComponentInChildren<GameHandler>().respawnPlayer(this.gameObject);
         }
     }
 }

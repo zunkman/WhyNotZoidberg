@@ -32,31 +32,32 @@ public class Polluto_SFX : MonoBehaviour {
 			Destroy (this.gameObject);
 		}
 	}
-
+    //Polluto_SFX.playSound ("levelload");
 	public static void playSound(string soundID){
 	int SID = 0;
 		switch(soundID){
-		case "pickup":
-			SID = 0;
-			break;
-		case "newlevel":
 		case "levelload":
-        case "testmusic":
-			SID = 1;
+		case "newlevel":
+			SID = 0;//sfx2a - Rising
 			break;
-		case "hitwall":
-		case "hitbarrier":
         case "teleport":
-			SID = 2;
+			SID = 1;//sfx3a - Volley Up
+			break;
+        case "zap":
+			SID = 2;//sfx4a - BugZapper
 			break;
 		case "shoot":
-			SID = 3;
+		case "hitwall":
+		case "hitbarrier":
+        case "hit":
+			SID = 3;//damage - Soft Hit
 			break;
 		case "bombDeath":
-			SID = 4;
+		case "pickup":
+            SID = 4;//health up - Muffled tone
 			break;
 		case "bossDeath":
-			SID = 5;
+			SID = 5;//menu ding - DOS Tone
 			break;
 		case "playerdeath":
 		case "playerDeath":
