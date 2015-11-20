@@ -84,6 +84,7 @@
     <Compile Include="Assets\Polluto_GCD\Scripts\DefaultPlayerMovement.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\DestructableBlocks.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\Destructible.cs" />
+    <Compile Include="Assets\Polluto_GCD\Scripts\Effects\EffectBlinkOff.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\Effects\EffectTimer.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\ElevatorScript.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\EndLevel.cs" />
@@ -93,10 +94,12 @@
     <Compile Include="Assets\Polluto_GCD\Scripts\HiggsAttack.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\HiggsBombinController.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\Level\BGScroller.cs" />
+    <Compile Include="Assets\Polluto_GCD\Scripts\Level\Checkpoint.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\Level\LevelDoor.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\Level\LevelScript_Subterfuge.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\Level\MovingPlatformScript.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\Level\Polluto_SFX.cs" />
+    <Compile Include="Assets\Polluto_GCD\Scripts\Level\TankGirlWall.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\LooperFunctionality.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\LooperInputs.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\MainMenuScript.cs" />
@@ -114,6 +117,8 @@
     <Compile Include="Assets\Polluto_GCD\Scripts\Restarter.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\Turret.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\TurretProjectile.cs" />
+    <Compile Include="Assets\Polluto_GCD\Scripts\Units\AI_MeleeAttack.cs" />
+    <Compile Include="Assets\Polluto_GCD\Scripts\Units\AI_Slime.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\VideoCamera.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\invisToVisThing.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\javalinBehaviour.cs" />

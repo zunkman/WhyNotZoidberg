@@ -65,6 +65,7 @@ public class PlayerUI : MonoBehaviour
             playerTwoEmpty.gameObject.SetActive(false);
         }
 
+        /*Turn this back on possibly*/
         missionObjective.gameObject.SetActive(false);
 
         setCharacters();
@@ -149,8 +150,8 @@ public class PlayerUI : MonoBehaviour
     // This function will allow other scripts to update various text fields
     public void updateObjective (string inputText)
     {
-        missionObjective.text = inputText;
         StartCoroutine(objectiveTimer());
+        missionObjective.text = inputText;
     }
 
     public void startBasicCooldown(int playerNumber, float inputCoolDown)
@@ -206,10 +207,13 @@ public class PlayerUI : MonoBehaviour
             if (!missionObjective.gameObject.activeSelf)
             {
                 missionObjective.gameObject.SetActive(true);
+                Debug.Log("On");
             }
+
             timePassed += Time.deltaTime;
             yield return null;
         } while (timePassed < objectiveShowTime);
+        Debug.Log("off");
         missionObjective.gameObject.SetActive(false);
     }
 }

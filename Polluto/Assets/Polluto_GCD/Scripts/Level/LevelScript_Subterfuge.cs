@@ -38,6 +38,7 @@ public class LevelScript_Subterfuge : MonoBehaviour {
     [SerializeField]private GameObject playerOneInstatiatedObject;
     [SerializeField]private GameObject playerTwoInstatiatedObject;
     [SerializeField]private GameObject looperInstantiatedObject;
+    [SerializeField]private GameObject PlayerUI;
     //--duplicate from GameHandler--//
     [SerializeField]private GameObject playerSpawnOne;
     //--Reference to GameHandler--//
@@ -50,7 +51,7 @@ public class LevelScript_Subterfuge : MonoBehaviour {
         gameHandlerScript = FindObjectOfType<GameHandler>();
         
         playerSpawnOne = GameObject.FindGameObjectWithTag("firstPlayerSpawn");
-	    gameCanvas = GameObject.FindGameObjectWithTag("UI");
+	    gameCanvas = GameObject.FindGameObjectWithTag("UI").gameObject;
         missionText = GameObject.FindGameObjectWithTag("MissionText");
         newSwitchObject = GameObject.FindGameObjectWithTag("Switch");
         switchMissionStartHitBox = GameObject.FindGameObjectWithTag("beginSwitchMission");
@@ -122,6 +123,9 @@ public class LevelScript_Subterfuge : MonoBehaviour {
     void subterfugeMissionStart()
     {
         string newMission = "Find control room";
+        //gameCanvas.GetComponent<PlayerUI>().updateObjective(newMission);
+        gameCanvas.GetComponentInChildren<PlayerUI>().updateObjective(newMission);
+
         setMissionText(newMission);
         StartCoroutine(missionTextClear(3.0f));
         //add a special collision component to each character for only this level
@@ -154,9 +158,10 @@ public class LevelScript_Subterfuge : MonoBehaviour {
                 {
                     setNewCompassTarget(switchCompasTargets[1]);
                 }
-
-                missionText.GetComponent<Text>().text = "Find power breakers and turn them on [" + switchesOn + "/2]";
-                StartCoroutine(missionTextClear(3.0f));
+                string newMission = "Find power breakers and turn them on [" + switchesOn + "/2]";
+                //missionText.GetComponent<Text>().text = "Find power breakers and turn them on [" + switchesOn + "/2]";
+                gameCanvas.GetComponentInChildren<PlayerUI>().updateObjective(newMission);
+                //StartCoroutine(missionTextClear(3.0f));
             }
         }
 
@@ -179,6 +184,7 @@ public class LevelScript_Subterfuge : MonoBehaviour {
         if (endMission == true)
         {
             string newMission = "Escape!";
+            gameCanvas.GetComponentInChildren<PlayerUI>().updateObjective(newMission);
             endLevelDoor.SetActive(true);
             setNewCompassTarget(endLevelDoor);
             setMissionText(newMission);

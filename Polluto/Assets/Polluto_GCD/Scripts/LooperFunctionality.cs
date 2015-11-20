@@ -384,10 +384,21 @@ public class LooperFunctionality : MonoBehaviour
 
     void OnTriggerEnter(Collider colliderEnter)
     {
-        //if (colliderEnter.gameObject.tag == "Enemy")
+        if (colliderEnter.gameObject.tag == "Enemy")
         {
-            EnemyDamage hitHP = colliderEnter.gameObject.GetComponentInParent<EnemyDamage>();
-            if(hitHP != null) colliderEnter.gameObject.GetComponent<EnemyDamage>().takeDamage(looperDamage);
+           // EnemyDamage hitHP = colliderEnter.gameObject.GetComponentInParent<EnemyDamage>();
+           // if(hitHP != null) colliderEnter.gameObject.GetComponent<EnemyDamage>().takeDamage(looperDamage);
+
+
+            if (colliderEnter.gameObject.GetComponentInParent<EnemyDamage>() == null)
+            {
+                Debug.Log("damage is in child.");
+                colliderEnter.gameObject.GetComponentInChildren<EnemyDamage>().takeDamage(looperDamage);
+            }
+            else
+            {
+                colliderEnter.gameObject.GetComponentInParent<EnemyDamage>().takeDamage(looperDamage);
+            }
         }
     }
 

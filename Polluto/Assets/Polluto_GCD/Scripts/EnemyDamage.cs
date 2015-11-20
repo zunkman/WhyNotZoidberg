@@ -33,6 +33,7 @@ public class EnemyDamage : MonoBehaviour
         }
 
         Debug.Log("Taking " + damage);
+        Polluto_SFX.playSound("damage");
         health -= damage;
         //--edit by CT to destroy objects with no health left when hit--//
         if(health <= 0 && autoDestruct == true) {
