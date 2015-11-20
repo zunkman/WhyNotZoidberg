@@ -31,7 +31,7 @@ public class EnemyDamage : MonoBehaviour
         {
             gotHit = true;
         }
-
+        Polluto_SFX.playSound ("hit");
         health -= damage;
         //--edit by CT to destroy objects with no health left when hit--//
         if(health <= 0 && autoDestruct == true) {
