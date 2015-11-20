@@ -58,10 +58,18 @@ public class javalinBehaviour : MonoBehaviour
 
     void OnTriggerEnter(Collider colliderEnter)
     {
-        //if (colliderEnter.gameObject.tag == "Enemy")
+        if (colliderEnter.gameObject.tag == "Enemy")
         {
-            EnemyDamage hitHP = colliderEnter.gameObject.GetComponentInParent<EnemyDamage>();
-            if(hitHP != null) hitHP.takeDamage(javelinDamage);
+            Debug.Log("Enemy");
+            if (colliderEnter.gameObject.GetComponentInParent<EnemyDamage>() == null)
+            {
+                Debug.Log("damage is in child.");
+                colliderEnter.gameObject.GetComponentInChildren<EnemyDamage>().takeDamage(javelinDamage);
+            }
+            else
+            {
+                colliderEnter.gameObject.GetComponentInParent<EnemyDamage>().takeDamage(javelinDamage);
+            }
         }
     }
 

@@ -32,6 +32,7 @@ public class EnemyDamage : MonoBehaviour
             gotHit = true;
         }
 
+        Debug.Log("Taking " + damage);
         health -= damage;
         //--edit by CT to destroy objects with no health left when hit--//
         if(health <= 0 && autoDestruct == true) {

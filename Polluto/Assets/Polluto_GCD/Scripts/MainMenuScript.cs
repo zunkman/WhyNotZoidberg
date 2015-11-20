@@ -250,10 +250,10 @@ public class MainMenuScript : MonoBehaviour
         Application.LoadLevel("VolcanoParadise");
     }
 
-    public void onClickLabratory()
+    public void onClickTutorial()
     {
-        GameHandler.selectedLevelName = "Subterfuge";
-        Application.LoadLevel("Level4");
+        GameHandler.selectedLevelName = "Tutorial";
+        Application.LoadLevel("Tutorial");
     }
 
 
