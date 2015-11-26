@@ -32,7 +32,7 @@ public class TankgirlAttack : MonoBehaviour {
 
             if (!hitObjects.Contains(other.gameObject)) { 
 
-                other.gameObject.GetComponent<EnemyDamage>().health -= damage*chargebonus;
+                other.gameObject.GetComponentInParent<EnemyDamage>().health -= damage*chargebonus;
                 hitObjects.Add(other.gameObject);
             }
             

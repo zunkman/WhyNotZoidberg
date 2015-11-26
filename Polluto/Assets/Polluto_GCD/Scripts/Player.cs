@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
     [SerializeField]    Vector3 speedAdjust = new Vector3(0, 0, 0);
 
     // Edit by Joe
-    [SerializeField] public float health, baseHealth;
+    [SerializeField] public float health, baseHealth, formerHealth;
 
     [SerializeField] public PlayerUI UIScript;
     
@@ -345,9 +345,38 @@ public class Player : MonoBehaviour
     void healthCheck ()
     {
         GameObject handler = GameObject.FindGameObjectWithTag("gameHandler");
+
+        // This checks if formerHealth has ever been set, and if not, sets it.
+        if (formerHealth == 0)
+        {
+            formerHealth = health;
+        }
+
+        // This checks if we've lost health. If so, we run the takeDamage coroutine, and flash red.
+        if (health < formerHealth)
+        {
+            StartCoroutine(takeDamage());
+            formerHealth = health;
+        }
+
         if (health <= 0 && handler != null)
         {
             handler.GetComponentInChildren<GameHandler>().respawnPlayer(this.gameObject);
+            formerHealth = baseHealth;
         }
+    }
+
+    IEnumerator takeDamage ()
+    {
+        float timePassed = 0, damageTime = 1;
+        Color originalColor = this.transform.root.GetComponentInChildren<SpriteRenderer>().color;
+        do
+        {
+            timePassed += Time.deltaTime;
+            this.transform.root.GetComponentInChildren<SpriteRenderer>().color = new Color(255, 0, 0);
+            yield return null;
+        } while (timePassed < damageTime);
+
+        this.transform.root.GetComponentInChildren<SpriteRenderer>().color = originalColor;
     }
 }
