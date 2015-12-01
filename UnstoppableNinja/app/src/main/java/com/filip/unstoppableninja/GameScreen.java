@@ -30,7 +30,8 @@ public class GameScreen extends Screen
     int drawAgain = 1;
     Pixmap tiltPixmap = Assets.tiltUp;
     //These are update speeed variables
-    float tickCounter = 0.0f, tickTarget = 1.0f;
+    float tickCounter = 0.0f, tickTarget = 1.0f, timePassed = 0.0f, enemySpawnTime = 20.0f;
+    boolean spawningEnemy = false;
 
     Graphics g = game.getGraphics();
 
@@ -103,6 +104,14 @@ public class GameScreen extends Screen
                         //Player starting point, draw a floor
                         g.drawPixmap(Assets.floorTile, drawPos[0], drawPos[1]);
                     }
+
+                    else if (mapArray[x][y] == 4)
+                    {
+                        // Enemy starting point.
+                        g.drawPixmap(Assets.floorTile, drawPos[0], drawPos[1]);
+                        g.drawPixmap(Assets.enemyDown, drawPos[0], drawPos[1]);
+                    }
+
                     else
                     {
                         //Draw a pause icon by default to show unassigned grid spot
@@ -167,9 +176,26 @@ public class GameScreen extends Screen
         }
 
         tickCounter += deltaTime;
+        timePassed += deltaTime;
         if (tickCounter >= tickTarget) {
             tickCounter -= tickTarget;
             drawAgain = 1;
+
+            // Joe's enemy spawn system
+
+            // this will eventually spawn an enemy at a random location.
+            if (timePassed % enemySpawnTime < 1 && !spawningEnemy)
+            {
+                spawningEnemy = true;
+                spawnThing(4);
+            }
+
+            if (timePassed % enemySpawnTime > 1 && spawningEnemy)
+            {
+                spawningEnemy = false;
+            }
+
+            // Cory's player movement
             //g.drawPixmap(Assets.background, 0, 0);
             if (playerDir > 3) playerDir -= 4;
             if (playerDir < 0) playerDir += 4;
@@ -209,6 +235,30 @@ public class GameScreen extends Screen
             if(Settings.soundEnabled)
                 Assets.eat.play(1);
         }*/
+    }
+
+    // This will create something new on the map.
+    private void spawnThing (int thing)
+    {
+        boolean spawned = false;
+        Random randomGenerator = new Random();
+        int xPos = 0, yPos = 0;
+
+        do
+        {
+            xPos = randomGenerator.nextInt( mapArray.length - 5) + 2;
+            yPos = randomGenerator.nextInt( mapArray.length - 5) + 2;
+
+            // Checks if it's empty.
+            if (mapArray[xPos][yPos] == 0 || mapArray[xPos][yPos] == 1)
+            {
+                mapArray[xPos][yPos] = thing;
+                mapArray[playerX + 1][playerY + 1] = thing;
+                System.out.println("Spawned an enemy.");
+                spawned = true;
+            }
+
+        }while (!spawned);
     }
 
     // The 2D array we're storing map data on, the number of walls to make, the maximum wall length.
