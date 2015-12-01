@@ -24,6 +24,13 @@ public class GameScreen extends Screen
     // These are map variables.
     int [][] mapArray = new int [43][43];
     int playerX, playerY;
+    //0123, UpRightDownLeft, set playerDir to previousDir +-1 when turning
+    int playerDir = 0, previousDir = 0;
+    //stuff for tilt
+    int drawAgain = 1;
+    Pixmap tiltPixmap = Assets.tiltUp;
+    //These are update speeed variables
+    float tickCounter = 0.0f, tickTarget = 1.0f;
 
     Graphics g = game.getGraphics();
 
@@ -64,33 +71,47 @@ public class GameScreen extends Screen
     {
         Graphics g = game.getGraphics();
         int x, y;
+        //g.getHeight()
 
-        for (x = playerX - 6; x < playerX + 7; x++)
+        for (x = playerX - 4; x <= playerX + 4; x++)
         {
-            for (y = playerY - 4; y < playerY + 5; y++)
+            for (y = playerY - 6; y <= playerY + 6; y++)
             {
                 // Check if we're in range of the map array. If so, we start drawing.
-                if (x > 0 && x < 42 && y > 0 && y < 42)
+                if (x >= 0 && x <= 42 && y >= 0 && y <= 42)
                 {
+                    //get the pixel coordinates of the tile to draw
+                    int drawPos[] = {
+                            //((y - playerY) * Assets.floorTile.getWidth()) + (g.getWidth()-Assets.floorTile.getWidth()) / 2
+                            //, ((x - playerX) * (Assets.floorTile.getHeight())) + (g.getHeight()-Assets.floorTile.getHeight())/2
+                            ((x - playerX) * Assets.floorTile.getHeight()) + (g.getWidth()-Assets.floorTile.getWidth()) / 2
+                            , ((y - playerY) * Assets.floorTile.getWidth()) + (g.getHeight()-Assets.floorTile.getHeight())/2
+                    };
+
                     if (mapArray[x][y] == 0 || mapArray[x][y] == 1)
                     {
-                        g.drawPixmap(Assets.floorTile, ((y - playerY + 3) * Assets.floorTile.getWidth()) + Assets.floorTile.getWidth() / 4, ((x - playerX + 5) * (Assets.floorTile.getHeight())) + Assets.floorTile.getHeight()/2);
+                        //Draw floors here
+                        g.drawPixmap(Assets.floorTile, drawPos[0], drawPos[1]);
                     }
-
                     else if (mapArray[x][y] == 2)
                     {
-                        g.drawPixmap(Assets.wallTile, ((y - playerY + 3) * Assets.wallTile.getWidth()) + Assets.wallTile.getWidth() / 4, ((x - playerX + 5) * (Assets.wallTile.getHeight())) + Assets.wallTile.getHeight()/2);
+                        //Draw walls here
+                        g.drawPixmap(Assets.wallTile, drawPos[0], drawPos[1]);
                     }
-
                     else if (mapArray[x][y] == 3)
                     {
-                        g.drawPixmap(Assets.floorTile, ((y - playerY + 3) * Assets.floorTile.getWidth()) + Assets.floorTile.getWidth() / 4, ((x - playerX + 5) * (Assets.floorTile.getHeight())) + Assets.floorTile.getHeight()/2);
-                        g.drawPixmap(Assets.tiltUp, ((y - playerY + 3) * Assets.tiltUp.getWidth()) + Assets.tiltUp.getWidth() / 4, ((x - playerX + 5) * (Assets.tiltUp.getHeight())) + Assets.tiltUp.getHeight()/2);
+                        //Player starting point, draw a floor
+                        g.drawPixmap(Assets.floorTile, drawPos[0], drawPos[1]);
                     }
-
                     else
                     {
-
+                        //Draw a pause icon by default to show unassigned grid spot
+                        g.drawPixmap(Assets.pauseIcon, drawPos[0], drawPos[1]);
+                    }
+                    //if the current location is the player position, draw the player
+                    if(playerX == x && playerY == y){
+                        g.drawPixmap(tiltPixmap, drawPos[0], drawPos[1]);
+                        //g.drawPixmap(Assets.tiltUp, drawPos[0], drawPos[1]);
                     }
                 }
             }
@@ -116,16 +137,66 @@ public class GameScreen extends Screen
                 }
             }
             if(event.type == TouchEvent.TOUCH_DOWN) {
-                if(event.x < 64 && event.y > 416) {
+                if(event.x < 64 && event.y > (g.getHeight()-64)) {
                     //world.snake.turnLeft();
+                    playerDir = previousDir - 1;
+                    drawAgain = 1;//since Tilt is facing a different direction, redraw the scene
                 }
-                if(event.x > 256 && event.y > 416) {
+                if(event.x > (g.getWidth()-64) && event.y > (g.getHeight()-64)) {
                     //world.snake.turnRight();
+                    playerDir = previousDir + 1;
+                    drawAgain = 1;//since Tilt is facing a different direction, redraw the scene
+                }
+                if (playerDir > 3) playerDir -= 4;
+                if (playerDir < 0) playerDir += 4;
+                switch (playerDir) {
+                    case 0:
+                        tiltPixmap = Assets.tiltUp;
+                        break;
+                    case 1:
+                        tiltPixmap = Assets.tiltRight;
+                        break;
+                    case 2:
+                        tiltPixmap = Assets.tiltDown;
+                        break;
+                    case 3:
+                        tiltPixmap = Assets.tiltLeft;
+                        break;
                 }
             }
         }
 
-
+        tickCounter += deltaTime;
+        if (tickCounter >= tickTarget) {
+            tickCounter -= tickTarget;
+            drawAgain = 1;
+            //g.drawPixmap(Assets.background, 0, 0);
+            if (playerDir > 3) playerDir -= 4;
+            if (playerDir < 0) playerDir += 4;
+            switch (playerDir) {
+                case 0:
+                    if (mapArray[playerX][playerY - 1] != 2) playerY--;
+                    if (playerY < 1) playerY = 1;
+                    tiltPixmap = Assets.tiltUp;
+                    break;
+                case 1:
+                    if (mapArray[playerX + 1][playerY] != 2) playerX++;
+                    if (playerX > mapArray.length - 2) playerX = mapArray.length - 2;
+                    tiltPixmap = Assets.tiltRight;
+                    break;
+                case 2:
+                    if (mapArray[playerX][playerY + 1] != 2) playerY++;
+                    if (playerY > mapArray.length - 2) playerY = mapArray.length - 2;
+                    tiltPixmap = Assets.tiltDown;
+                    break;
+                case 3:
+                    if (mapArray[playerX - 1][playerY] != 2) playerX--;
+                    if (playerX < 1) playerX = 1;
+                    tiltPixmap = Assets.tiltLeft;
+                    break;
+            }
+            previousDir = playerDir;
+        }
         /*world.update(deltaTime);
         if(world.gameOver) {
             if(Settings.soundEnabled)
@@ -467,13 +538,15 @@ public class GameScreen extends Screen
 
 
     @Override
-    public void present(float deltaTime)
-    {
+    public void present(float deltaTime) {
         Graphics g = game.getGraphics();
 
-        g.drawPixmap(Assets.background, 0, 0);
 
-        drawMap();
+
+        if (drawAgain > 0){
+            drawMap();
+            drawAgain = 0;
+        }
         //drawWorld(world);
         //if(state == GameState.Ready)
             //drawReadyUI();

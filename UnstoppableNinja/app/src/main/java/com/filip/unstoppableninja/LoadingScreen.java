@@ -42,11 +42,15 @@ public class LoadingScreen extends Screen {
         Assets.shuriken = g.newPixmap("UnNin_Shuriken_FX_64x.png", PixmapFormat.ARGB4444);
 
         Assets.floorTile = g.newPixmap("UnNin_FloorTile_64x.png", PixmapFormat.ARGB4444);
-        Assets.wallTile = g.newPixmap("UnNin_WallTile_64x.png", PixmapFormat.ARGB4444);
+        Assets.wallTile = g.newPixmap("UnNin_WallTile_V2_64x.png", PixmapFormat.ARGB4444);
 
         Assets.enemyDown = g.newPixmap("UnNin_Enemy_Down_64x.png", PixmapFormat.ARGB4444);
 
         Assets.tiltUp = g.newPixmap("UnNin_Ninja_Up_64x.png", PixmapFormat.ARGB4444);
+        Assets.tiltDown = g.newPixmap("UnNin_Ninja_Down_64x.png", PixmapFormat.ARGB4444);
+        Assets.tiltLeft = g.newPixmap("UnNin_Ninja_Left_64x.png", PixmapFormat.ARGB4444);
+        Assets.tiltRight = g.newPixmap("UnNin_Ninja_Right_64x.png", PixmapFormat.ARGB4444);
+
 
         Assets.click = game.getAudio().newSound("click.ogg");
         Settings.load(game.getFileIO());
