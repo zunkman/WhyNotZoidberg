@@ -18,10 +18,11 @@ public class HiggsAttack : MonoBehaviour
 
     void OnTriggerEnter (Collider other)
     {
-        //if (other.gameObject.tag == "Enemy")
+        
+        if (other.gameObject.tag == "Enemy")
         {
-            EnemyDamage hitHP = other.gameObject.GetComponentInParent<EnemyDamage>();
-            if(hitHP != null) hitHP.takeDamage(damage);
+            EnemyDamage enemyHP = other.gameObject.GetComponentInParent<EnemyDamage>();
+            enemyHP.takeDamage(damage);
         }
     }
 }

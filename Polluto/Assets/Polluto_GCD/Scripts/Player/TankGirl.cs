@@ -32,7 +32,6 @@ public class TankGirl : Player
 
     TankgirlAttack attack;
 
-
     protected override void Start()
     {
         base.Start();
@@ -40,6 +39,7 @@ public class TankGirl : Player
         speed = Vector3.zero;
         jumptimer = jumpDelay;
         camera = GameObject.Find("Main Camera").GetComponent<PlayerFollow>();
+        originalColor = this.transform.root.GetComponentInChildren<SpriteRenderer>().color;
     }
 
     protected override void Update()
@@ -231,15 +231,17 @@ public class TankGirl : Player
 
     IEnumerator takeDamage()
     {
-        float timePassed = 0, damageTime = 1;
-        Color originalColor = this.transform.root.GetComponentInChildren<SpriteRenderer>().color;
+        float timePassed = 0, damageTime = 0.5f;
+        takingDamage = true;
         do
         {
+
             timePassed += Time.deltaTime;
             this.transform.root.GetComponentInChildren<SpriteRenderer>().color = new Color(255, 0, 0);
             yield return null;
-        } while (timePassed < damageTime);
+        } while (timePassed < damageTime && takingDamage);
 
+        takingDamage = false;
         this.transform.root.GetComponentInChildren<SpriteRenderer>().color = originalColor;
     }
 }

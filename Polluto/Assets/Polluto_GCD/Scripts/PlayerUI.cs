@@ -49,7 +49,7 @@ public class PlayerUI : MonoBehaviour
         playerTwoEmpty.fillMethod = Image.FillMethod.Horizontal;
         playerTwoEmpty.fillOrigin = (int)Image.OriginHorizontal.Right;
         playerOneEmpty.fillAmount = 1;
-        playerTwoEmpty.fillAmount = 1;
+        playerTwoEmpty.fillAmount = 1; 
 
         playerOneSpecial.type = Image.Type.Filled;
         playerOneSpecial.fillMethod = Image.FillMethod.Vertical;

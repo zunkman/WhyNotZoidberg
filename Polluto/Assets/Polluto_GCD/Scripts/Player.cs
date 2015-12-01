@@ -33,7 +33,9 @@ public class Player : MonoBehaviour
     [SerializeField] public float health, baseHealth, formerHealth;
 
     [SerializeField] public PlayerUI UIScript;
-    
+    protected Color originalColor;
+    protected bool takingDamage;
+
     //override any of these functions using
     //protected override void Example () {
     ////Debug.Log("yo :)");
@@ -47,6 +49,8 @@ public class Player : MonoBehaviour
     {
         speed = Vector3.zero;
         UIScript = FindObjectOfType<PlayerUI>();//check if this is null when accessing, some scenes may not have it
+        originalColor = this.transform.root.GetComponentInChildren<SpriteRenderer>().color;
+
     }
 
 
@@ -353,7 +357,7 @@ public class Player : MonoBehaviour
         }
 
         // This checks if we've lost health. If so, we run the takeDamage coroutine, and flash red.
-        if (health < formerHealth)
+        if (health < formerHealth && !takingDamage)
         {
             StartCoroutine(takeDamage());
             formerHealth = health;
@@ -361,6 +365,7 @@ public class Player : MonoBehaviour
 
         if (health <= 0 && handler != null)
         {
+            takingDamage = false;
             handler.GetComponentInChildren<GameHandler>().respawnPlayer(this.gameObject);
             formerHealth = baseHealth;
         }
@@ -368,15 +373,17 @@ public class Player : MonoBehaviour
 
     IEnumerator takeDamage ()
     {
-        float timePassed = 0, damageTime = 1;
-        Color originalColor = this.transform.root.GetComponentInChildren<SpriteRenderer>().color;
+        float timePassed = 0, damageTime = 0.5f;
+        takingDamage = true;
         do
         {
+            
             timePassed += Time.deltaTime;
             this.transform.root.GetComponentInChildren<SpriteRenderer>().color = new Color(255, 0, 0);
             yield return null;
-        } while (timePassed < damageTime);
+        } while (timePassed < damageTime && takingDamage);
 
+        takingDamage = false;
         this.transform.root.GetComponentInChildren<SpriteRenderer>().color = originalColor;
     }
 }
