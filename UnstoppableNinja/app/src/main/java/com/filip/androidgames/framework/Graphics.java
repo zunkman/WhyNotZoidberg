@@ -15,6 +15,8 @@ public interface Graphics
     public void drawPixmap(Pixmap pixmap, int x, int y, int srcX, int srcY, int srcWidth, int srcHeight);
     public void drawPixmap(Pixmap pixmap, int x, int y);
     public void drawPixmap(Pixmap pixmap, int x, int y, float scaleX, float scaleY);
+    public void drawPixmap(Pixmap pixmap, int x, int y, int rotation);
+    public void drawPixmap(Pixmap pixmap, int x, int y, int rotation, int sx, int sy);
     public int getWidth();
     public int getHeight();
 }

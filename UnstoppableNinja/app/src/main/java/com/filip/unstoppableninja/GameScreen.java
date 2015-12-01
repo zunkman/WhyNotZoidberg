@@ -30,7 +30,7 @@ public class GameScreen extends Screen
     int drawAgain = 1;
     Pixmap tiltPixmap = Assets.tiltUp;
     //These are update speeed variables
-    float tickCounter = 0.0f, tickTarget = 1.0f, timePassed = 0.0f, enemySpawnTime = 20.0f;
+        float tickCounter = 0.0f, tickTarget = 1.0f, timePassed = 0.0f, enemySpawnTime = 20.0f;
     boolean spawningEnemy = false;
 
     Graphics g = game.getGraphics();
@@ -92,7 +92,7 @@ public class GameScreen extends Screen
                     if (mapArray[x][y] == 0 || mapArray[x][y] == 1)
                     {
                         //Draw floors here
-                        g.drawPixmap(Assets.floorTile, drawPos[0], drawPos[1]);
+                        g.drawPixmap(Assets.floorTile, drawPos[0], drawPos[1], ((x+y)%3*90));
                     }
                     else if (mapArray[x][y] == 2)
                     {
@@ -111,11 +111,10 @@ public class GameScreen extends Screen
                         g.drawPixmap(Assets.floorTile, drawPos[0], drawPos[1]);
                         g.drawPixmap(Assets.enemyDown, drawPos[0], drawPos[1]);
                     }
-
                     else
                     {
                         //Draw a pause icon by default to show unassigned grid spot
-                        g.drawPixmap(Assets.pauseIcon, drawPos[0], drawPos[1]);
+                        g.drawPixmap(Assets.wallTile, drawPos[0], drawPos[1], ((x+y)%3*90));
                     }
                     //if the current location is the player position, draw the player
                     if(playerX == x && playerY == y){
@@ -237,7 +236,7 @@ public class GameScreen extends Screen
         }*/
     }
 
-    // This will create something new on the map.
+	// This will create something new on the map.
     private void spawnThing (int thing)
     {
         boolean spawned = false;
