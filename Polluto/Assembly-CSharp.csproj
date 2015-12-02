@@ -90,6 +90,8 @@
      <Compile Include="Assets\Polluto_GCD\Scripts\TurretProjectile.cs" />
      <Compile Include="Assets\Polluto_GCD\Scripts\Units\AI_MeleeAttack.cs" />
      <Compile Include="Assets\Polluto_GCD\Scripts\Units\AI_Slime.cs" />
+     <Compile Include="Assets\Polluto_GCD\Scripts\Units\Guard.cs" />
+     <Compile Include="Assets\Polluto_GCD\Scripts\Units\SurveillanceCamera.cs" />
      <Compile Include="Assets\Polluto_GCD\Scripts\VideoCamera.cs" />
      <Compile Include="Assets\Polluto_GCD\Scripts\invisToVisThing.cs" />
      <Compile Include="Assets\Polluto_GCD\Scripts\javalinBehaviour.cs" />
