@@ -66,6 +66,7 @@
      <Compile Include="Assets\Polluto_GCD\Scripts\HiggsBombinController.cs" />
      <Compile Include="Assets\Polluto_GCD\Scripts\Level\BGScroller.cs" />
      <Compile Include="Assets\Polluto_GCD\Scripts\Level\Checkpoint.cs" />
+     <Compile Include="Assets\Polluto_GCD\Scripts\Level\DoorSwitch.cs" />
      <Compile Include="Assets\Polluto_GCD\Scripts\Level\LevelDoor.cs" />
      <Compile Include="Assets\Polluto_GCD\Scripts\Level\LevelScript_Subterfuge.cs" />
      <Compile Include="Assets\Polluto_GCD\Scripts\Level\MovingPlatformScript.cs" />
