@@ -28,6 +28,7 @@ public class GameScreen extends Screen
     int playerDir = 0, previousDir = 0;
     //stuff for tilt
     int drawAgain = 1;
+
     Pixmap tiltPixmap = Assets.tiltUp;
     //These are update speeed variables
         float tickCounter = 0.0f, tickTarget = 1.0f, timePassed = 0.0f, enemySpawnTime = 20.0f;
