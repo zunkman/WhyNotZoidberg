@@ -37,7 +37,11 @@ class Enemy
             offset.x=0;offset.y=0;
             dir++;
             if(dir>3){dir=0;}
+<<<<<<< HEAD
         }
+=======
+       }
+>>>>>>> origin/master
         x+=offset.x;
         y+=offset.y;
         y=Math.min(Math.max(y,1),41);
@@ -62,6 +66,7 @@ class Enemy
     }
     int getWall(int checkX,int checkY){
         return parent.getSpace(checkX,checkY);
+<<<<<<< HEAD
 
     }
     boolean killPlayer (int theX, int theY)
@@ -77,6 +82,11 @@ class Enemy
         }
     }
 
+=======
+
+    }
+
+>>>>>>> origin/master
 
 }
 
@@ -97,10 +107,17 @@ public class GameScreen extends Screen
     //0123, UpRightDownLeft, set playerDir to previousDir +-1 when turning
     int playerDir = 0, previousDir = 0;
     //stuff for tilt
+<<<<<<< HEAD
     int drawAgain = 1, Score = 0, KilledEnemies = 1;
     Pixmap tiltPixmap = Assets.tiltUp;
     //These are update speeed variables
     float tickCounter = 0.0f, tickTarget = 0.25f, timePassed = 0.0f, enemySpawnTime = 5.0f;
+=======
+    int drawAgain = 1, Score = 0, KilledEnemies = 0;
+    Pixmap tiltPixmap = Assets.tiltUp;
+    //These are update speeed variables
+    float tickCounter = 0.0f, tickTarget = 0.25f, timePassed = 0.0f, enemySpawnTime = 20.0f;
+>>>>>>> origin/master
     boolean spawningEnemy = false;
 
     Graphics g = game.getGraphics();
@@ -273,7 +290,11 @@ public class GameScreen extends Screen
             if (playerDir < 0) playerDir += 4;
             switch (playerDir) {
                 case 0:
+<<<<<<< HEAD
                     if (mapArray[playerX][playerY - 1] != 2 && mapArray[playerX][playerY - 1] != 10) {
+=======
+                    if (mapArray[playerX][playerY - 1] != 2) {
+>>>>>>> origin/master
                         playerY--;
                         Score += 1;
                     }
@@ -282,7 +303,11 @@ public class GameScreen extends Screen
                     tiltPixmap = Assets.tiltUp;
                     break;
                 case 1:
+<<<<<<< HEAD
                     if (mapArray[playerX + 1][playerY] != 2 && mapArray[playerX + 1][playerY] != 10) {
+=======
+                    if (mapArray[playerX + 1][playerY] != 2) {
+>>>>>>> origin/master
                         playerX++;
                         Score += 1;
                     }
@@ -291,7 +316,11 @@ public class GameScreen extends Screen
                     tiltPixmap = Assets.tiltRight;
                     break;
                 case 2:
+<<<<<<< HEAD
                     if (mapArray[playerX][playerY + 1] != 2 && mapArray[playerX][playerY + 1] != 10){
+=======
+                    if (mapArray[playerX][playerY + 1] != 2){
+>>>>>>> origin/master
                         playerY++;
                         Score += 1;
                     }
@@ -299,7 +328,11 @@ public class GameScreen extends Screen
                     tiltPixmap = Assets.tiltDown;
                     break;
                 case 3:
+<<<<<<< HEAD
                     if (mapArray[playerX - 1][playerY] != 2 && mapArray[playerX - 1][playerY] != 10) {
+=======
+                    if (mapArray[playerX - 1][playerY] != 2) {
+>>>>>>> origin/master
                         playerX--;
                         Score += 1;
                     }
@@ -321,11 +354,15 @@ public class GameScreen extends Screen
                     enemies.get(i).Update();
                     System.out.println(enemies.get(i).getX() + " " + enemies.get(i).getY());
                     mapArray[enemies.get(i).getX()][enemies.get(i).getY()]=4;
+<<<<<<< HEAD
                     if (enemies.get(i).killPlayer(playerX, playerY))
                     {
                         SaveScore();
                         game.setScreen(new HighscoreScreen(game));
                     }
+=======
+
+>>>>>>> origin/master
                 }
             }
         }
@@ -360,10 +397,17 @@ public class GameScreen extends Screen
             {
                 mapArray[xPos][yPos] = thing;
                 //mapArray[playerX + 1][playerY + 1] = thing;
+<<<<<<< HEAD
                 if(thing==4) {
                     System.out.println("Spawned an enemy.");
                     enemies.add(new Enemy(xPos,yPos,this));
                 }
+=======
+              if(thing==4) {
+                  System.out.println("Spawned an enemy.");
+                  enemies.add(new Enemy(xPos,yPos,this));
+              }
+>>>>>>> origin/master
 
 
                 spawned = true;
@@ -859,7 +903,11 @@ public class GameScreen extends Screen
     //Call this when the player dies.
     public void SaveScore()
     {
+<<<<<<< HEAD
         //Score *= KilledEnemies;
+=======
+        Score *= KilledEnemies;
+>>>>>>> origin/master
         Settings.addScore(Score);
     }
 
@@ -872,7 +920,11 @@ public class GameScreen extends Screen
 
     }
     public void clearWaypoint(int checkX, int checkY){
+<<<<<<< HEAD
         waypointArray[checkX][checkY] = 0;
+=======
+       waypointArray[checkX][checkY] = 0;
+>>>>>>> origin/master
 
     }
 }

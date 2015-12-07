@@ -45,6 +45,9 @@ public class LoadingScreen extends Screen {
         Assets.wallTile = g.newPixmap("UnNin_WallTile_V2_64x.png", PixmapFormat.ARGB4444);
 
         Assets.enemyDown = g.newPixmap("UnNin_Enemy_Down_64x.png", PixmapFormat.ARGB4444);
+        Assets.enemyLeft = g.newPixmap("UnNin_Enemy_Left_64x.png", PixmapFormat.ARGB4444);
+        Assets.enemyRight = g.newPixmap("UnNin_Enemy_Right_64x.png", PixmapFormat.ARGB4444);
+        Assets.enemyUp = g.newPixmap("UnNin_Enemy_Up_64x.png", PixmapFormat.ARGB4444);
 
         Assets.tiltUp = g.newPixmap("UnNin_Ninja_Up_64x.png", PixmapFormat.ARGB4444);
         Assets.tiltDown = g.newPixmap("UnNin_Ninja_Down_64x.png", PixmapFormat.ARGB4444);
