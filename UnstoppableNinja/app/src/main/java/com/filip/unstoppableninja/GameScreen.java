@@ -1,6 +1,7 @@
 package com.filip.unstoppableninja;
 
 import android.graphics.Color;
+import android.graphics.Point;
 
 import com.filip.androidgames.framework.Game;
 import com.filip.androidgames.framework.Graphics;
@@ -8,12 +9,79 @@ import com.filip.androidgames.framework.Input.TouchEvent;
 import com.filip.androidgames.framework.Pixmap;
 import com.filip.androidgames.framework.Screen;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+class Enemy
+{
+    int x;
+    int y;
+    int dir;
+    Point offset;
+    GameScreen parent;
+    boolean alerted;
+    Enemy(int myX, int myY, GameScreen myParent){
+        x=myX;
+        y=myY;
+        parent = myParent;
+    }
+    void Update(){
+        int newDir = parent.getWaypoint(x,y);
+        if(newDir!=0){parent.clearWaypoint(x,y);dir=newDir-1;}
+        offset = new Point(0,0);
+        setDir();
+        int tar =getWall(x+offset.x,y+offset.y);
+
+        if(tar==2||tar==10){
+            offset.x=0;offset.y=0;
+            dir++;
+            if(dir>3){dir=0;}
+        }
+        x+=offset.x;
+        y+=offset.y;
+        y=Math.min(Math.max(y,1),41);
+        x=Math.min(Math.max(x,1),41);
+    }
+
+    void setDir(){
+        if(dir==0){offset.y=-1;}
+        if(dir==1){offset.x=1;}
+        if(dir==2){offset.y=1;}
+        if(dir==3){offset.x=-1;}
+    }
+
+    int getX(){
+        return x;
+    }
+    int getY(){
+        return y;
+    }
+    int getDir(){
+        return dir;
+    }
+    int getWall(int checkX,int checkY){
+        return parent.getSpace(checkX,checkY);
+
+    }
+    boolean killPlayer (int theX, int theY)
+    {
+        if (theX == x && theY == y)
+        {
+            return true;
+        }
+
+        else
+        {
+            return false;
+        }
+    }
+
+
+}
+
 public class GameScreen extends Screen
 {
-
     enum GameState
     {
         Running,
@@ -21,21 +89,25 @@ public class GameScreen extends Screen
         GameOver
     }
 
+
     // These are map variables.
     int [][] mapArray = new int [43][43];
+    int [][] waypointArray = new int[43][43];
     int playerX, playerY;
     //0123, UpRightDownLeft, set playerDir to previousDir +-1 when turning
     int playerDir = 0, previousDir = 0;
     //stuff for tilt
-    int drawAgain = 1;
+    int drawAgain = 1, Score = 0, KilledEnemies = 1;
     Pixmap tiltPixmap = Assets.tiltUp;
     //These are update speeed variables
-        float tickCounter = 0.0f, tickTarget = 1.0f, timePassed = 0.0f, enemySpawnTime = 20.0f;
+    float tickCounter = 0.0f, tickTarget = 0.25f, timePassed = 0.0f, enemySpawnTime = 5.0f;
     boolean spawningEnemy = false;
 
     Graphics g = game.getGraphics();
 
     GameState state = GameState.Running;
+
+    List<Enemy> enemies;
     //World world;
     //int oldScore = 0;
     //String score = "0";
@@ -44,11 +116,11 @@ public class GameScreen extends Screen
     {
         super(game);
         //world = new World();
-
         generateMap(10, 20);
         playerX = mapArray.length / 2;
         playerY = mapArray.length / 2;
         drawMap();
+        enemies = new ArrayList<Enemy>();
 
     }
 
@@ -157,6 +229,7 @@ public class GameScreen extends Screen
                 }
                 if (playerDir > 3) playerDir -= 4;
                 if (playerDir < 0) playerDir += 4;
+                waypointArray[playerX][playerY]=playerDir+1;
                 switch (playerDir) {
                     case 0:
                         tiltPixmap = Assets.tiltUp;
@@ -200,27 +273,61 @@ public class GameScreen extends Screen
             if (playerDir < 0) playerDir += 4;
             switch (playerDir) {
                 case 0:
-                    if (mapArray[playerX][playerY - 1] != 2) playerY--;
+                    if (mapArray[playerX][playerY - 1] != 2 && mapArray[playerX][playerY - 1] != 10) {
+                        playerY--;
+                        Score += 1;
+                    }
+
                     if (playerY < 1) playerY = 1;
                     tiltPixmap = Assets.tiltUp;
                     break;
                 case 1:
-                    if (mapArray[playerX + 1][playerY] != 2) playerX++;
+                    if (mapArray[playerX + 1][playerY] != 2 && mapArray[playerX + 1][playerY] != 10) {
+                        playerX++;
+                        Score += 1;
+                    }
+
                     if (playerX > mapArray.length - 2) playerX = mapArray.length - 2;
                     tiltPixmap = Assets.tiltRight;
                     break;
                 case 2:
-                    if (mapArray[playerX][playerY + 1] != 2) playerY++;
+                    if (mapArray[playerX][playerY + 1] != 2 && mapArray[playerX][playerY + 1] != 10){
+                        playerY++;
+                        Score += 1;
+                    }
                     if (playerY > mapArray.length - 2) playerY = mapArray.length - 2;
                     tiltPixmap = Assets.tiltDown;
                     break;
                 case 3:
-                    if (mapArray[playerX - 1][playerY] != 2) playerX--;
+                    if (mapArray[playerX - 1][playerY] != 2 && mapArray[playerX - 1][playerY] != 10) {
+                        playerX--;
+                        Score += 1;
+                    }
                     if (playerX < 1) playerX = 1;
                     tiltPixmap = Assets.tiltLeft;
                     break;
             }
             previousDir = playerDir;
+
+            //update Enemies
+            for (int j = 0; j<mapArray[0].length; j++) {
+                for (int i = 0; i < mapArray.length; i++) {
+                    if(mapArray[j][i]==4){mapArray[j][i]=0;}
+                }
+            }
+            for(int i=0;i<enemies.size();i++){
+
+                if(enemies.get(i)!=null){
+                    enemies.get(i).Update();
+                    System.out.println(enemies.get(i).getX() + " " + enemies.get(i).getY());
+                    mapArray[enemies.get(i).getX()][enemies.get(i).getY()]=4;
+                    if (enemies.get(i).killPlayer(playerX, playerY))
+                    {
+                        SaveScore();
+                        game.setScreen(new HighscoreScreen(game));
+                    }
+                }
+            }
         }
         /*world.update(deltaTime);
         if(world.gameOver) {
@@ -236,7 +343,7 @@ public class GameScreen extends Screen
         }*/
     }
 
-	// This will create something new on the map.
+    // This will create something new on the map.
     private void spawnThing (int thing)
     {
         boolean spawned = false;
@@ -252,8 +359,13 @@ public class GameScreen extends Screen
             if (mapArray[xPos][yPos] == 0 || mapArray[xPos][yPos] == 1)
             {
                 mapArray[xPos][yPos] = thing;
-                mapArray[playerX + 1][playerY + 1] = thing;
-                System.out.println("Spawned an enemy.");
+                //mapArray[playerX + 1][playerY + 1] = thing;
+                if(thing==4) {
+                    System.out.println("Spawned an enemy.");
+                    enemies.add(new Enemy(xPos,yPos,this));
+                }
+
+
                 spawned = true;
             }
 
@@ -598,7 +710,7 @@ public class GameScreen extends Screen
         }
         //drawWorld(world);
         //if(state == GameState.Ready)
-            //drawReadyUI();
+        //drawReadyUI();
         if(state == GameState.Running)
             drawRunningUI();
         if(state == GameState.Paused)
@@ -665,26 +777,28 @@ public class GameScreen extends Screen
     private void drawRunningUI() {
         Graphics g = game.getGraphics();
 
-        g.drawPixmap(Assets.pauseIcon,0, 0, 0, 0, 64, 64);
+        g.drawPixmap(Assets.pauseIcon, 0, 0, 0, 0, 64, 64);
         g.drawLine(0, 655, 480, 655, Color.BLACK);//g.drawLine(0, 416, 480, 416, Color.BLACK);
 
         g.drawPixmap(Assets.smokeDrop, 1 + g.getWidth() - Assets.smokeDrop.getWidth(), 0, 0, 0, 64, 64);
 
-        g.drawPixmap(Assets.arrowLeftIcon,  0, g.getHeight() - 64, -1.0f, 1.0f);
-        g.drawPixmap(Assets.arrowRightIcon, 1 + g.getWidth() - Assets.arrowRightIcon.getWidth() , g.getHeight() - 64, 0, 0, 64, 64);
+        g.drawPixmap(Assets.arrowLeftIcon, 0, g.getHeight() - 64, -1.0f, 1.0f);
+        g.drawPixmap(Assets.arrowRightIcon, 1 + g.getWidth() - Assets.arrowRightIcon.getWidth(), g.getHeight() - 64, 0, 0, 64, 64);
 
-
+        //Draws the score
+        String ScoreText = Integer.toString(Score);
+        drawText(g, ScoreText, g.getWidth() / 2 - 10, g.getHeight() / 2 + 300);
     }
 
     private void drawPausedUI() {
         Graphics g = game.getGraphics();
 
-        g.drawPixmap(Assets.pauseTitle, ((g.getWidth() - Assets.pauseTitle.getWidth()) / 2), g.getHeight() / 4  , 0, 0, 192, 42);
+        g.drawPixmap(Assets.pauseTitle, ((g.getWidth() - Assets.pauseTitle.getWidth()) / 2), g.getHeight() / 4, 0, 0, 192, 42);
 
         g.drawLine(0, 655, 480, 655, Color.BLACK);
 
         g.drawPixmap(Assets.resumeButton, ((g.getWidth() - Assets.resumeButton.getWidth()) / 2), g.getHeight() / 2, 0, 0, 192, 42);
-        g.drawPixmap(Assets.quitButton, ((g.getWidth() - Assets.quitButton.getWidth()) / 2) , ((g.getHeight() / 2) + Assets.quitButton.getHeight()) , 0, 0, 100, 42);
+        g.drawPixmap(Assets.quitButton, ((g.getWidth() - Assets.quitButton.getWidth()) / 2), ((g.getHeight() / 2) + Assets.quitButton.getHeight()), 0, 0, 100, 42);
     }
 
     private void drawGameOverUI() {
@@ -738,6 +852,27 @@ public class GameScreen extends Screen
 
     @Override
     public void dispose() {
+
+    }
+
+    // Saves and adds the current score to the highscore file
+    //Call this when the player dies.
+    public void SaveScore()
+    {
+        //Score *= KilledEnemies;
+        Settings.addScore(Score);
+    }
+
+    public int getSpace(int checkX, int checkY){
+        return mapArray[checkX][checkY];
+
+    }
+    public int getWaypoint(int checkX, int checkY){
+        return waypointArray[checkX][checkY];
+
+    }
+    public void clearWaypoint(int checkX, int checkY){
+        waypointArray[checkX][checkY] = 0;
 
     }
 }
