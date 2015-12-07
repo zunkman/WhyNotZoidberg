@@ -21,16 +21,17 @@ public class GameScreen extends Screen
         GameOver
     }
 
+
     // These are map variables.
     int [][] mapArray = new int [43][43];
     int playerX, playerY;
     //0123, UpRightDownLeft, set playerDir to previousDir +-1 when turning
     int playerDir = 0, previousDir = 0;
     //stuff for tilt
-    int drawAgain = 1;
+    int drawAgain = 1, Score = 0, KilledEnemies = 0;
     Pixmap tiltPixmap = Assets.tiltUp;
     //These are update speeed variables
-        float tickCounter = 0.0f, tickTarget = 1.0f, timePassed = 0.0f, enemySpawnTime = 20.0f;
+    float tickCounter = 0.0f, tickTarget = 1.0f, timePassed = 0.0f, enemySpawnTime = 20.0f;
     boolean spawningEnemy = false;
 
     Graphics g = game.getGraphics();
@@ -44,12 +45,10 @@ public class GameScreen extends Screen
     {
         super(game);
         //world = new World();
-
         generateMap(10, 20);
         playerX = mapArray.length / 2;
         playerY = mapArray.length / 2;
         drawMap();
-
     }
 
     @Override
@@ -200,22 +199,36 @@ public class GameScreen extends Screen
             if (playerDir < 0) playerDir += 4;
             switch (playerDir) {
                 case 0:
-                    if (mapArray[playerX][playerY - 1] != 2) playerY--;
+                    if (mapArray[playerX][playerY - 1] != 2) {
+                        playerY--;
+                        Score += 1;
+                    }
+
                     if (playerY < 1) playerY = 1;
                     tiltPixmap = Assets.tiltUp;
                     break;
                 case 1:
-                    if (mapArray[playerX + 1][playerY] != 2) playerX++;
+                    if (mapArray[playerX + 1][playerY] != 2) {
+                        playerX++;
+                        Score += 1;
+                    }
+
                     if (playerX > mapArray.length - 2) playerX = mapArray.length - 2;
                     tiltPixmap = Assets.tiltRight;
                     break;
                 case 2:
-                    if (mapArray[playerX][playerY + 1] != 2) playerY++;
+                    if (mapArray[playerX][playerY + 1] != 2){
+                        playerY++;
+                        Score += 1;
+                    }
                     if (playerY > mapArray.length - 2) playerY = mapArray.length - 2;
                     tiltPixmap = Assets.tiltDown;
                     break;
                 case 3:
-                    if (mapArray[playerX - 1][playerY] != 2) playerX--;
+                    if (mapArray[playerX - 1][playerY] != 2) {
+                        playerX--;
+                        Score += 1;
+                    }
                     if (playerX < 1) playerX = 1;
                     tiltPixmap = Assets.tiltLeft;
                     break;
@@ -665,21 +678,23 @@ public class GameScreen extends Screen
     private void drawRunningUI() {
         Graphics g = game.getGraphics();
 
-        g.drawPixmap(Assets.pauseIcon,0, 0, 0, 0, 64, 64);
+        g.drawPixmap(Assets.pauseIcon, 0, 0, 0, 0, 64, 64);
         g.drawLine(0, 655, 480, 655, Color.BLACK);//g.drawLine(0, 416, 480, 416, Color.BLACK);
 
         g.drawPixmap(Assets.smokeDrop, 1 + g.getWidth() - Assets.smokeDrop.getWidth(), 0, 0, 0, 64, 64);
 
-        g.drawPixmap(Assets.arrowLeftIcon,  0, g.getHeight() - 64, -1.0f, 1.0f);
-        g.drawPixmap(Assets.arrowRightIcon, 1 + g.getWidth() - Assets.arrowRightIcon.getWidth() , g.getHeight() - 64, 0, 0, 64, 64);
+        g.drawPixmap(Assets.arrowLeftIcon, 0, g.getHeight() - 64, -1.0f, 1.0f);
+        g.drawPixmap(Assets.arrowRightIcon, 1 + g.getWidth() - Assets.arrowRightIcon.getWidth(), g.getHeight() - 64, 0, 0, 64, 64);
 
-
+        //Draws the score
+        String ScoreText = Integer.toString(Score);
+        drawText(g, ScoreText, g.getWidth() / 2 - 10, g.getHeight() / 2 + 300);
     }
 
     private void drawPausedUI() {
         Graphics g = game.getGraphics();
 
-        g.drawPixmap(Assets.pauseTitle, ((g.getWidth() - Assets.pauseTitle.getWidth()) / 2), g.getHeight() / 4  , 0, 0, 192, 42);
+        g.drawPixmap(Assets.pauseTitle, ((g.getWidth() - Assets.pauseTitle.getWidth()) / 2), g.getHeight() / 4, 0, 0, 192, 42);
 
         g.drawLine(0, 655, 480, 655, Color.BLACK);
 
@@ -739,5 +754,13 @@ public class GameScreen extends Screen
     @Override
     public void dispose() {
 
+    }
+
+    // Saves and adds the current score to the highscore file
+    //Call this when the player dies.
+    public void SaveScore()
+    {
+        Score *= KilledEnemies;
+        Settings.addScore(Score);
     }
 }
