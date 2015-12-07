@@ -9,9 +9,9 @@ public class Turret : MonoBehaviour
     [SerializeField] public float damage, initialFireRate, fireRate, projectileSpeed;
     [SerializeField] public Vector3 focus, defaultFocus;
 
-    private float fireCooldown;
-    [SerializeField] private GameObject gun, gunBarrel, projectile, player;
-    private bool haveTarget, canFire;
+    protected float fireCooldown;
+    [SerializeField] protected GameObject gun, gunBarrel, projectile, player;
+    protected bool haveTarget, canFire;
 
 	// Use this for initialization
 	void Start ()
@@ -20,6 +20,7 @@ public class Turret : MonoBehaviour
         canFire = false;
         fireCooldown = initialFireRate;
         focus = defaultFocus;
+        childStart();
 	}
 	
 	// Update is called once per frame
@@ -54,8 +55,21 @@ public class Turret : MonoBehaviour
 
         aim();
         lineOfSight();
+
+        childUpdate();
 	}
 
+    public virtual void childStart ()
+    {
+
+    }
+
+    public virtual void childUpdate ()
+    {
+
+    }
+
+    
     // This function aims at a point.
     void aim ()
     {
