@@ -148,7 +148,7 @@ public class GameScreen extends Screen
     int playerDir = 0, previousDir = 0;
     //stuff for tilt
     int drawAgain = 1, Score = 0, KilledEnemies = 1;
-    Pixmap tiltPixmap = Assets.tiltUp;
+    Pixmap tiltPixmap = Assets.tiltUp; Pixmap enemyPixmap = Assets.enemyDown;
     //These are update speeed variables
     float tickCounter = 0.0f, tickTarget = 0.25f, timePassed = 0.0f, enemySpawnTime = 5.0f;
     boolean spawningEnemy = false;
@@ -169,9 +169,8 @@ public class GameScreen extends Screen
         generateMap(10, 20);
         playerX = mapArray.length / 2;
         playerY = mapArray.length / 2;
-        drawMap();
         enemies = new ArrayList<Enemy>();
-
+        drawMap();
     }
 
     @Override
@@ -231,9 +230,10 @@ public class GameScreen extends Screen
 
                     else if (mapArray[x][y] == 4)
                     {
+                        //enemy will be drawn in the following for loop
                         // Enemy starting point.
                         g.drawPixmap(Assets.floorTile, drawPos[0], drawPos[1]);
-                        g.drawPixmap(Assets.enemyDown, drawPos[0], drawPos[1]);
+                        //g.drawPixmap(Assets.enemyDown, drawPos[0], drawPos[1]);
                     }
                     else
                     {
@@ -245,6 +245,29 @@ public class GameScreen extends Screen
                         g.drawPixmap(tiltPixmap, drawPos[0], drawPos[1]);
                         //g.drawPixmap(Assets.tiltUp, drawPos[0], drawPos[1]);
                     }
+                }
+            }
+        }
+        for(int i=0;i<enemies.size();i++){
+            if(enemies.get(i)!=null){
+                if(Math.abs( enemies.get(i).getX() - playerX) <= 4
+                        && Math.abs( enemies.get(i).getY() - playerY) <= 4){
+                    switch (enemies.get(i).getDir()) {
+                        case 0:
+                            enemyPixmap = Assets.enemyUp;
+                            break;
+                        case 1:
+                            enemyPixmap = Assets.enemyRight;
+                            break;
+                        case 2:
+                            enemyPixmap = Assets.enemyDown;
+                            break;
+                        case 3:
+                            enemyPixmap = Assets.enemyLeft;
+                            break;
+                    }
+                    g.drawPixmap(enemyPixmap, ((enemies.get(i).getX() - playerX) * Assets.floorTile.getHeight()) + (g.getWidth() - Assets.floorTile.getWidth()) / 2
+                            , ((enemies.get(i).getY() - playerY) * Assets.floorTile.getWidth()) + (g.getHeight() - Assets.floorTile.getHeight()) / 2);
                 }
             }
         }
