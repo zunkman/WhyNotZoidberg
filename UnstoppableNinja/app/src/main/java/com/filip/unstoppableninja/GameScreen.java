@@ -25,26 +25,76 @@ class Enemy
         x=myX;
         y=myY;
         parent = myParent;
+        alerted = false;
     }
     void Update(){
-        int newDir = parent.getWaypoint(x,y);
-        if(newDir!=0){parent.clearWaypoint(x,y);dir=newDir-1;}
+        Random randomGenerator = new Random();
+        if(alerted) {
+            int newDir = parent.getWaypoint(x, y);
+            if (newDir != 0) {
+                dir = newDir - 1;
+            }
+        }
+        else{
+
+            if(randomGenerator.nextInt(10)==9){
+                if(randomGenerator.nextInt(2)==1){
+                    dir--;
+                }
+                else{
+                    dir++;
+                }
+
+            }
+        }
         offset = new Point(0,0);
         setDir();
         int tar =getWall(x+offset.x,y+offset.y);
 
         if(tar==2||tar==10){
             offset.x=0;offset.y=0;
-            dir++;
-            if(dir>3){dir=0;}
+            if(randomGenerator.nextInt(2)==1){
+                dir--;
+            }
+            else{
+                dir++;
+            }
         }
         x+=offset.x;
         y+=offset.y;
         y=Math.min(Math.max(y,1),41);
         x=Math.min(Math.max(x,1),41);
+
+        //
+
+        setDir();
+        Point newOffset = offset;
+        for(int i=0;i<7;i++){
+            Point playerPoint = parent.getPlayerPos();
+
+            if(playerPoint.x==x+newOffset.x && playerPoint.y==y+newOffset.y){
+                parent.playerWaypoint();
+                System.out.println("alert");
+                alerted=true;
+
+            }
+
+            tar =getWall(x+newOffset.x,y+newOffset.y);
+            if(tar==2 || tar ==10){
+                break;
+            }
+
+            if(newOffset.x>0){newOffset.x++;}
+            if(newOffset.x<0){newOffset.x--;}
+            if(newOffset.y>0){newOffset.y++;}
+            if(newOffset.y<0){newOffset.y--;}
+        }
+
     }
 
     void setDir(){
+        if(dir<0){dir=3;}
+        if(dir>3){dir=0;}
         if(dir==0){offset.y=-1;}
         if(dir==1){offset.x=1;}
         if(dir==2){offset.y=1;}
@@ -138,6 +188,8 @@ public class GameScreen extends Screen
         if(state == GameState.GameOver)
             updateGameOver(touchEvents);
     }
+
+
 
     // This function will draw the initial map.
     private void drawMap ()
@@ -276,6 +328,7 @@ public class GameScreen extends Screen
                     if (mapArray[playerX][playerY - 1] != 2 && mapArray[playerX][playerY - 1] != 10) {
                         playerY--;
                         Score += 1;
+                        if(waypointArray[playerX][playerY]!=0){playerWaypoint();}
                     }
 
                     if (playerY < 1) playerY = 1;
@@ -285,6 +338,7 @@ public class GameScreen extends Screen
                     if (mapArray[playerX + 1][playerY] != 2 && mapArray[playerX + 1][playerY] != 10) {
                         playerX++;
                         Score += 1;
+                        if(waypointArray[playerX][playerY]!=0){playerWaypoint();}
                     }
 
                     if (playerX > mapArray.length - 2) playerX = mapArray.length - 2;
@@ -294,6 +348,7 @@ public class GameScreen extends Screen
                     if (mapArray[playerX][playerY + 1] != 2 && mapArray[playerX][playerY + 1] != 10){
                         playerY++;
                         Score += 1;
+                        if(waypointArray[playerX][playerY]!=0){playerWaypoint();}
                     }
                     if (playerY > mapArray.length - 2) playerY = mapArray.length - 2;
                     tiltPixmap = Assets.tiltDown;
@@ -302,6 +357,7 @@ public class GameScreen extends Screen
                     if (mapArray[playerX - 1][playerY] != 2 && mapArray[playerX - 1][playerY] != 10) {
                         playerX--;
                         Score += 1;
+                        if(waypointArray[playerX][playerY]!=0){playerWaypoint();}
                     }
                     if (playerX < 1) playerX = 1;
                     tiltPixmap = Assets.tiltLeft;
@@ -319,7 +375,7 @@ public class GameScreen extends Screen
 
                 if(enemies.get(i)!=null){
                     enemies.get(i).Update();
-                    System.out.println(enemies.get(i).getX() + " " + enemies.get(i).getY());
+
                     mapArray[enemies.get(i).getX()][enemies.get(i).getY()]=4;
                     if (enemies.get(i).killPlayer(playerX, playerY))
                     {
@@ -875,4 +931,12 @@ public class GameScreen extends Screen
         waypointArray[checkX][checkY] = 0;
 
     }
+
+    public Point getPlayerPos(){
+        return new Point(playerX,playerY);
+    }
+
+public void playerWaypoint(){
+    waypointArray[playerX][playerY]=playerDir+1;
+}
 }
