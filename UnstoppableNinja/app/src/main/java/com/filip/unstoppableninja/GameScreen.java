@@ -943,16 +943,19 @@ public class GameScreen extends Screen
     }
 
     public int getSpace(int checkX, int checkY){
-        return mapArray[checkX][checkY];
-
+        if (checkX >= 0 && checkX <= 42 && checkY >= 0 && checkY <= 42) {
+            return mapArray[checkX][checkY];
+        } else return -1;
     }
-    public int getWaypoint(int checkX, int checkY){
-        return waypointArray[checkX][checkY];
-
+    public int getWaypoint(int checkX, int checkY) {
+        if (checkX >= 0 && checkX <= 42 && checkY >= 0 && checkY <= 42) {
+            return waypointArray[checkX][checkY];
+        } else return -1;
     }
-    public void clearWaypoint(int checkX, int checkY){
-        waypointArray[checkX][checkY] = 0;
-
+    public void clearWaypoint(int checkX, int checkY) {
+        if (checkX >= 0 && checkX <= 42 && checkY >= 0 && checkY <= 42) {
+            waypointArray[checkX][checkY] = 0;
+        }
     }
 
     public Point getPlayerPos(){

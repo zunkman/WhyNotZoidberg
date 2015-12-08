@@ -21,6 +21,7 @@ public class TossedGarbage : MonoBehaviour {
     }
 
     void hit(Collider other) {
+        
         //only do this if it is considered a weapon.
         if(isWeapon || GetComponent<Rigidbody>().velocity.magnitude > 1.0f) {
             //Debug.Log("Trigger Overlap.");
@@ -33,13 +34,13 @@ public class TossedGarbage : MonoBehaviour {
             } else if(other.transform.parent)
             {
                 //Debug.Log("Has Parent.");
-                if (other.transform.parent.GetComponentInChildren<EnemyDamage>())
+                if (other.GetComponentInParent<EnemyDamage>())
                 {
                     //Debug.Log("Has Child Script.");
-                    impactedDamageScript = other.transform.parent.GetComponentInChildren<EnemyDamage>();
+                    impactedDamageScript = other.GetComponentInParent<EnemyDamage>();
                 } else
                 {
-                    //Debug.Log("No Child script.");
+                    Debug.Log("No script.");
                 }
             }
             if (impactedDamageScript)
@@ -48,16 +49,21 @@ public class TossedGarbage : MonoBehaviour {
                 isWeapon = false;
                 baseDamage *= 0.5f; if(baseDamage < 1.0f) baseDamage = 1.0f;
                 //Destroy(this);
+                Debug.Log("Hit " + other.gameObject.tag);
             }
             if (other.gameObject.tag == "Ground")
             {
                     Destroy(this.gameObject);
             }
-        } else { Debug.Log("Velocity:" + GetComponent<Rigidbody>().velocity.magnitude); }
+        } else {
+            if(!isWeapon)Debug.Log("Not Weapon");
+            if(GetComponent<Rigidbody>().velocity.magnitude > 1.0f)Debug.Log("Low Velocity");//:" + GetComponent<Rigidbody>().velocity.magnitude); }
+        }
     }
     void OnTriggerEnter (Collider other)
     {
         hit(other);
+        
     }
     
     void OnTriggerStay(Collider other)

@@ -37,6 +37,7 @@ public class Telekinesis_Grabber : MonoBehaviour {
                         CollectedTrash[i].GetComponent<Rigidbody>().velocity = CollectedTrash[i].GetComponent<Rigidbody>().velocity * Mathf.Pow(0.5f, Time.deltaTime);
                         Vector3 offset = this.transform.position - CollectedTrash[i].transform.position;
 				        CollectedTrash[i].transform.position += offset * 0.1f;
+                        CollectedTrash[i].isWeapon = true;
 			        }
                 }
             }
@@ -119,7 +120,8 @@ public class Telekinesis_Grabber : MonoBehaviour {
 			for(i = 0; i < CollectedTrash.Length;i++){
 				CollectedTrashBuffer[i] = CollectedTrash[i];
 				if(CollectedTrash[i] == triggerUnit) { duplicate = true;
-					Debug.Log ("Duplicate Unit!!"); }
+                    //Debug.Log ("Duplicate Unit!!");
+                }
 			}
 			if(duplicate == false) {
 				CollectedTrash = null;
