@@ -1,11 +1,11 @@
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2008
-
-Project("{605B7486-FC4E-0F9A-E8F3-7C85CFC641BF}") = "Polluto", "Assembly-CSharp-firstpass.csproj", "{34089E55-B480-1DA9-F6DB-6D0C3FCE7009}"
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Polluto.CSharp.Plugins", "Polluto.CSharp.Plugins.csproj", "{C29DC13F-7029-4CFA-6A9B-53FEBD9586CC}"
 EndProject
-Project("{605B7486-FC4E-0F9A-E8F3-7C85CFC641BF}") = "Polluto", "Assembly-CSharp.csproj", "{8F4E674E-CC5C-21F1-90B0-5D415CEDF855}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Polluto.CSharp", "Polluto.CSharp.csproj", "{901E0C97-BE07-E9AE-F3FA-47D52C309946}"
 EndProject
-Project("{605B7486-FC4E-0F9A-E8F3-7C85CFC641BF}") = "Polluto", "Assembly-CSharp-Editor.csproj", "{DDBEE97A-551B-0618-6619-AB53828F5ADC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Polluto.CSharp.Editor", "Polluto.CSharp.Editor.csproj", "{7CA8B53A-44B5-BEA0-46B3-59C6C53A5AC3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,44 +13,20 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{34089E55-B480-1DA9-F6DB-6D0C3FCE7009}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{34089E55-B480-1DA9-F6DB-6D0C3FCE7009}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{34089E55-B480-1DA9-F6DB-6D0C3FCE7009}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{34089E55-B480-1DA9-F6DB-6D0C3FCE7009}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8F4E674E-CC5C-21F1-90B0-5D415CEDF855}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8F4E674E-CC5C-21F1-90B0-5D415CEDF855}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8F4E674E-CC5C-21F1-90B0-5D415CEDF855}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8F4E674E-CC5C-21F1-90B0-5D415CEDF855}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DDBEE97A-551B-0618-6619-AB53828F5ADC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DDBEE97A-551B-0618-6619-AB53828F5ADC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DDBEE97A-551B-0618-6619-AB53828F5ADC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DDBEE97A-551B-0618-6619-AB53828F5ADC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C29DC13F-7029-4CFA-6A9B-53FEBD9586CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C29DC13F-7029-4CFA-6A9B-53FEBD9586CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C29DC13F-7029-4CFA-6A9B-53FEBD9586CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C29DC13F-7029-4CFA-6A9B-53FEBD9586CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{901E0C97-BE07-E9AE-F3FA-47D52C309946}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{901E0C97-BE07-E9AE-F3FA-47D52C309946}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{901E0C97-BE07-E9AE-F3FA-47D52C309946}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{901E0C97-BE07-E9AE-F3FA-47D52C309946}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CA8B53A-44B5-BEA0-46B3-59C6C53A5AC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CA8B53A-44B5-BEA0-46B3-59C6C53A5AC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CA8B53A-44B5-BEA0-46B3-59C6C53A5AC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CA8B53A-44B5-BEA0-46B3-59C6C53A5AC3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-<<<<<<< HEAD
-																																							GlobalSection(MonoDevelopProperties) = preSolution
-=======
-																													GlobalSection(MonoDevelopProperties) = preSolution
->>>>>>> origin/master
-		StartupItem = Assembly-CSharp.csproj
-		Policies = $0
-		$0.TextStylePolicy = $1
-		$1.inheritsSet = null
-		$1.scope = text/x-csharp
-		$0.CSharpFormattingPolicy = $2
-		$2.inheritsSet = Mono
-		$2.inheritsScope = text/x-csharp
-		$2.scope = text/x-csharp
-		$0.TextStylePolicy = $3
-		$3.FileWidth = 120
-		$3.TabWidth = 4
-		$3.IndentWidth = 4
-		$3.EolMarker = Unix
-		$3.inheritsSet = Mono
-		$3.inheritsScope = text/plain
-		$3.scope = text/plain
-	EndGlobalSection
-
 EndGlobal

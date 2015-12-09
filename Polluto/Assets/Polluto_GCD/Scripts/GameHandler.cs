@@ -40,7 +40,7 @@ public class GameHandler : MonoBehaviour
     /* Possible remove this later */
     public GameObject targetObject;
     
-
+    [SerializeField] private Button ResumeButton;
 
 
     void Awake()
@@ -274,6 +274,7 @@ public class GameHandler : MonoBehaviour
         if (isPaused == true)
         {
             pauseMenu.SetActive(true);
+            ResumeButton.Select();
             Time.timeScale = 0.0f;  
         }
     }

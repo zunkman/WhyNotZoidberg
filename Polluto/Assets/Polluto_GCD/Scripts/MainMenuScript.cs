@@ -29,8 +29,17 @@ public class MainMenuScript : MonoBehaviour
 
     private float cameraMoveSpeed;
 
+
+    [SerializeField] private Button StartButton;
+    [SerializeField] private Button CreditsBackButton;
+    [SerializeField] private Button OptionsBackButton;
+    [SerializeField] private Button OnePlayerButton;
+    [SerializeField] private Button LevelOneButton;
+    [SerializeField] private Button CharacterDefaultButton;
+
     void Start()
     {
+        StartButton.Select();
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
         creditsCanvas = GameObject.FindGameObjectWithTag("creditCanvas");
         optionsCanvas = GameObject.FindGameObjectWithTag("optionsCanvas");
@@ -125,18 +134,21 @@ public class MainMenuScript : MonoBehaviour
     {
         moveCameraTierTwo = true;
         creditsCanvas.SetActive(true);
+        CreditsBackButton.Select();
     }
 
     public void OnClickButtonOptions()
     {
         moveCameraTierTwo = true;
         optionsCanvas.SetActive(true);
+        OptionsBackButton.Select();
     }
 
     public void OnClickButtonCharacter()
     {
         moveCameraTierTwo = true;
         characterCanvas.SetActive(true);
+        OnePlayerButton.Select();
     }
 
     public void OnClickBackToMainMenu()
@@ -145,6 +157,7 @@ public class MainMenuScript : MonoBehaviour
         optionsCanvas.SetActive(false);
         characterSelectCanvas.SetActive(false);
         characterCanvas.SetActive(false);
+        OnePlayerButton.Select();
         moveCameraTierOne = true;
     }
 
@@ -152,6 +165,7 @@ public class MainMenuScript : MonoBehaviour
     {
         characterSelectCanvas.SetActive(true);
         levelSelectCanvas.SetActive(false);
+        CharacterDefaultButton.Select();
         moveCameraTierTwoNeg = true;
     }
 
@@ -162,6 +176,7 @@ public class MainMenuScript : MonoBehaviour
         characterSelectTitle.GetComponent<Text>().text = "Select your character player one";
         characterSelectCanvas.SetActive(true);
         characterCanvas.SetActive(false);
+        CharacterDefaultButton.Select();
         GameHandler.numPlayers = 1;
         currentSelectingPlayer = 1;
     }
@@ -171,6 +186,7 @@ public class MainMenuScript : MonoBehaviour
         characterSelectTitle.GetComponent<Text>().text = "Select your character player one";
         characterSelectCanvas.SetActive(true);
         characterCanvas.SetActive(false);
+        CharacterDefaultButton.Select();
         GameHandler.numPlayers = 2;
         currentSelectingPlayer = 1;
     }
@@ -179,6 +195,7 @@ public class MainMenuScript : MonoBehaviour
     {
         characterSelectCanvas.SetActive(false);
         characterCanvas.SetActive(true);
+        OnePlayerButton.Select();
         playerOneOk.SetActive(false);
         playerTwoOk.SetActive(false);
         GameHandler.numPlayers = 0;
@@ -189,6 +206,7 @@ public class MainMenuScript : MonoBehaviour
         if (GameHandler.numPlayers == 1)
         {
             levelSelectCanvas.SetActive(true);
+            LevelOneButton.Select();
             moveCameraTierThree = true;
         }
         else if (GameHandler.numPlayers == 2)
@@ -212,6 +230,7 @@ public class MainMenuScript : MonoBehaviour
         playerOneOk.SetActive(false);
         playerTwoOk.SetActive(false);
         levelSelectCanvas.SetActive(true);
+        LevelOneButton.Select();
         moveCameraTierThree = true;
     }
 
