@@ -110,9 +110,9 @@ class Enemy
     int getDir(){
         return dir;
     }
-    int getWall(int checkX,int checkY){
+    int getWall(int checkX,int checkY)
+    {
         return parent.getSpace(checkX,checkY);
-
     }
 
     boolean killPlayer (int theX, int theY)
@@ -134,6 +134,13 @@ class Powerup
 {
     int Px;
     int Py;
+
+    int GetPX(){
+        return Px;
+    }
+    int GetPY(){
+        return Py;
+    }
     GameScreen Parent;
     Pixmap pickup;
     Powerup(int myX, int myY, GameScreen myParent)
@@ -148,7 +155,7 @@ class Powerup
         Pixmap shuriken =Assets.shurikenDrop;
         Pixmap caltrops =Assets.caltropsDrop;
         Random rand = new Random();
-        int Pdrop = rand.nextInt((3) + 6);
+        int Pdrop = rand.nextInt(3) + 6;
 
         if(Pdrop ==6)
         {
@@ -316,6 +323,21 @@ public class GameScreen extends Screen
                 }
             }
         }
+
+        for(int i=0;i<Pickups.size();i++)
+        {
+            if(Pickups.get(i)!=null)
+            {
+                if(Math.abs( Pickups.get(i).GetPX() - playerX) <= 5
+                        && Math.abs( Pickups.get(i).GetPY() - playerY) <= 5)
+                {
+                    g.drawPixmap(Pickups.get(i).pickup, ((Pickups.get(i).GetPX() - playerX) * Assets.floorTile.getHeight()) + (g.getWidth() - Assets.floorTile.getWidth()) / 2
+                            , ((Pickups.get(i).GetPY() - playerY) * Assets.floorTile.getWidth()) + (g.getHeight() - Assets.floorTile.getHeight()) / 2);
+                }
+            }
+        }
+
+
     }
     private void updateReady(List<TouchEvent> touchEvents)
     {
@@ -380,6 +402,7 @@ public class GameScreen extends Screen
             {
                 spawningEnemy = true;
                 spawnThing(4);
+                spawnThing(5);
             }
 
             if (timePassed % enemySpawnTime > 1 && spawningEnemy)
