@@ -130,6 +130,42 @@ class Enemy
 
 }
 
+class Powerup
+{
+    int Px;
+    int Py;
+    GameScreen Parent;
+    Pixmap pickup;
+    Powerup(int myX, int myY, GameScreen myParent)
+    {
+        Px=myX;
+        Py=myY;
+        Parent = myParent;
+    }
+    void PUpdate()
+    {
+        Pixmap smoke = Assets.smokeDrop;
+        Pixmap shuriken =Assets.shurikenDrop;
+        Pixmap caltrops =Assets.caltropsDrop;
+        Random rand = new Random();
+        int Pdrop = rand.nextInt((3) + 6);
+
+        if(Pdrop ==6)
+        {
+            pickup = smoke;
+        }
+        if(Pdrop ==7)
+        {
+            pickup = shuriken;
+        }
+        if(Pdrop ==8)
+        {
+            pickup = caltrops;
+        }
+    }
+}
+
+
 public class GameScreen extends Screen
 {
     enum GameState
@@ -138,8 +174,6 @@ public class GameScreen extends Screen
         Paused,
         GameOver
     }
-
-
     // These are map variables.
     int [][] mapArray = new int [43][43];
     int [][] waypointArray = new int[43][43];
@@ -161,6 +195,7 @@ public class GameScreen extends Screen
     //World world;
     //int oldScore = 0;
     //String score = "0";
+    List<Powerup> Pickups;
 
     public GameScreen(Game game)
     {
@@ -170,6 +205,7 @@ public class GameScreen extends Screen
         playerX = mapArray.length / 2;
         playerY = mapArray.length / 2;
         enemies = new ArrayList<Enemy>();
+        Pickups = new ArrayList<Powerup>();
         drawMap();
     }
 
@@ -235,6 +271,13 @@ public class GameScreen extends Screen
                         g.drawPixmap(Assets.floorTile, drawPos[0], drawPos[1]);
                         //g.drawPixmap(Assets.enemyDown, drawPos[0], drawPos[1]);
                     }
+
+                    else if (mapArray[x][y] == 5)
+                    {
+                        //pickup will be drawn in the following for loop
+                        g.drawPixmap(Assets.floorTile, drawPos[0], drawPos[1]);
+
+                    }
                     else
                     {
                         //Draw a pause icon by default to show unassigned grid spot
@@ -248,8 +291,10 @@ public class GameScreen extends Screen
                 }
             }
         }
-        for(int i=0;i<enemies.size();i++){
-            if(enemies.get(i)!=null){
+        for(int i=0;i<enemies.size();i++)
+        {
+            if(enemies.get(i)!=null)
+            {
                 if(Math.abs( enemies.get(i).getX() - playerX) <= 4
                         && Math.abs( enemies.get(i).getY() - playerY) <= 4){
                     switch (enemies.get(i).getDir()) {
@@ -439,16 +484,26 @@ public class GameScreen extends Screen
             {
                 mapArray[xPos][yPos] = thing;
                 //mapArray[playerX + 1][playerY + 1] = thing;
-                if(thing==4) {
+                if(thing==4)
+                {
                     System.out.println("Spawned an enemy.");
                     enemies.add(new Enemy(xPos,yPos,this));
+                }
+
+                if(thing==5)
+                {
+                    System.out.println("Spawned a Pickup.");
+                    Pickups.add(new Powerup(xPos, yPos, this));
+                    Pickups.get(Pickups.size()-1).PUpdate();
                 }
 
 
                 spawned = true;
             }
 
-        }while (!spawned);
+        }
+
+        while (!spawned);
     }
 
     // The 2D array we're storing map data on, the number of walls to make, the maximum wall length.
