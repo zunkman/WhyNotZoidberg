@@ -244,17 +244,16 @@ public class GameScreen extends Screen
         {
             for (y = playerY - 6; y <= playerY + 6; y++)
             {
+                int drawPos[] = {
+                        //((y - playerY) * Assets.floorTile.getWidth()) + (g.getWidth()-Assets.floorTile.getWidth()) / 2
+                        //, ((x - playerX) * (Assets.floorTile.getHeight())) + (g.getHeight()-Assets.floorTile.getHeight())/2
+                        ((x - playerX) * Assets.floorTile.getHeight()) + (g.getWidth()-Assets.floorTile.getWidth()) / 2
+                        , ((y - playerY) * Assets.floorTile.getWidth()) + (g.getHeight()-Assets.floorTile.getHeight())/2
+                };
                 // Check if we're in range of the map array. If so, we start drawing.
                 if (x >= 0 && x <= 42 && y >= 0 && y <= 42)
                 {
                     //get the pixel coordinates of the tile to draw
-                    int drawPos[] = {
-                            //((y - playerY) * Assets.floorTile.getWidth()) + (g.getWidth()-Assets.floorTile.getWidth()) / 2
-                            //, ((x - playerX) * (Assets.floorTile.getHeight())) + (g.getHeight()-Assets.floorTile.getHeight())/2
-                            ((x - playerX) * Assets.floorTile.getHeight()) + (g.getWidth()-Assets.floorTile.getWidth()) / 2
-                            , ((y - playerY) * Assets.floorTile.getWidth()) + (g.getHeight()-Assets.floorTile.getHeight())/2
-                    };
-
                     if (mapArray[x][y] == 0 || mapArray[x][y] == 1)
                     {
                         //Draw floors here
@@ -295,6 +294,8 @@ public class GameScreen extends Screen
                         g.drawPixmap(tiltPixmap, drawPos[0], drawPos[1]);
                         //g.drawPixmap(Assets.tiltUp, drawPos[0], drawPos[1]);
                     }
+                } else {
+                    g.drawPixmap(Assets.wallTile, drawPos[0], drawPos[1]);
                 }
             }
         }
