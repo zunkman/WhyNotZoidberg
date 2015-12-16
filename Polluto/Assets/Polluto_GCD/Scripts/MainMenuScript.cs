@@ -132,13 +132,15 @@ public class MainMenuScript : MonoBehaviour
     /* Sets the camera tier to move to two if clicked */
     public void OnClickButtonCredits()
     {
-        moveCameraTierTwo = true;
+        Polluto_SFX.playSound("Button");
+            moveCameraTierTwo = true;
         creditsCanvas.SetActive(true);
         CreditsBackButton.Select();
     }
 
     public void OnClickButtonOptions()
     {
+        Polluto_SFX.playSound("Button");
         moveCameraTierTwo = true;
         optionsCanvas.SetActive(true);
         OptionsBackButton.Select();
@@ -146,6 +148,7 @@ public class MainMenuScript : MonoBehaviour
 
     public void OnClickButtonCharacter()
     {
+        Polluto_SFX.playSound("Button");
         moveCameraTierTwo = true;
         characterCanvas.SetActive(true);
         OnePlayerButton.Select();
@@ -153,6 +156,7 @@ public class MainMenuScript : MonoBehaviour
 
     public void OnClickBackToMainMenu()
     {
+        Polluto_SFX.playSound("Button");
         creditsCanvas.SetActive(false);
         optionsCanvas.SetActive(false);
         characterSelectCanvas.SetActive(false);
@@ -163,6 +167,7 @@ public class MainMenuScript : MonoBehaviour
 
     public void OnClickBackToCharacterSelect()
     {
+        Polluto_SFX.playSound("Button");
         characterSelectCanvas.SetActive(true);
         levelSelectCanvas.SetActive(false);
         CharacterDefaultButton.Select();
@@ -173,6 +178,7 @@ public class MainMenuScript : MonoBehaviour
     /* Sets the camera tier to move to two if clicked */
     public void OnClickButtonSinglePlayer()
     {
+        Polluto_SFX.playSound("Button");
         characterSelectTitle.GetComponent<Text>().text = "Select your character player one";
         characterSelectCanvas.SetActive(true);
         characterCanvas.SetActive(false);
@@ -183,6 +189,7 @@ public class MainMenuScript : MonoBehaviour
 
     public void OnClickButtonTwoPlayer()
     {
+        Polluto_SFX.playSound("Button");
         characterSelectTitle.GetComponent<Text>().text = "Select your character player one";
         characterSelectCanvas.SetActive(true);
         characterCanvas.SetActive(false);
@@ -193,6 +200,7 @@ public class MainMenuScript : MonoBehaviour
 
     public void backToCharacterCanvas()
     {
+        Polluto_SFX.playSound("Button");
         characterSelectCanvas.SetActive(false);
         characterCanvas.SetActive(true);
         OnePlayerButton.Select();
@@ -203,6 +211,7 @@ public class MainMenuScript : MonoBehaviour
 
     public void playerOneOkButton()
     {
+        Polluto_SFX.playSound("Button");
         if (GameHandler.numPlayers == 1)
         {
             levelSelectCanvas.SetActive(true);
@@ -213,7 +222,7 @@ public class MainMenuScript : MonoBehaviour
         {
             characterSelectTitle.GetComponent<Text>().text = "Select your character player two";
             currentSelectingPlayer = 2;
-
+            CharacterDefaultButton.Select();
             if (currentSelectingPlayer == 2)
             {
                 playerOneOk.SetActive(false);
@@ -227,6 +236,7 @@ public class MainMenuScript : MonoBehaviour
 
     public void playerTwoOkButton()
     {
+        Polluto_SFX.playSound("Button");
         playerOneOk.SetActive(false);
         playerTwoOk.SetActive(false);
         levelSelectCanvas.SetActive(true);
@@ -236,6 +246,7 @@ public class MainMenuScript : MonoBehaviour
 
     public void clickOnCharacter(int charID)
     {
+        Polluto_SFX.playSound("Button");
         //Looper, Higgs, JunkToss, TankGirl, GlassCannonMan
         if(currentSelectingPlayer >= 0)
         {
@@ -247,30 +258,35 @@ public class MainMenuScript : MonoBehaviour
 
     public void onClickSubterfuge()
     {
+        Polluto_SFX.playSound("Button");
         GameHandler.selectedLevelName = "Subterfuge";
         Application.LoadLevel("Level4");
     }
 
     public void onClickMountainGoat()
     {
+        Polluto_SFX.playSound("Button");
         GameHandler.selectedLevelName = "  ";
         Application.LoadLevel("MountainBox");
     }
 
     public void onClickFortKnox()
     {
+        Polluto_SFX.playSound("Button");
         GameHandler.selectedLevelName = "Fort Knox";
         Application.LoadLevel("Fort Knox");
     }
 
     public void onClickVolcanoParadise()
     {
+        Polluto_SFX.playSound("Button");
         GameHandler.selectedLevelName = "VolcanoParadise";
         Application.LoadLevel("VolcanoParadise");
     }
 
     public void onClickTutorial()
     {
+        Polluto_SFX.playSound("Button");
         GameHandler.selectedLevelName = "Tutorial";
         Application.LoadLevel("Tutorial");
     }

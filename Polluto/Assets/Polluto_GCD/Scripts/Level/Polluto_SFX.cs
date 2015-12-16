@@ -61,11 +61,20 @@ public class Polluto_SFX : MonoBehaviour {
 			break;
 		case "playerdeath":
 		case "playerDeath":
-			SID = 6;
+			SID = 0;
 			break;
 		case "bump"://missing audio clip?
-			SID = 7;
+			SID = 0;
 			break;
+        case "button":
+        case "Button":
+            SID = 6;
+            break;
+        case "EnemyDamage":
+        case "damage":
+        case "Damage":
+            SID = 7;
+            break;
 		default:
 			SID = 0;
 			break;
