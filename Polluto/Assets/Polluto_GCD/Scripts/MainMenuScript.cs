@@ -287,8 +287,8 @@ public class MainMenuScript : MonoBehaviour
     public void onClickTutorial()
     {
         Polluto_SFX.playSound("Button");
-        GameHandler.selectedLevelName = "Tutorial";
-        Application.LoadLevel("Tutorial");
+		GameHandler.selectedLevelName = "VolcanoParadise";
+		Application.LoadLevel("VolcanoParadise");
     }
 
 
