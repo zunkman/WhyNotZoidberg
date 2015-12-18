@@ -84,6 +84,7 @@
     <Compile Include="Assets\Polluto_GCD\Scripts\DefaultPlayerMovement.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\DestructableBlocks.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\Destructible.cs" />
+    <Compile Include="Assets\Polluto_GCD\Scripts\Effects\AVD_RenderLayer.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\Effects\EffectBlinkOff.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\Effects\EffectTimer.cs" />
     <Compile Include="Assets\Polluto_GCD\Scripts\ElevatorScript.cs" />

@@ -280,16 +280,20 @@ public class MainMenuScript : MonoBehaviour
     public void onClickVolcanoParadise()
     {
         Polluto_SFX.playSound("Button");
-        GameHandler.selectedLevelName = "VolcanoParadise";
-        Application.LoadLevel("VolcanoParadise");
+        GameHandler.selectedLevelName = "Tutorial";//"VolcanoParadise";
+        Application.LoadLevel("Tutorial");//"VolcanoParadise");
     }
 
     public void onClickTutorial()
     {
         Polluto_SFX.playSound("Button");
-		GameHandler.selectedLevelName = "VolcanoParadise";
-		Application.LoadLevel("VolcanoParadise");
+        GameHandler.selectedLevelName = "Tutorial";//"VolcanoParadise";
+        Application.LoadLevel("Tutorial");//"VolcanoParadise");
     }
 
+    public void onClickEXIT()
+    {
+        Application.Quit();
+    }
 
 }
